@@ -7,8 +7,8 @@
   "formatVersion" : "1.0",
   "documents" : [
     {
-      "title" : "Introduction to the micro:bit",
-      "overviewSubtitle" : "Getting started with the micro:bit",
+      "title" : "Intro to microbit",
+      "overviewSubtitle" : "Introduction to the micro:bit",
       "description" : "",
       "difficultyLevel" : "intermediate",
       "contentIdentifier" : "org.microbit.playgrounds.microbit-intro",
