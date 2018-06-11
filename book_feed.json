@@ -7,8 +7,8 @@
   "formatVersion" : "1.0",
   "documents" : [
     {
-      "title" : "Introduction to the microt",
-      "overviewSubtitle" : "Getting started with using Swift and the micro:bit",
+      "title" : "Introduction to the micro:bit",
+      "overviewSubtitle" : "Getting started with the micro:bit",
       "description" : "",
       "difficultyLevel" : "intermediate",
       "contentIdentifier" : "org.microbit.playgrounds.microbit-intro",
