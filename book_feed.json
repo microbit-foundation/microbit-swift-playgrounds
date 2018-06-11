@@ -1,0 +1,32 @@
+{
+  "title" : "micro:bit",
+  "subtitle" : "Introduction ",
+  "publisherName" : "Microbit Educational Foundation",
+  "feedIdentifier" : "org.microbit.playgrounds",
+  "contactURL" : "http://microbit.org/testing",
+  "formatVersion" : "1.0",
+  "documents" : [
+    {
+      "title" : "Intro to microbit",
+      "overviewSubtitle" : "Introduction to the micro:bit",
+      "description" : "",
+      "difficultyLevel" : "intermediate",
+      "contentIdentifier" : "org.microbit.playgrounds.microbit-intro",
+      "contentVersion" : "0.2",
+      "url" : "https://microbit-foundation.github.io/microbit-swift-playgrounds/intro.playgroundbook.zip",
+      "publishedDate" : "2018-06-11T18:31:00+01:00",
+      "lastUpdatedDate" : "2018-06-11T19:31:00+01:00",
+      "thumbnailURL" : "intro_thumbnail.png",
+      "bannerImageURL" : "intro_banner.png",
+      "additionalInformation" : [
+        {
+          "name" : "Languages",
+          "value" : "English"
+        }
+      ],
+      "previewImageURLs" : [
+        "preview-1.png"
+      ]
+    }
+  ]
+}
