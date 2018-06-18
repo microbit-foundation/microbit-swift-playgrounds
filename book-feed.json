@@ -1,14 +1,14 @@
 {
   "title" : "micro:bit",
   "subtitle" : "Introduction ",
-  "publisherName" : "Microbit Educational Foundation",
+  "publisherName" : "Micro:bit Educational Foundation",
   "feedIdentifier" : "org.microbit.playgrounds",
-  "contactURL" : "http://microbit.org/testing",
+  "contactURL" : "http://microbit.org/testing#swiftplaygrounds",
   "formatVersion" : "1.0",
   "documents" : [
     {
-      "title" : "Intro to the microbit",
-      "overviewSubtitle" : "Introduction to the micro:bit",
+      "title" : "Intro to the BBC micro:bit",
+      "overviewSubtitle" : "Introduction to the BBC micro:bit",
       "description" : "",
       "difficultyLevel" : "intermediate",
       "contentIdentifier" : "org.microbit.playgrounds.microbit-intro",
