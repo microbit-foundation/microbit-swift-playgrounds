@@ -323,7 +323,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M3i-9K-gZN">
                                         <rect key="frame" x="12.666666666666657" y="12" width="310" height="101.66666666666667"/>
                                         <string key="text">Step 1
-Reset the micro:bit while holding buttons A and B. Continue holding A and B until PAIRING mode starts to display or you see a Bluetooth logo.</string>
+Reset the micro:bit by holding buttons A + B and reset for three seconds, then release reset. Continue holding A and B until PAIRING mode starts to display or you see a Bluetooth logo.</string>
                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
