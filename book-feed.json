@@ -1,21 +1,21 @@
 {
   "title" : "micro:bit",
-  "subtitle" : "Introduction ",
   "publisherName" : "Micro:bit Educational Foundation",
-  "feedIdentifier" : "org.microbit.playgrounds",
+  "feedIdentifier" : "io.github.microbit-foundation",
   "contactURL" : "http://microbit.org/testing#swiftplaygrounds",
   "formatVersion" : "1.0",
   "documents" : [
     {
       "title" : "Intro to the BBC micro꞉bit",
-      "overviewSubtitle" : "Introduction to the BBC micro:bit",
+      "overviewSubtitle" : "An introduction to the BBC micro:bit.",
+      "detailSubtitle" : "Learn how to control the micro:bit using Swift.",
       "description" : "",
       "difficultyLevel" : "intermediate",
-      "contentIdentifier" : "org.microbit.playgrounds.microbit-intro",
-      "contentVersion" : "0.3.5",
+      "contentIdentifier" : "io.github.microbit-foundation.playgrounds.microbit-intro",
+      "contentVersion" : "0.3.6",
       "url" : "https://microbit-foundation.github.io/microbit-swift-playgrounds/intro.playgroundbook.zip",
       "publishedDate" : "2018-06-11T18:31:00+01:00",
-      "lastUpdatedDate" : "2018-06-18T13:25:00+01:00",
+      "lastUpdatedDate" : "2018-06-21T12:21:00+01:00",
       "thumbnailURL" : "intro_thumbnail.png",
       "bannerImageURL" : "intro_banner.png",
       "additionalInformation" : [
