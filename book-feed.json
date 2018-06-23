@@ -12,10 +12,10 @@
       "description" : "",
       "difficultyLevel" : "intermediate",
       "contentIdentifier" : "io.github.microbit-foundation.playgrounds.microbit-intro",
-      "contentVersion" : "0.3.6",
+      "contentVersion" : "0.3.7",
       "url" : "https://microbit-foundation.github.io/microbit-swift-playgrounds/intro.playgroundbook.zip",
       "publishedDate" : "2018-06-11T18:31:00+01:00",
-      "lastUpdatedDate" : "2018-06-21T12:21:00+01:00",
+      "lastUpdatedDate" : "2018-06-23T12:08:32+01:00",
       "thumbnailURL" : "intro_thumbnail.png",
       "bannerImageURL" : "intro_banner.png",
       "additionalInformation" : [
