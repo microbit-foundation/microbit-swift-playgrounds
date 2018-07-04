@@ -13,8 +13,7 @@ eg.
 A clear and concise description of what you expected to happen.
 
 **Screenshots/recordings**
-Add screenshots to help explain your problem. You can copy paste the screenshot or .gif in the github report. 
-
+Add screenshots and recordings to help explain your problem. You can copy and paste the screenshot or screenrecording in the github report. (screen recordings will need to be in .gif format or attached as a .zip file)
 
 **iPad**
  - iOS Version
