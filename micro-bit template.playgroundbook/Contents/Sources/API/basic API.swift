@@ -25,39 +25,93 @@
 
 import Foundation
 
-public func showNumber(_ number: Int, handler: DisplayTextHandler? = nil) {
+/**
+ Shows a number on the LED screen. It will slide left if it has more than one digit.
+ - parameters:
+    - _ A number as an Int or a Double, this cannot be omitted.
+ */
+public func showNumber(_ number: Int) {
     
-    showString(String(number), handler: handler)
+    showString(String(number))
 }
 
-public func showNumber(_ number: Double, handler: DisplayTextHandler? = nil) {
+/**
+ Shows a number on the LED screen. It will slide left if it has more than one digit.
+ - parameters:
+    - _ A number as an Int or a Double, this cannot be omitted.
+ */
+public func showNumber(_ number: Double) {
     
-    showString(String(number), handler: handler)
+    showString(String(number))
 }
 
-public func showLeds(_ string: String, handler: ReadImageHandler? = nil) {
+/**
+ Shows a picture on the LED screen.
+ - parameters:
+    - _ A string that controls which LEDs are on and off. This is a multi-line string with a # to turn the LED on and a . to turn it off.
+ */
+public func showLeds(_ string: String) {
     
     MicrobitImage(string).showImage()
 }
 
-public func showIcon(_ iconName: MicrobitImage.IconName, handler: ReadImageHandler? = nil) {
+/**
+ Shows the chosen icon on the LED screen.
+ - parameters:
+    - _ The icon name of the image you want to show. You can pick an icon image such as: .heart
+ */
+public func showIcon(_ iconName: MicrobitImage.IconName) {
     
     iconImage(iconName).showImage()
 }
 
-public func showString(_ text: String, handler: DisplayTextHandler? = nil) {
+/**
+ Scrolls a text string onto the LED screen
+ - parameters:
+    - _ Text as a String, this cannot be omitted.
+ */
+public func showString(_ text: String) {
     
     ContentMessenger.messenger.sendMessageOfType(.writeData,
                                                  forCharacteristicUUID: .ledTextUUID,
-                                                 withData: text.microbitData,
-                                                 handler: handler)
+                                                 withData: text.microbitData)
 }
 
-public func showArrow(_ arrowName: MicrobitImage.ArrowName, handler: ReadImageHandler? = nil) {
+/**
+ Sets the delay when scrolling text.
+ - parameters:
+    - _ delay: A number that sets how many milli-seconds between each movement of the scroll. The bigger the value the slower the text will scroll.
+ */
+public func setScrollingDelay(_ delay: Int) {
+    
+    ContentMessenger.messenger.sendMessageOfType(.writeData,
+                                                 forCharacteristicUUID: .ledScrollingDelayUUID,
+                                                 withData: Data.littleEndianUInt16FromInt(delay))
+}
+
+/**
+ Scroll (slide) an image (picture) from one side to the other of the LED screen.
+ 
+ - parameters:
+    - _ delayInSeconds: A number that sets how many seconds between each movement of the scroll.  The bigger the value the slower the text will scroll.
+ */
+public func setScrollingDelayInSeconds(_ delayInSeconds: Double) {
+    setScrollingDelay(Int(delayInSeconds * 1_000))
+}
+
+/**
+ Shows the chosen arrow on the LED screen.
+ - parameters:
+    - _ The arrow name of the image you want to show. You can pick an arrow image such as: .north
+ */
+public func showArrow(_ arrowName: MicrobitImage.ArrowName) {
     
     arrowImage(arrowName).showImage()
 }
 
+/**
+Turn off all the LED lights on the LED screen.
+ */
 public func clearScreen() {
     MicrobitImage().showImage()
 }

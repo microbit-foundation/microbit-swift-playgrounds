@@ -60,6 +60,9 @@ extension BTMicrobit {
             case down = 1
             case up = 2
             case click = 3
+            case longClick = 4
+            case hold = 5
+            case doubleClick = 6
         }
         
         public init(button: BTMicrobit.Button, buttonEvent: ButtonEvent) {
@@ -116,8 +119,8 @@ extension BTMicrobit {
                 case let .buttonAB(type, value):
                     return Data(fromArray: [type.rawValue.littleEndian, value.rawValue.littleEndian])
                     
-                default:
-                    return nil
+                //default:
+                  //  return nil
                 }
             }
         }

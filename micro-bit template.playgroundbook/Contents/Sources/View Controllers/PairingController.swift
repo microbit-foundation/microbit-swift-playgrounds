@@ -39,6 +39,7 @@ public class PairingController: UIViewController {
     @IBOutlet weak var ledStackView: UIStackView?
     @IBOutlet weak var microbitNameLabel: UILabel?
     @IBOutlet weak var pairingStatusLabel: UILabel?
+    @IBOutlet weak var pairingStatusImageView: UIImageView?
     
     @IBAction public func dismissController(_ sender: UIButton) {
         
@@ -71,7 +72,8 @@ public class PairingController: UIViewController {
     @IBAction public func startPairing(_ sender: UIButton) {
         
         mainActionButton?.isEnabled = false
-        pairingStatusLabel?.text = "Searching for: " + self.microbitPeripheralName + "…"
+        pairingStatusLabel?.text = "Searching for:\n" + self.microbitPeripheralName + "…"
+        pairingStatusImageView?.image = UIImage(named: "thinking-emoji")
         
         self.btManager?.beginPairingWithMicrobitName(self.microbitPeripheralName,
                                                      handler: {microbit, error in
@@ -83,10 +85,11 @@ public class PairingController: UIViewController {
                                                                 if devicesMappingDict == nil {
                                                                     devicesMappingDict = [String: PlaygroundValue]()
                                                                 }
-                                                                devicesMappingDict![microbit.peripheral.identifier.description] = .string(self.microbitPeripheralName)
+                                                                devicesMappingDict![String(describing: microbit.peripheral.identifier)] = .string(self.microbitPeripheralName)
                                                                 self.btManager?.pairedDeviceMappings = devicesMappingDict
                                                                 
                                                                 self.pairingStatusLabel?.text = "Pairing successful!\nPress the RESET button on the micro:bit and tap Finish."
+                                                                self.pairingStatusImageView?.image = UIImage(named: "well-done-emoji")
                                                                 self.mainActionButton?.isEnabled = true
                                                                 self.mainActionButton?.setTitle("Finished", for: .normal)
                                                                 self.mainActionButton?.removeTarget(self, action: #selector(self.startPairing(_:)), for: .touchUpInside)
@@ -94,7 +97,8 @@ public class PairingController: UIViewController {
                                                                 self.cancelButton?.removeFromSuperview()
                                                             }
                                                         } else {
-                                                            self.pairingStatusLabel?.text = "callback: \(error!)"
+                                                            self.pairingStatusLabel?.text = error!.localizedDescription
+                                                            self.pairingStatusImageView?.image = UIImage(named: "fail-emoji")
                                                             self.mainActionButton?.setTitle("Pair Again", for: .normal)
                                                             self.mainActionButton?.isEnabled = true
                                                         }
@@ -107,6 +111,7 @@ public class PairingController: UIViewController {
         super.viewDidLoad()
         
         pairingStatusLabel?.text = nil
+        pairingStatusImageView?.image = nil
         ledStackView?.layer.backgroundColor = UIColor.black.cgColor
         
         for tag in 0...24 {

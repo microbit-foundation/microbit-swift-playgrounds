@@ -25,16 +25,34 @@
 
 import Foundation
 
+public typealias Temperature = Measurement<UnitTemperature>
+public typealias Acceleration = Measurement<UnitAcceleration>
+public typealias Bearing = Measurement<UnitAngle>
+public typealias MagneticFluxDensity = Measurement<UnitMagneticFluxDensity>
+
 extension UnitAcceleration {
     public static let milliGravity      = UnitAcceleration(symbol: "mg", converter: UnitConverterLinear(coefficient: 9.81 / 1000.0))
     public static let microbitGravity   = UnitAcceleration(symbol: "mg", converter: UnitConverterLinear(coefficient: 9.81 / 1023.0))
 }
 
-public class MagneticFluxDensityUnit: Dimension {
-    public static let tesla         = MagneticFluxDensityUnit(symbol: "T", converter: UnitConverterLinear(coefficient: 1.0))
-    public static let milliTesla    = MagneticFluxDensityUnit(symbol: "mT", converter: UnitConverterLinear(coefficient: 1.0e3))
-    public static let microTesla    = MagneticFluxDensityUnit(symbol: "µT", converter: UnitConverterLinear(coefficient: 1.0e6))
-    public static let nanoTesla     = MagneticFluxDensityUnit(symbol: "nT", converter: UnitConverterLinear(coefficient: 1.0e9))
+public class UnitMagneticFluxDensity: Dimension {
+    public static let tesla         = UnitMagneticFluxDensity(symbol: "T", converter: UnitConverterLinear(coefficient: 1.0e-6))
+    public static let milliTesla    = UnitMagneticFluxDensity(symbol: "mT", converter: UnitConverterLinear(coefficient: 1.0e-3))
+    public static let microTesla    = UnitMagneticFluxDensity(symbol: "µT", converter: UnitConverterLinear(coefficient: 1.0))
+    public static let nanoTesla     = UnitMagneticFluxDensity(symbol: "nT", converter: UnitConverterLinear(coefficient: 1.0e3))
     
-    public static let baseUnit = tesla
+    public static let baseUnit = microTesla
+}
+
+extension FloatingPoint {
+    
+    /**
+     A static variable that returns the proper circle constant that is effectively twice pi.
+     For more information on why pi is wrong, see [The Tau Manifesto.](https://tauday.com/tau-manifesto)
+     */
+    public static var tau: Self {
+        get {
+            return Self.pi * Self.init(2)
+        }
+    }
 }

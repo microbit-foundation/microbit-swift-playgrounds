@@ -34,6 +34,12 @@ extension String {
         }
     }
     
+    /**
+     A variable for getting an array of type MicrobitImage from a String.
+     
+     There are extensions to Array\<MicrobitImage\> to simplify the scrolling of multiple images on the micro:bit display.
+     - returns: An array of MicrobitImages
+     */
     public var microbitImages: Array<MicrobitImage> {
         get {
             return self.map { $0.microbitImage }
@@ -54,6 +60,11 @@ extension Character {
         }
     }
     
+    /**
+     A variable for getting the MicrobitImage for a Character.
+     
+     - returns: a MicrobitImage
+     */
     public var microbitImage: MicrobitImage {
         get {
             return MicrobitFont.defaultFont.microbitImageForCharacter(self)

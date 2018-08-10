@@ -29,7 +29,7 @@ extension BTMicrobit {
     
     // MARK:- Service UUIDs
     
-    public enum ServiceUUID: String {
+    public enum ServiceUUID: String, CustomStringConvertible {
         
         case genericAccessUUID = "00001800-0000-1000-8000-00805F9B34FB"
         case deviceInformationUUID = "0000180A-0000-1000-8000-00805F9B34FB"
@@ -42,8 +42,36 @@ extension BTMicrobit {
         case magnetometerUUID = "E95DF2D8-251D-470A-A062-FA1922DFA9A8"
         case temperatureUUID = "E95D6100-251D-470A-A062-FA1922DFA9A8"
         case ioPinUUID = "E95D127B-251D-470A-A062-FA1922DFA9A8"
+        case uartUUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
         
         case eventUUID = "E95D93AF-251D-470A-A062-FA1922DFA9A8"
+        
+        public var description: String {
+            switch self {
+            case .genericAccessUUID:
+                return "Generic Access Service"
+            case .deviceInformationUUID:
+                return "Device Information Service"
+            case .dfuControlUUID:
+                return "DFU Control Service"
+            case .ledUUID:
+                return "LED Display Service"
+            case .buttonUUID:
+                return "Button Service"
+            case .accelerometerUUID:
+                return "Accelerometer Service"
+            case .magnetometerUUID:
+                return "Magnetometer Service"
+            case .temperatureUUID:
+                return "Temperature Service"
+            case .ioPinUUID:
+                return "IO Pin Service"
+            case .uartUUID:
+                return "UART Service"
+            case .eventUUID:
+                return "Event Service"
+            }
+        }
     }
     
     // MARK:- Characterisitic UUIDs
@@ -73,6 +101,9 @@ extension BTMicrobit {
         case pinADConfigurationUUID = "E95D5899-251D-470A-A062-FA1922DFA9A8"
         case pinIOConfigurationUUID = "E95DB9FE-251D-470A-A062-FA1922DFA9A8"
         case pinPWMControlUUID = "E95DD822-251D-470A-A062-FA1922DFA9A8"
+        
+        case uartTX = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
+        case uartRX = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
         
         case eventMicrobitRequirementsUUID = "E95DB84C-251D-470A-A062-FA1922DFA9A8"
         case eventMicrobitEventUUID = "E95D9775-251D-470A-A062-FA1922DFA9A8"
@@ -105,6 +136,9 @@ extension BTMicrobit {
                     
                 case .eventMicrobitRequirementsUUID, .eventMicrobitEventUUID, .eventClientRequirementsUUID, .eventClientEventUUID:
                     return .eventUUID
+                    
+                case .uartTX, .uartRX:
+                    return .uartUUID
                 }
             }
         }

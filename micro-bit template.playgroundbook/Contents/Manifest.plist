@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>Version</key>
-	<string>3.0</string>
+	<string>4.0</string>
 	<key>ContentVersion</key>
-	<string>0.1</string>
+	<string>0.5</string>
 	<key>Name</key>
 	<string>micro:bit Template Book</string>
 	<key>ContentIdentifier</key>

@@ -29,13 +29,19 @@ public func createImage(_ leds: String) -> MicrobitImage {
     return MicrobitImage(leds)
 }
 
+/**
+ Create an arrow shaped image for the LED screen.
+ - returns:
+ A MicrobitImage that can be displayed on the LED screen.
+ - parameters:
+    - _ The arrow name of the image you want to create. You can pick an arrow image such as: .north
+ */
 public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
     
-    var stringImage: String
     switch arrowName {
         
     case .north:
-        stringImage = """
+        return """
         ..#..
         .###.
         #.#.#
@@ -44,7 +50,7 @@ public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
         """
         
     case .northEast:
-        stringImage = """
+        return """
         ..###
         ...##
         ..#.#
@@ -53,7 +59,7 @@ public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
         """
         
     case .east:
-        stringImage = """
+        return """
         ..#..
         ...#.
         #####
@@ -62,7 +68,7 @@ public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
         """
         
     case .southEast:
-        stringImage = """
+        return """
         #....
         .#...
         ..#.#
@@ -71,7 +77,7 @@ public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
         """
         
     case .south:
-        stringImage = """
+        return """
         ..#..
         ..#..
         #.#.#
@@ -80,7 +86,7 @@ public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
         """
         
     case .southWest:
-        stringImage = """
+        return """
         ....#
         ...#.
         #.#..
@@ -89,7 +95,7 @@ public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
         """
         
     case .west:
-        stringImage = """
+        return """
         ..#..
         .#...
         #####
@@ -98,7 +104,7 @@ public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
         """
         
     case .northWest:
-        stringImage = """
+        return """
         ###..
         ##...
         #.#..
@@ -106,17 +112,25 @@ public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
         ....#
         """
     }
-    
-    return MicrobitImage(stringImage)
 }
 
+/**
+ Create an icon image for the LED screen.
+ 
+ - returns:
+ A MicrobitImage that can be displayed on the LED screen.
+ 
+ - parameters:
+    - _ The icon name of the image you want to create. You can pick an icon image such as: .heart
+ 
+ - LocalizationKey: iconImage()
+ */
 public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
     
-    var stringImage: String
     switch iconName {
         
     case .heart:
-        stringImage = """
+        return """
         .#.#.
         #####
         #####
@@ -125,7 +139,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .smallHeart:
-        stringImage = """
+        return """
         .....
         .#.#.
         .###.
@@ -134,7 +148,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .yes:
-        stringImage = """
+        return """
         .....
         ....#
         ...#.
@@ -143,7 +157,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .no:
-        stringImage = """
+        return """
         #...#
         .#.#.
         ..#..
@@ -152,7 +166,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .happy:
-        stringImage = """
+        return """
         .....
         .#.#.
         .....
@@ -161,7 +175,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .sad:
-        stringImage = """
+        return """
         .....
         .#.#.
         .....
@@ -170,7 +184,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .confused:
-        stringImage = """
+        return """
         .....
         .#.#.
         .....
@@ -179,7 +193,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .angry:
-        stringImage = """
+        return """
         #...#
         .#.#.
         .....
@@ -188,7 +202,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .asleep:
-        stringImage = """
+        return """
         .....
         ##.##
         .....
@@ -197,7 +211,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .surprised:
-        stringImage = """
+        return """
         .#.#.
         .....
         ..#..
@@ -206,7 +220,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .silly:
-        stringImage = """
+        return """
         #...#
         .....
         #####
@@ -215,7 +229,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .fabulous:
-        stringImage = """
+        return """
         #####
         ##.##
         .....
@@ -224,7 +238,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .meh:
-        stringImage = """
+        return """
         ##.##
         .....
         ...#.
@@ -233,7 +247,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .tShirt:
-        stringImage = """
+        return """
         ##.##
         #####
         .###.
@@ -242,7 +256,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .rollerSkate:
-        stringImage = """
+        return """
         ...##
         ...##
         #####
@@ -251,7 +265,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .duck:
-        stringImage = """
+        return """
         .##..
         ###..
         .####
@@ -260,7 +274,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .house:
-        stringImage = """
+        return """
         ..#..
         .###.
         #####
@@ -269,7 +283,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .tortoise:
-        stringImage = """
+        return """
         .....
         .###.
         #####
@@ -278,7 +292,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .butterfly:
-        stringImage = """
+        return """
         ##.##
         #####
         ..#..
@@ -287,7 +301,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .stickFigure:
-        stringImage = """
+        return """
         ..#..
         #####
         ..#..
@@ -296,7 +310,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .ghost:
-        stringImage = """
+        return """
         .###.
         #.#.#
         #####
@@ -305,7 +319,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .sword:
-        stringImage = """
+        return """
         ..#..
         ..#..
         ..#..
@@ -314,7 +328,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .giraffe:
-        stringImage = """
+        return """
         ##...
         .#...
         .#...
@@ -323,7 +337,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .skull:
-        stringImage = """
+        return """
         .###.
         #.#.#
         #####
@@ -332,7 +346,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .umbrella:
-        stringImage = """
+        return """
         .###.
         #####
         ..#..
@@ -341,7 +355,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .snake:
-        stringImage = """
+        return """
         ##...
         ##.##
         .#.#.
@@ -350,7 +364,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .rabbit:
-        stringImage = """
+        return """
         #.#..
         #.#..
         ####.
@@ -359,7 +373,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .cow:
-        stringImage = """
+        return """
         #...#
         #...#
         #####
@@ -368,7 +382,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .quarterNote:
-        stringImage = """
+        return """
         ..#..
         ..#..
         ..#..
@@ -377,7 +391,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .eighthNote:
-        stringImage = """
+        return """
         ..#..
         ..##.
         ..#.#
@@ -386,7 +400,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .pitchfork:
-        stringImage = """
+        return """
         #.#.#
         #.#.#
         #####
@@ -395,7 +409,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .target:
-        stringImage = """
+        return """
         ..#..
         .###.
         ##.##
@@ -404,7 +418,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .triangle:
-        stringImage = """
+        return """
         .....
         ..#..
         .#.#.
@@ -413,7 +427,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .leftTriangle:
-        stringImage = """
+        return """
         #....
         ##...
         #.#..
@@ -422,7 +436,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .chessboard:
-        stringImage = """
+        return """
         .#.#.
         #.#.#
         .#.#.
@@ -431,7 +445,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .diamond:
-        stringImage = """
+        return """
         ..#..
         .#.#.
         #...#
@@ -440,7 +454,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .smallDiamond:
-        stringImage = """
+        return """
         .....
         ..#..
         .#.#.
@@ -449,7 +463,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .square:
-        stringImage = """
+        return """
         #####
         #...#
         #...#
@@ -458,7 +472,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .smallSquare:
-        stringImage = """
+        return """
         .....
         .###.
         .#.#.
@@ -467,21 +481,26 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         """
         
     case .scissors:
-        stringImage = """
+        return """
         ##..#
         ##.#.
         ..#..
         ##.#.
         ##..#
         """
+        
+    case .north, .northEast, .east, .southEast, .south, .southWest, .west, .northWest:
+        if let arrowName = MicrobitImage.ArrowName(rawValue: iconName.rawValue) {
+            return arrowImage(arrowName)
+        } else {
+            return MicrobitImage()
+        }
     }
-    
-    return MicrobitImage(stringImage)
 }
 
 extension MicrobitImage {
     
-    public enum ArrowName {
+    public enum ArrowName : String {
         case north
         case northEast
         case east
@@ -492,7 +511,7 @@ extension MicrobitImage {
         case northWest
     }
     
-    public enum IconName {
+    public enum IconName : String {
         case heart
         case smallHeart
         case yes
@@ -533,17 +552,49 @@ extension MicrobitImage {
         case square
         case smallSquare
         case scissors
+        case north
+        case northEast
+        case east
+        case southEast
+        case south
+        case southWest
+        case west
+        case northWest
     }
     
+    /**
+     Show an image (picture) on the LED screen.
+     
+     - parameters:
+        - offset: A number as an Int. Positive numbers offset the image to the left, whereas negative values offset it to the right. This parameter has a default value of 0, so it can be omitted.
+     */
     public func showImage(offset: Int = 0) {
         
-        let image = self.imageOffsetBy(offset)
+        let image = self.imageOffsetBy(dx: offset)
         
         ContentMessenger.messenger.sendMessageOfType(.writeData,
                                                      forCharacteristicUUID: .ledStateUUID,
                                                      withData: image.imageData)
     }
     
+    /**
+     Scroll (slide) an image (picture) from one side to the other of the LED screen.
+     
+     - parameters:
+        - offset: A number that is an Int that sets how many LEDs to scroll at a time. Positive numbers scroll from right to left, whereas negative numbers scroll from left to right.
+        - delay: A number that sets how many seconds to wait before scrolling by the amount of the offset. The bigger you make this number, the slower the image will scroll.
+     */
+    public func scrollImage(offset: Int, delayInSeconds: Double) {
+        self.scrollImage(offset: offset, delay: Int(delayInSeconds * 1_000))
+    }
+    
+    /**
+     Scroll (slide) an image (picture) from one side to the other of the LED screen.
+     
+     - parameters:
+        - offset: A number that is an Int that sets how many LEDs to scroll at a time. Positive numbers scroll from right to left, whereas negative numbers scroll from left to right.
+        - delay: A number that sets how many milliseconds to wait before scrolling by the amount of the offset. (There are 1000 milliseconds in a second) The bigger you make this number, the slower the image will scroll.
+     */
     public func scrollImage(offset: Int, delay: Int) {
         
         if abs(offset) >= 10 {
@@ -556,7 +607,24 @@ extension MicrobitImage {
         for frame in 1...numberOfDisplaysRequired {
             
             self.showImage(offset: (actualOffset > 0 ? -5 : 5) + frame * actualOffset)
-            usleep(UInt32(delay) * 1000)
+            usleep(UInt32(delay * 1_000))
+        }
+    }
+}
+
+extension Array where Element: MicrobitImage {
+    
+    /**
+     A function that scrolls an array of images across the LED display.
+     - parameters:
+        - delay: A number that sets how many milli-seconds between each movement of the scroll. The bigger the value the slower the text will scroll.
+        - withSpacing: an Int that adds an additional number of blank columns between each image. This parameter is optional and defaults to 0.
+     */
+    public func scrollImages(delay: Int = 200, withSpacing spacing: Int = 0) {
+        for scrollIndex in self.scrollStartIndex()...self.scrollEndIndex(withSpacing: spacing) {
+            let image = self.imageAtScrollIndex(scrollIndex, withSpacing: spacing)
+            image.showImage()
+            usleep(UInt32(delay * 1_000))
         }
     }
 }

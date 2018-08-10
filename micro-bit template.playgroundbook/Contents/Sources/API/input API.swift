@@ -33,6 +33,12 @@ public func onButtonPressed(_ button: BTMicrobit.Button, handler: @escaping Even
                                                  handler: handler)
 }
 
+/*
+ // This could be useful as a teaching aid - will not bloat API
+public func onShake(handler: @escaping EventHandler) {
+    onGesture(.shake, handler: handler)
+}*/
+
 public func onGesture(_ gesture: BTMicrobit.Event.Gesture, handler: @escaping EventHandler) {
     
     let gestureEvent = BTMicrobit.Event(gesture)
@@ -40,3 +46,84 @@ public func onGesture(_ gesture: BTMicrobit.Event.Gesture, handler: @escaping Ev
                                                  withData: gestureEvent.microbitData,
                                                  handler: handler)
 }
+
+public func setAccelerometerPeriod(_ period: BTMicrobit.AccelerometerPeriod, handler: ReadAccelerometerPeriodHandler? = nil) {
+    
+    ContentMessenger.messenger.sendMessageOfType(.writeData,
+                                                 forCharacteristicUUID: .accelerometerPeriodUUID,
+                                                 withData: Data.littleEndianUInt16FromInt(period.rawValue),
+                                                 handler: handler)
+}
+
+public func onAcceleration(_ handler: @escaping ReadAccelerometerHandler) {
+    
+    ContentMessenger.messenger.sendMessageOfType(.startNotifications,
+                                                 forCharacteristicUUID: .accelerometerDataUUID,
+                                                 handler: handler)
+}
+
+public func readTemperature(_ handler: @escaping ReadTemperatureHandler) {
+    
+    ContentMessenger.messenger.sendMessageOfType(.readData,
+                                                 forCharacteristicUUID: .temperatureDataUUID,
+                                                 handler: handler)
+}
+
+public func setTemperaturePeriod(_ period: Int, handler: ReadTemperaturePeriodHandler? = nil) {
+    
+    ContentMessenger.messenger.sendMessageOfType(.writeData,
+                                                 forCharacteristicUUID: .temperaturePeriodUUID,
+                                                 withData: Data.littleEndianUInt16FromInt(period),
+                                                 handler: handler)
+}
+
+public func onTemperature(_ handler: @escaping ReadTemperatureHandler) {
+    
+    ContentMessenger.messenger.sendMessageOfType(.startNotifications,
+                                                 forCharacteristicUUID: .temperatureDataUUID,
+                                                 handler: handler)
+}
+
+public func setMagentometerPeriod(_ period: BTMicrobit.MagnetometerPeriod, handler: ReadMagnetometerPeriodHandler? = nil) {
+    
+    ContentMessenger.messenger.sendMessageOfType(.writeData,
+                                                 forCharacteristicUUID: .magnetometerPeriodUUID,
+                                                 withData: Data.littleEndianUInt16FromInt(period.rawValue),
+                                                 handler: handler)
+}
+
+public func onCompassHeading(_ handler: @escaping ReadCompassHeadingHandler) {
+    
+    ContentMessenger.messenger.sendMessageOfType(.startNotifications,
+                                                 forCharacteristicUUID: .magnetometerBearingUUID,
+                                                 handler: handler)
+}
+
+public func onMagneticForce(_ handler: @escaping ReadMagnetometerHandler) {
+    
+    ContentMessenger.messenger.sendMessageOfType(.startNotifications,
+                                                 forCharacteristicUUID: .magnetometerDataUUID,
+                                                 handler: handler)
+}
+
+public func onPinPressed(_ pin: BTMicrobit.Pin, handler: @escaping EventHandler) {
+    
+    setInputPins([pin])
+    setAnaloguePins([pin])
+    onPins({(pinStore: PinStore) in
+        
+        struct staticState {
+            static var pinIsPressed = false
+        }
+        
+        if let pinValue = pinStore[pin] {
+            if pinValue > 16 && !staticState.pinIsPressed {
+                staticState.pinIsPressed = true
+                handler()
+            } else {
+                staticState.pinIsPressed = false
+            }
+        }
+    })
+}
+

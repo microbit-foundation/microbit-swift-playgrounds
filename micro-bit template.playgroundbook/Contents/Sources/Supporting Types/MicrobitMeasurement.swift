@@ -25,9 +25,6 @@
 
 import Foundation
 
-public typealias Temperature = Measurement<UnitTemperature>
-public typealias Acceleration = Measurement<UnitAcceleration>
-
 public enum MicrobitMeasurement : Equatable {
     case accelerationX(UnitAcceleration)
     case accelerationY(UnitAcceleration)
@@ -52,38 +49,29 @@ public enum MicrobitMeasurement : Equatable {
         }
     }
     
-    var microbitUnit: Unit {
-        get {
-            switch self {
-            case .accelerationX, .accelerationY, .accelerationZ:
-                return UnitAcceleration.microbitGravity
-            case .bearing:
-                return UnitAngle.degrees
-            case .temperature:
-                return UnitTemperature.celsius
-            }
+    public func displayMeasurementFromMicrobitValue(_ value: Double) -> Measurement<Unit> {
+        
+        switch self {
+        case let .accelerationX(displayUnitType):
+            let convertedMeasurement = Measurement(value: value, unit: UnitAcceleration.microbitGravity).converted(to: displayUnitType)
+            return Measurement(value: convertedMeasurement.value, unit: convertedMeasurement.unit as Unit)
+            
+        case let .accelerationY(displayUnitType):
+            let convertedMeasurement = Measurement(value: value, unit: UnitAcceleration.microbitGravity).converted(to: displayUnitType)
+            return Measurement(value: convertedMeasurement.value, unit: convertedMeasurement.unit as Unit)
+            
+        case let .accelerationZ(displayUnitType):
+            let convertedMeasurement = Measurement(value: value, unit: UnitAcceleration.microbitGravity).converted(to: displayUnitType)
+            return Measurement(value: convertedMeasurement.value, unit: convertedMeasurement.unit as Unit)
+            
+        case let .bearing(displayUnitType):
+            let convertedMeasurement = Measurement(value: value, unit: UnitAngle.degrees).converted(to: displayUnitType)
+            return Measurement(value: convertedMeasurement.value, unit: convertedMeasurement.unit as Unit)
+            
+        case let .temperature(displayUnitType):
+            let convertedMeasurement = Measurement(value: value, unit: UnitTemperature.celsius).converted(to: displayUnitType)
+            return Measurement(value: convertedMeasurement.value, unit: convertedMeasurement.unit as Unit)
         }
-    }
-    
-    public var unit: Unit {
-        get {
-            switch self {
-            case let .accelerationX(associatedUnitType):
-                return associatedUnitType
-            case let .accelerationY(associatedUnitType):
-                return associatedUnitType
-            case let .accelerationZ(associatedUnitType):
-                return associatedUnitType
-            case let .bearing(associatedUnitType):
-                return associatedUnitType
-            case let .temperature(associatedUnitType):
-                return associatedUnitType
-            }
-        }
-    }
-    
-    public func measurementFromMicrobitValue(_ value: Double) -> Measurement<Unit> {
-        return Measurement(value: value, unit: self.microbitUnit)
     }
     
     public static func == (lhs: MicrobitMeasurement, rhs: MicrobitMeasurement) -> Bool {
@@ -98,7 +86,7 @@ public enum MicrobitMeasurement : Equatable {
             
         case (.accelerationZ, .accelerationZ):
             return true
-        
+            
         case (.bearing, .bearing):
             return true
             

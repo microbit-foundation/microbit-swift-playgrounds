@@ -6,9 +6,16 @@
 	<string>Getting Started</string>
 	<key>Pages</key>
 	<array>
+		<string>GettingStarted.cutscenepage</string>
 		<string>Page1.playgroundpage</string>
 		<string>Page2.playgroundpage</string>
 		<string>Page3.playgroundpage</string>
+		<string>Page4.playgroundpage</string>
+		<string>Page5.playgroundpage</string>
+		<string>Page6.playgroundpage</string>
+		<string>Page7.playgroundpage</string>
+		<string>Page8.playgroundpage</string>
+		<string>Page9.playgroundpage</string>
 	</array>
 </dict>
 </plist>

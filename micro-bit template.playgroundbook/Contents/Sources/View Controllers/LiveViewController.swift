@@ -24,31 +24,34 @@
  */
 
 import UIKit
+import CoreGraphics
 import CoreBluetooth
 import PlaygroundSupport
 import PlaygroundBluetooth
 
 @objc(LiveViewController)
-public class LiveViewController: UIViewController, BTManagerDelegate, ValuesTableViewDataSourceProtocol {
+public class LiveViewController: UIViewController, BTManagerDelegate, LoggingProtocol, ValuesTableViewDataSourceProtocol {
     
     public weak var containerViewController: LiveViewContainerController!
     
-    var _btManager: BTManager!
     var bluetoothController: BluetoothConnectionViewController!
     var valuesTableViewController: ValuesTableViewController!
-    var _cachedMicrobitImage: MicrobitImage?
     
     @IBOutlet weak var pairButton: UIButton!
+    @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var microbitMimic: MicrobitMimic!
     @IBOutlet weak var logTextView: UITextView!
     
-    public var btManager: BTManager {
-        get {
-            return _btManager
+    public var btManager: BTManager! {
+        didSet {
+            btManager.delegate = self
+            btManager.messageLogger = self
         }
-        set {
-            _btManager = newValue
-            _btManager.delegate = self
+    }
+    
+    public var dataActivityItem: DataActivityItemSource? {
+        didSet {
+            self.shareButton.isHidden = dataActivityItem == nil
         }
     }
     
@@ -57,9 +60,15 @@ public class LiveViewController: UIViewController, BTManagerDelegate, ValuesTabl
         super.viewDidLoad()
         // Hide the logView when released
         self.logTextView.isHidden = true
+        self.shareButton.isHidden = true
         self.btManager = BTManager()
-        
+        self.microbitMimic.messageLogger = self
+        self.setupValuesTable()
         //self.logMessage("viewDidLoad: \(UIDevice.current.identifierForVendor)")
+        if let navigationBar = self.navigationController?.navigationBar {
+            //navigationBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
+            navigationBar.shadowImage = UIImage()
+        }
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -67,23 +76,12 @@ public class LiveViewController: UIViewController, BTManagerDelegate, ValuesTabl
         super.viewWillAppear(animated)
         
         if !isMovingToParentViewController {
-            // Ensure peripheral is renamed after pairing
-            
             if let devicesMappingDict = self.btManager.pairedDeviceMappings {
-                
                 bluetoothController?.view.isHidden = devicesMappingDict.count == 0
-                if let peripheral = self.btManager.microbit?.peripheral {
-                    
-                    let peripheralUUID = peripheral.identifier.description
-                    if let microbitNameValue = devicesMappingDict[peripheralUUID], case .string(let microbitName) = microbitNameValue {
-                        if let btConnectionView = bluetoothController.view as? PlaygroundBluetoothConnectionView {
-                            btConnectionView.setName(microbitName, forPeripheral: peripheral)
-                        }
-                    }
-                    self.btManager.bluetoothCentralManager.connect(toPeripheralWithUUID: peripheral.identifier,
-                                                                   timeout: 7.0,
-                                                                   callback:{peripheral, error in
-                                                                    // TODO: - Handle the error here - although unlikely
+                if self.btManager.microbit == nil {
+                    _ = self.btManager.bluetoothCentralManager.connectToLastConnectedPeripheral(timeout: 7.0,
+                                                                                                callback: {(peripheral: CBPeripheral?, error: Error?) in
+                                                                                                    // TODO: - Handle the error here - although unlikely
                     })
                 }
             } else {
@@ -108,6 +106,7 @@ public class LiveViewController: UIViewController, BTManagerDelegate, ValuesTabl
         
         //self.logMessage("horizontal size class: \(self.traitCollection.horizontalSizeClass.rawValue) vertical size class: \(self.traitCollection.verticalSizeClass.rawValue)")
         //self.logMessage("and my bluetoothController is: \(self.bluetoothController.view!)")
+        self.microbitMimic.orientation = self.traitCollection.horizontalSizeClass == .regular ? .landscapeLeft : .portrait
     }
     
     override public func didMove(toParentViewController parent: UIViewController?) {
@@ -118,11 +117,105 @@ public class LiveViewController: UIViewController, BTManagerDelegate, ValuesTabl
     
     public var cachedMicrobitImage: MicrobitImage {
         get {
-            return _cachedMicrobitImage ?? MicrobitImage()
+            return self.microbitMimic.microbitImage
         }
         set {
-            _cachedMicrobitImage = newValue
-            self.microbitMimic.microbitImage = self.cachedMicrobitImage
+            self.microbitMimic.microbitImage = newValue
+        }
+    }
+    
+    //MARK: - Setup notifications for values table
+    
+    func setupValuesTable() {
+        
+        // Setup notifications for values in the table.
+        //self.logMessage("setupValuesTable")
+        
+        var hasAcceleration = false
+        for microbitMeasurement in self.containerViewController.microbitMeasurements {
+            
+            var characteristicUUID: BTMicrobit.CharacteristicUUID? = nil
+            switch microbitMeasurement {
+                
+            case .accelerationX, .accelerationY, .accelerationZ:
+                if !hasAcceleration {
+                    characteristicUUID = .accelerometerDataUUID
+                    hasAcceleration = true
+                }
+                
+            case .bearing:
+                characteristicUUID = .magnetometerBearingUUID
+                
+            case .temperature:
+                characteristicUUID = .temperatureDataUUID
+            }
+            
+            if let characteristicUUID = characteristicUUID {
+                
+                if let microbit = self.btManager.microbit {
+                    microbit.setNotifyValue(true,
+                                            forCharacteristicUUID: characteristicUUID,
+                                            handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                                
+                                                if let characteristicUUID = BTMicrobit.CharacteristicUUID(rawValue: characteristic.uuid.uuidString),
+                                                    let data = characteristic.value {
+                                                    
+                                                    switch characteristicUUID {
+                                                        
+                                                    case .accelerometerDataUUID:
+                                                        if let accelerometerValues = AccelerometerValues(data: data) {
+                                                            
+                                                            self.microbitMimic.accelerometerValues = accelerometerValues
+                                                            //self.logMessage("\(accelerometerValues)")
+                                                            
+                                                            self.valuesTableViewController.setMicrobitValue(accelerometerValues.x,
+                                                                                                            forMicrobitMeasurement: .accelerationX(.microbitGravity))
+                                                            self.valuesTableViewController.setMicrobitValue(accelerometerValues.y,
+                                                                                                            forMicrobitMeasurement: .accelerationY(.microbitGravity))
+                                                            self.valuesTableViewController.setMicrobitValue(accelerometerValues.z,
+                                                                                                            forMicrobitMeasurement: .accelerationZ(.microbitGravity))
+                                                        }
+                                                        
+                                                    case .magnetometerBearingUUID:
+                                                        let bearing = Double(data.integerFromLittleUInt16!)
+                                                        self.valuesTableViewController.setMicrobitValue(bearing,
+                                                                                                        forMicrobitMeasurement: .bearing(.degrees))
+                                                        
+                                                    case .temperatureDataUUID:
+                                                        let temperatureValue = Double(data[0])
+                                                        self.valuesTableViewController.setMicrobitValue(temperatureValue,
+                                                                                                        forMicrobitMeasurement: .temperature(.celsius))
+                                                        
+                                                    default:
+                                                        break
+                                                    }
+                                                    return .continueNotifications
+                                                }
+                                                return .stopNotifications
+                    })
+                }
+                
+                if self.microbitMimic.isActive {
+                    switch characteristicUUID {
+                        
+                    case .accelerometerDataUUID:
+                        self.microbitMimic.addAccelerometerHandler({accelerometerValues in
+                            
+                            self.valuesTableViewController.setMicrobitValue(accelerometerValues.x,
+                                                                            forMicrobitMeasurement: .accelerationX(.microbitGravity))
+                            self.valuesTableViewController.setMicrobitValue(accelerometerValues.y,
+                                                                            forMicrobitMeasurement: .accelerationY(.microbitGravity))
+                            self.valuesTableViewController.setMicrobitValue(accelerometerValues.z,
+                                                                            forMicrobitMeasurement: .accelerationZ(.microbitGravity))
+                            
+                            return .continueNotifications
+                        })
+                        
+                    default:
+                        break
+                    }
+                }
+            }
         }
     }
     
@@ -145,7 +238,7 @@ public class LiveViewController: UIViewController, BTManagerDelegate, ValuesTabl
                 self.view.addSubview(connectionView)
                 connectionView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
-                    connectionView.topAnchor.constraint(equalTo: self.view.layoutMarginsGuide.topAnchor, constant: 0.0),
+                    connectionView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 12.0),
                     connectionView.trailingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.trailingAnchor, constant: 0.0),
                     connectionView.widthAnchor.constraint(greaterThanOrEqualToConstant: 270.0)
                     ])
@@ -165,7 +258,8 @@ public class LiveViewController: UIViewController, BTManagerDelegate, ValuesTabl
     public func btManager(_ manager: BTManager,
                           didConnectMicrobit microbit: BTMicrobit) {
         
-        // Tell the code view the microbit is available?
+        let message = PlaygroundValue.fromActionType(.connectionChanged)
+        self.containerViewController.send(message)
         
         self.pairButton.isHidden = true
         self.bluetoothController.view.isHidden = false
@@ -175,109 +269,122 @@ public class LiveViewController: UIViewController, BTManagerDelegate, ValuesTabl
         var characteristicUUID: BTMicrobit.CharacteristicUUID?
         // Get the microbit image and cache it.
         characteristicUUID = .ledStateUUID
-        microbit.readValueFor(serviceUUIDString: characteristicUUID!.serviceUUID.rawValue,
-                              characteristicUUIDString: characteristicUUID!.rawValue,
-                              handler: {(characteristic: CBCharacteristic, handlerType, error: Error?) in
-                                
-                                if let data = characteristic.value {
-                                    //self.logMessage("I got image: \(data as! NSData)")
-                                    self.cachedMicrobitImage = MicrobitImage(data)
-                                }
+        microbit.readValueForCharacteristic(characteristicUUID!,
+                                            handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                                
+                                                if let data = characteristic.value {
+                                                    //self.logMessage("I got image: \(data as! NSData)")
+                                                    self.microbitMimic.microbitImage = MicrobitImage(data)
+                                                }
+        })
+        
+        characteristicUUID = .ledScrollingDelayUUID
+        microbit.readValueForCharacteristic(characteristicUUID!,
+                                            handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                                
+                                                if let data = characteristic.value {
+                                                    if let scrollingDelay = data.integerFromLittleUInt16 {
+                                                        //self.logMessage("Default scrolling delay: \(scrollingDelay)")
+                                                        self.microbitMimic.scrollingDelay = scrollingDelay
+                                                    }
+                                                }
         })
         
         characteristicUUID = .buttonStateAUUID
         microbit.setNotifyValue(true,
-                                serviceUUIDString: characteristicUUID!.serviceUUID.rawValue,
-                                characteristicUUIDString:characteristicUUID!.rawValue,
-                                handler: {(characteristic: CBCharacteristic, handlerType, error: Error?) in
+                                forCharacteristicUUID: characteristicUUID!,
+                                handler: {(characteristic: CBCharacteristic, error: Error?) in
                                     if let data = characteristic.value {
                                         let buttonState = BTMicrobit.ButtonState(data) ?? BTMicrobit.ButtonState.notPressed
                                         self.microbitMimic.showButtonAPressed(buttonState != .notPressed)
+                                        return .continueNotifications
                                     }
+                                    return .stopNotifications
         })
         
         characteristicUUID = .buttonStateBUUID
         microbit.setNotifyValue(true,
-                                serviceUUIDString: characteristicUUID!.serviceUUID.rawValue,
-                                characteristicUUIDString:characteristicUUID!.rawValue,
-                                handler: {(characteristic: CBCharacteristic, handlerType, error: Error?) in
+                                forCharacteristicUUID: characteristicUUID!,
+                                handler: {(characteristic: CBCharacteristic, error: Error?) in
                                     if let data = characteristic.value {
                                         let buttonState = BTMicrobit.ButtonState(data) ?? BTMicrobit.ButtonState.notPressed
                                         self.microbitMimic.showButtonBPressed(buttonState != .notPressed)
+                                        return .continueNotifications
                                     }
+                                    return .stopNotifications
         })
         
-        // Setup notifications for values in the table.
-        var hasAcceleration = false
-        for microbitMeasurement in self.containerViewController.microbitMeasurements {
-            
-            switch microbitMeasurement {
-                
-            case .accelerationX, .accelerationY, .accelerationZ:
-                if !hasAcceleration {
-                    characteristicUUID = .accelerometerDataUUID
-                    hasAcceleration = true
-                }
-                
-            case .bearing:
-                characteristicUUID = .magnetometerBearingUUID
-                
-            case .temperature:
-                characteristicUUID = .temperatureDataUUID
+        self.setupValuesTable()
+    }
+    
+    public func btManager(_ manager: BTManager,
+                          didDisconnectMicrobit microbit: BTMicrobit?,
+                          error: Error?) {
+        
+        let message = PlaygroundValue.fromActionType(.connectionChanged)
+        self.containerViewController.send(message)
+        
+        self.pairButton.isHidden = false
+        self.microbitMimic.resetInterface()
+        self.microbitMimic.isActive = true
+        self.setupValuesTable()
+    }
+    
+    public func btManager(_ manager: BTManager,
+                          didFailToConnectToPeripheral peripheral: CBPeripheral,
+                          error: Error?) {
+        
+        // If we fail to connect to a micro:bit then should we remove its UUID from the list of paired devices.
+        // This maybe because the pairing information was deleted from the iOS device's Settings
+        if error != nil {
+            if var devicesMappingDict = manager.pairedDeviceMappings {
+                devicesMappingDict[String(describing: peripheral.identifier)] = nil
+                manager.pairedDeviceMappings = devicesMappingDict
             }
-            
-            if let characteristicUUID = characteristicUUID {
-                microbit.setNotifyValue(true,
-                                        serviceUUIDString: characteristicUUID.serviceUUID.rawValue,
-                                        characteristicUUIDString:characteristicUUID.rawValue,
-                                        handler: {(characteristic: CBCharacteristic, handlerType, error: Error?) in
-                                            
-                                            if let characteristicUUID = BTMicrobit.CharacteristicUUID(rawValue: characteristic.uuid.uuidString),
-                                                let data = characteristic.value {
-                                                
-                                                switch characteristicUUID {
-                                                    
-                                                case .accelerometerDataUUID:
-                                                    if let accelerometerValues = AccelerometerValues(data: data) {
-                                                        self.valuesTableViewController.setMicrobitValue(accelerometerValues.x,
-                                                                                                        forMicrobitMeasurement: .accelerationX(.microbitGravity))
-                                                        self.valuesTableViewController.setMicrobitValue(accelerometerValues.y,
-                                                                                                        forMicrobitMeasurement: .accelerationY(.microbitGravity))
-                                                        self.valuesTableViewController.setMicrobitValue(accelerometerValues.z,
-                                                                                                        forMicrobitMeasurement: .accelerationZ(.microbitGravity))
-                                                    }
-                                                    
-                                                case .magnetometerBearingUUID:
-                                                    let bearing = Double(data.integerFromLittleUInt16!)
-                                                    self.valuesTableViewController.setMicrobitValue(bearing,
-                                                                                                    forMicrobitMeasurement: .bearing(.degrees))
-                                                    
-                                                case .temperatureDataUUID:
-                                                    let temperatureValue = Double(data[0])
-                                                    self.valuesTableViewController.setMicrobitValue(temperatureValue,
-                                                                                                    forMicrobitMeasurement: .temperature(.celsius))
-                                                    
-                                                default:
-                                                    break
-                                                }
-                                            }
-                })
+        }
+        
+        self.pairButton.isHidden = false
+        self.microbitMimic.isActive = true
+    }
+    
+    // This delegate is not called if the array is empty - there is at least one missing service.
+    public func btManager(_ manager: BTManager,
+                          didTimeoutReadingServices services: Array<BTMicrobit.ServiceUUID>) {
+        
+        //self.logMessage("Did timeout reading services: \(services)")
+        
+        // Don't display this message if we are not the root view controller
+        // Might be pairing and not all services appear
+        
+        if self.navigationController?.viewControllers.count == 1 {
+            var message = "The following Bluetooth services cannot be discovered:\n"
+            for serviceUUID in services {
+                message += String(describing: serviceUUID) + "\n"
             }
+            message += "You will need to flash your micro:bit with a hex file that enables the required services."
+            let alertController = UIAlertController(title: "Bluetooth Services",
+                                                    message: message,
+                                                    preferredStyle: .alert
+            )
+            let action = UIAlertAction(title: "OK", style: .default, handler: {(action) in
+                self.dismiss(animated: true)
+            })
+            alertController.addAction(action)
+            self.present(alertController, animated: true)
         }
     }
     
     public func btManager(_ manager: BTManager,
-                          didDisconnectMicrobit microbit: BTMicrobit) {
+                          didPairToMicrobit microbit: BTMicrobit?,
+                          error: BTManager.PairingError?) {
         
-        self.pairButton.isHidden = false
-        self.microbitMimic.isActive = true
-    }
-    
-    public func btManager(_ manager: BTManager,
-                          didFailToConnectToMicrobit microbit: BTMicrobit) {
-        
-        self.pairButton.isHidden = false
-        self.microbitMimic.isActive = true
+        if let peripheral = microbit?.peripheral, let microbitName = self.btManager.microbitNameForPeripheral(peripheral) {
+            
+            // Ensure peripheral is renamed after pairing
+            if let btConnectionView = bluetoothController.view as? PlaygroundBluetoothConnectionView {
+                btConnectionView.setName(microbitName, forPeripheral: peripheral)
+            }
+        }
     }
     
     //MARK: - ValuesTableViewDataSourceProtocol
@@ -299,4 +406,36 @@ public class LiveViewController: UIViewController, BTManagerDelegate, ValuesTabl
             self.navigationController?.pushViewController(pairingController, animated:true)
         }
     }
+    
+    @IBAction public func shareData(_ sender: UIButton) {
+        
+        var activityItems = [Any]()
+        
+        /*if let activityItem = self.dataActivityItem {
+         activityItems.append(activityItem)
+         }*/
+        
+        let fileManager = FileManager()
+        let fileURL = fileManager.temporaryDirectory.appendingPathComponent("DataStore.csv")
+        do {
+            try self.dataActivityItem?.data.write(to: fileURL)
+            activityItems.append(fileURL)
+        } catch {
+            // Handle the write error?
+        }
+        
+        if activityItems.count > 0 {
+            let activityController = UIActivityViewController(activityItems: activityItems, applicationActivities: [])
+            if let popoverController = activityController.popoverPresentationController {
+                popoverController.sourceView = sender.superview
+                popoverController.sourceRect = sender.frame
+            }
+            self.present(activityController, animated: true, completion: nil)
+        }
+    }
+}
+
+public protocol LoggingProtocol: AnyObject {
+    
+    func logMessage(_ message: String)
 }

@@ -32,7 +32,7 @@ import PlaygroundSupport
 public class BluetoothConnectionViewController: UIViewController, PlaygroundBluetoothConnectionViewDelegate, PlaygroundBluetoothConnectionViewDataSource {
     
     var btManager: BTManager!
-    public weak var messageLogger: BTManagerDelegate?
+    public weak var messageLogger: LoggingProtocol?
     
     public init(bluetoothManager: BTManager) {
         
@@ -80,10 +80,7 @@ public class BluetoothConnectionViewController: UIViewController, PlaygroundBlue
                                rssi: Double) -> Bool {
         
         //self.messageLogger?.logMessage("Peripheral: \(peripheral)")
-        if let pairedDeviceMappings = self.btManager.pairedDeviceMappings {
-            return pairedDeviceMappings[peripheral.identifier.description] != nil // Only display 'known' microbit peripherals
-        }
-        return false
+        return self.btManager.microbitNameForPeripheral(peripheral) != nil // Only display 'known' microbit peripherals
     }
     
     public func connectionView(_ connectionView: PlaygroundBluetoothConnectionView,
@@ -100,14 +97,7 @@ public class BluetoothConnectionViewController: UIViewController, PlaygroundBlue
         let icon = UIImage(named: "microbit-bt-icon")!
         let issueIcon = UIImage(named: "microbit-bt-icon")!
         
-        var name: String! = nil
-        if let devicesMappingDict = self.btManager.pairedDeviceMappings {
-            for (identifier, microbitNameValue) in devicesMappingDict {
-                if identifier == peripheral.identifier.description, case .string(let microbitName) = microbitNameValue {
-                    name = microbitName
-                }
-            }
-        }
+        var name = self.btManager.microbitNameForPeripheral(peripheral)
         if name == nil {
             if let advertisedName = advertisementData?[CBAdvertisementDataLocalNameKey] as? String {
                 name = advertisedName
@@ -116,6 +106,6 @@ public class BluetoothConnectionViewController: UIViewController, PlaygroundBlue
             }
         }
         
-        return .init(name: name, icon: icon, issueIcon: issueIcon, firmwareStatus: .upToDate)
+        return .init(name: name!, icon: icon, issueIcon: issueIcon, firmwareStatus: .upToDate)
     }
 }

@@ -34,24 +34,78 @@ extension Data {
         return data
     }
     
-    var integerFromLittleUInt16: Int? {
+    static func littleEndianUInt32FromInt(_ value: Int) -> Data {
         
-        let number: Int? = self.withUnsafeBytes {
-            (pointer: UnsafePointer<UInt16>) -> Int? in
-            if MemoryLayout<UInt16>.size != self.count { return nil }
-            return Int(UInt16.init(littleEndian: pointer.pointee))
+        var integerFromValue = UInt32(value).littleEndian
+        let data = Data(buffer: UnsafeBufferPointer(start: &integerFromValue, count: 1))
+        return data
+    }
+    
+    static func fromPinStore(_ pinStore: PinStore) -> Data {
+        var data = Data(count: pinStore.count * 2)
+        var index = 0
+        for (pin, value) in pinStore {
+            data[index] = UInt8(pin.rawValue)
+            data[index + 1] = UInt8(value >> 2)
+            index += 2
         }
-        return number
+        return data
+    }
+    
+    var integerFromLittleInt8: Int? {
+        get {
+            let number: Int? = self.withUnsafeBytes {
+                (pointer: UnsafePointer<Int8>) -> Int? in
+                if MemoryLayout<Int8>.size != self.count { return nil }
+                return Int(Int8.init(littleEndian: pointer.pointee))
+            }
+            return number
+        }
+    }
+    
+    var integerFromLittleUInt16: Int? {
+        get {
+            let number: Int? = self.withUnsafeBytes {
+                (pointer: UnsafePointer<UInt16>) -> Int? in
+                if MemoryLayout<UInt16>.size != self.count { return nil }
+                return Int(UInt16.init(littleEndian: pointer.pointee))
+            }
+            return number
+        }
     }
     
     var integerFromLittleInt16: Int? {
-        
-        let number: Int? = self.withUnsafeBytes {
-            (pointer: UnsafePointer<Int16>) -> Int? in
-            if MemoryLayout<Int16>.size != self.count { return nil }
-            return Int(Int16.init(littleEndian: pointer.pointee))
+        get {
+            let number: Int? = self.withUnsafeBytes {
+                (pointer: UnsafePointer<Int16>) -> Int? in
+                if MemoryLayout<Int16>.size != self.count { return nil }
+                return Int(Int16.init(littleEndian: pointer.pointee))
+            }
+            return number
         }
-        return number
+    }
+    
+    var integerFromLittleUInt32: Int? {
+        get {
+            let number: Int? = self.withUnsafeBytes {
+                (pointer: UnsafePointer<UInt32>) -> Int? in
+                if MemoryLayout<UInt32>.size != self.count { return nil }
+                return Int(UInt32.init(littleEndian: pointer.pointee))
+            }
+            return number
+        }
+    }
+    
+    var pinStore: PinStore {
+        get {
+            var pinStore = PinStore()
+            for index in stride(from: 0, to: self.count, by: 2) {
+                if let pin = BTMicrobit.Pin(rawValue: Int(self[index])) {
+                    pinStore[pin] = Int(self[index + 1] << 2)
+                }
+            }
+            return pinStore
+        }
     }
     
     init<T>(fromArray values: [T]) {

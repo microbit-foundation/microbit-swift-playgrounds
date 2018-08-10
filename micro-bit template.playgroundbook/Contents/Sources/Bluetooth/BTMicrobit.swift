@@ -27,12 +27,22 @@ import Foundation
 import CoreBluetooth
 
 public typealias EventHandler = () -> Void
-public typealias ReadValueHandler = (Int?, Error?) -> Void
-public typealias ReadButtonStateHandler = (BTMicrobit.ButtonState?, Error?) -> Void
-public typealias ReadImageHandler = (MicrobitImage?, Error?) -> Void
-public typealias DisplayTextHandler = (Error?) -> Void
-public typealias ReadAccelerometerHandler = (AccelerometerValues?, Error?) -> Void
-public typealias ReadPinIOHandler = ([Int]?, Error?) -> Void
+public typealias ReadScrollingDelayHandler = (Int?) -> Void
+public typealias ReadButtonStateHandler = (BTMicrobit.ButtonState?) -> Void
+public typealias NotifyButtonStateHandler = (BTMicrobit.ButtonState?) -> BTPeripheral.NotificationAction
+public typealias ReadImageHandler = (MicrobitImage?) -> Void
+public typealias ReadAccelerometerPeriodHandler = (BTMicrobit.AccelerometerPeriod?) -> Void
+public typealias NotifyAccelerometerHandler = (AccelerometerValues?) -> BTPeripheral.NotificationAction
+public typealias ReadTemperaturePeriodHandler = (Int?) -> Void
+public typealias NotifyTemperatureHandler = (Double?) -> BTPeripheral.NotificationAction
+public typealias ReadMagnetometerPeriodHandler = (BTMicrobit.MagnetometerPeriod?) -> Void
+public typealias NotifyCompassHeadingHandler = (Double?) -> BTPeripheral.NotificationAction
+public typealias ReadMagnetometerHandler = (MagnetometerValues?) -> Void
+public typealias ReadPinConfigurationHandler = (PinConfigurationMask?) -> Void
+
+public typealias PinStore = [BTMicrobit.Pin: Int]
+public typealias PinConfigurationMask = Int
+public typealias NotifyPinIOHandler = (PinStore) -> BTPeripheral.NotificationAction
 
 public class BTMicrobit: BTPeripheral {
     
@@ -57,6 +67,52 @@ public class BTMicrobit: BTPeripheral {
         }
     }
     
+    public enum Pin: Int {
+        case pin0
+        case pin1
+        case pin2
+        case pin3
+        case pin4
+        case pin5
+        case pin6
+        case pin7
+        case pin8
+        case pin9
+        case pin10
+        case pin11
+        case pin12
+        case pin13
+        case pin14
+        case pin15
+        case pin16
+        case pin17
+        case pin18
+        case pin19
+        case pinGND = 1000
+    }
+    
+    public enum AccelerometerPeriod : Int {
+        case ms1 = 1
+        case ms2 = 2
+        case ms5 = 5
+        case ms10 = 10
+        case ms20 = 20
+        case ms80 = 80
+        case ms160 = 160
+        case ms640 = 640
+    }
+    
+    public enum MagnetometerPeriod : Int {
+        case ms1 = 1
+        case ms2 = 2
+        case ms5 = 5
+        case ms10 = 10
+        case ms20 = 20
+        case ms80 = 80
+        case ms160 = 160
+        case ms640 = 640
+    }
+    
     // MARK: - General Read Write Functions
     public func readValueForCharacteristic(_ characteristicUUID: CharacteristicUUID, handler: @escaping ReadCharacteristicHandler) {
         
@@ -78,7 +134,7 @@ public class BTMicrobit: BTPeripheral {
     
     public func setNotifyValue(_ enabled: Bool,
                                forCharacteristicUUID characteristicUUID: BTMicrobit.CharacteristicUUID,
-                               handler: ReadCharacteristicHandler? = nil) {
+                               handler: NotifyCharacteristicHandler? = nil) {
         
         self.setNotifyValue(enabled,
                             serviceUUIDString: characteristicUUID.serviceUUID.rawValue,
@@ -87,226 +143,290 @@ public class BTMicrobit: BTPeripheral {
     }
     
     // MARK: - LED Functions
-    public func displayText(_ text: String, handler: DisplayTextHandler?) {
+    public func displayText(_ text: String) {
         
         self.writeValue(text.microbitData,
                         forCharacteristicUUID: .ledTextUUID,
-                        handler: {
-                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                            // Is this handler ever called?
         })
     }
     
-    public func showImage(_ image: MicrobitImage, handler: ReadImageHandler?) {
+    public func readImage(handler: @escaping ReadImageHandler) {
+        self.readValueForCharacteristic(.ledStateUUID,
+                                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                            if let data = characteristic.value, data.count == 5 {
+                                                handler(MicrobitImage(data))
+                                            } else {
+                                                handler(nil)
+                                            }
+        })
+    }
+    
+    public func showImage(_ image: MicrobitImage, handler: ReadImageHandler? = nil) {
         
         self.writeValue(image.imageData,
                         forCharacteristicUUID: .ledStateUUID,
-                        handler: {
-                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                            if let handler = handler {
+                                if let data = characteristic.value, data.count == 5 {
+                                    handler(MicrobitImage(data))
+                                } else {
+                                    handler(nil)
+                                }
+                            }
         })
     }
     
-    public func readScrollingDelay(handler: ReadValueHandler) {
+    public func readScrollingDelay(handler: @escaping ReadScrollingDelayHandler) {
         self.readValueForCharacteristic(.ledScrollingDelayUUID,
-                                        handler: {
-                                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                            let delay = characteristic.value?.integerFromLittleUInt16
+                                            handler(delay)
         })
     }
     
-    public func setScrollingDelay(_ delay: Int, handler: ReadValueHandler) {
+    public func setScrollingDelay(_ delay: Int, handler: ReadScrollingDelayHandler? = nil) {
         
         let data = Data.littleEndianUInt16FromInt(delay)
         self.writeValue(data,
                         forCharacteristicUUID: .ledScrollingDelayUUID,
-                        handler: {
-                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                            if let handler = handler {
+                                let delay = characteristic.value?.integerFromLittleUInt16
+                                handler(delay)
+                            }
         })
     }
     
     // MARK: - Button Functions
     
-    public func readButtonState(button: Button, handler: ReadButtonStateHandler) {
+    public func readButtonState(button: Button, handler: @escaping ReadButtonStateHandler) {
         
         let characteristicUUID: BTMicrobit.CharacteristicUUID = button == .A ? .buttonStateAUUID : .buttonStateBUUID
         self.readValueForCharacteristic(characteristicUUID,
                                         handler: {
-                                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                                            (characteristic: CBCharacteristic, error: Error?) in
+                                            if let data = characteristic.value, data.count > 0 {
+                                                let buttonState = BTMicrobit.ButtonState(rawValue: data[0])
+                                                handler(buttonState)
+                                            } else {
+                                                handler(nil)
+                                            }
         })
     }
     
-    public func setNotifyValue(_ enabled: Bool, forButton button: Button, handler: ReadButtonStateHandler) {
+    public func onButtonState(forButton button: Button, handler: @escaping NotifyButtonStateHandler) {
         
         let characteristicUUID: BTMicrobit.CharacteristicUUID = button == .A ? .buttonStateAUUID : .buttonStateBUUID
-        self.setNotifyValue(enabled,
+        self.setNotifyValue(true,
                             forCharacteristicUUID: characteristicUUID,
                             handler: {
-                                (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                                (characteristic: CBCharacteristic, error: Error?) in
+                                if let data = characteristic.value, data.count > 0 {
+                                    let buttonState = BTMicrobit.ButtonState(rawValue: data[0])
+                                    return handler(buttonState)
+                                } else {
+                                    return handler(nil)
+                                }
         })
     }
     
     // MARK: - Accelerometer Functions
     
-    public func readAccelerometerPeriod(handler: ReadValueHandler) {
+    public func readAccelerometerPeriod(handler: @escaping ReadAccelerometerPeriodHandler) {
         
         self.readValueForCharacteristic(.accelerometerPeriodUUID,
-                                        handler: {
-                                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                            if let intPeriod = characteristic.value?.integerFromLittleUInt16,
+                                                let period = BTMicrobit.AccelerometerPeriod(rawValue: intPeriod) {
+                                                handler(period)
+                                            } else {
+                                                handler(nil)
+                                            }
         })
     }
     
-    public func setAccelerometerPeriod(_ period: Int, handler: ReadValueHandler) {
+    public func setAccelerometerPeriod(_ period: AccelerometerPeriod, handler: ReadAccelerometerPeriodHandler? = nil) {
+        
+        let data = Data.littleEndianUInt16FromInt(period.rawValue)
+        self.writeValue(data,
+                        forCharacteristicUUID: .accelerometerPeriodUUID,
+                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                            if let handler = handler {
+                                if let intPeriod = characteristic.value?.integerFromLittleUInt16,
+                                    let period = BTMicrobit.AccelerometerPeriod(rawValue: intPeriod) {
+                                    handler(period)
+                                } else {
+                                    handler(nil)
+                                }
+                            }
+        })
+    }
+    
+    public func onAccelerometer(handler: @escaping NotifyAccelerometerHandler) {
+        
+        self.setNotifyValue(true,
+                            forCharacteristicUUID: .accelerometerDataUUID,
+                            handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                
+                                if let data = characteristic.value, data.count > 5,
+                                    let accelerationValues = AccelerometerValues(data: data) {
+                                    return handler(accelerationValues)
+                                } else {
+                                    return handler(nil)
+                                }
+        })
+    }
+    
+    // MARK: - Temperature Functions
+    
+    public func readTemperaturePeriod(handler: @escaping ReadTemperaturePeriodHandler) {
+        
+        self.readValueForCharacteristic(.temperaturePeriodUUID,
+                                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                            
+                                            let intPeriod = characteristic.value?.integerFromLittleUInt16
+                                            handler(intPeriod)
+        })
+    }
+    
+    public func setTemperaturePeriod(_ period: Int, handler: ReadTemperaturePeriodHandler? = nil) {
         
         let data = Data.littleEndianUInt16FromInt(period)
         self.writeValue(data,
-                        forCharacteristicUUID: .accelerometerPeriodUUID,
-                        handler: {
-                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                        forCharacteristicUUID: .temperaturePeriodUUID,
+                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                            
+                            if let handler = handler {
+                                let intPeriod = characteristic.value?.integerFromLittleUInt16
+                                handler(intPeriod)
+                            }
         })
     }
     
-    public func setNotifyValueForAccelerometer(_ enabled: Bool, handler: ReadAccelerometerHandler) {
+    public func onTemperature(handler: @escaping NotifyTemperatureHandler) {
         
-        self.setNotifyValue(enabled,
-                            forCharacteristicUUID: .accelerometerDataUUID,
-                            handler: {
-                                (characteristic: CBCharacteristic, handlerType, error: Error?) in
+        self.setNotifyValue(true,
+                            forCharacteristicUUID: .temperatureDataUUID,
+                            handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                
+                                if let data = characteristic.value, data.count > 0,
+                                    let temperature = data.integerFromLittleInt8 {
+                                    return handler(Double(temperature))
+                                } else {
+                                    return handler(nil)
+                                }
         })
     }
     
     // MARK: - Magnetometer Functions
     
-    public func readMagnetometerPeriod(handler: ReadValueHandler) {
+    public func readMagnetometerPeriod(handler: @escaping ReadMagnetometerPeriodHandler) {
         
         self.readValueForCharacteristic(.magnetometerPeriodUUID,
-                                        handler: {
-                                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                            if let intPeriod = characteristic.value?.integerFromLittleUInt16,
+                                                let period = BTMicrobit.MagnetometerPeriod(rawValue: intPeriod) {
+                                                handler(period)
+                                            } else {
+                                                handler(nil)
+                                            }
         })
     }
     
-    public func setMagnetometerPeriod(_ period: Int, handler: ReadValueHandler) {
+    public func setMagnetometerPeriod(_ period: MagnetometerPeriod, handler: ReadMagnetometerPeriodHandler? = nil) {
         
-        let data = Data.littleEndianUInt16FromInt(period)
+        let data = Data.littleEndianUInt16FromInt(period.rawValue)
         self.writeValue(data,
                         forCharacteristicUUID: .magnetometerPeriodUUID,
-                        handler: {
-                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                            if let handler = handler {
+                                if let intPeriod = characteristic.value?.integerFromLittleUInt16,
+                                    let period = BTMicrobit.MagnetometerPeriod(rawValue: intPeriod) {
+                                    handler(period)
+                                } else {
+                                    handler(nil)
+                                }
+                            }
         })
     }
     
-    public func setNotifyValueForMagnetometerBearing(_ enabled: Bool, handler: ReadValueHandler) {
+    public func onMagnetometerBearing(handler: @escaping NotifyCompassHeadingHandler) {
         
-        self.setNotifyValue(enabled,
+        self.setNotifyValue(true,
                             forCharacteristicUUID: .magnetometerBearingUUID,
-                            handler: {
-                                (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                            handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                
+                                if let data = characteristic.value, data.count > 1,
+                                    let heading = data.integerFromLittleUInt16 {
+                                    return handler(Double(heading))
+                                } else {
+                                    return handler(nil)
+                                }
         })
     }
     
     // MARK: - Pin IO Functions
     
-    public func readPinADConfiguration(handler: ReadValueHandler) {
+    public func readPinADConfiguration(handler: @escaping ReadPinConfigurationHandler) {
         
         self.readValueForCharacteristic(.pinADConfigurationUUID,
                                         handler: {
-                                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                                            (characteristic: CBCharacteristic, error: Error?) in
+                                            let bitMask = characteristic.value?.integerFromLittleUInt32
+                                            handler(bitMask)
         })
     }
     
-    public func setPinADConfiguration(_ pinConfiguration: Int, handler: ReadValueHandler) {
+    public func setPinADConfiguration(_ pinConfiguration: PinConfigurationMask, handler: ReadPinConfigurationHandler? = nil) {
         
         let data = Data.littleEndianUInt16FromInt(pinConfiguration)
         self.writeValue(data,
                         forCharacteristicUUID: .pinADConfigurationUUID,
-                        handler: {
-                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                            if let handler = handler {
+                                let bitMask = characteristic.value?.integerFromLittleUInt32
+                                handler(bitMask)
+                            }
         })
     }
     
-    public func readPinIOConfiguration(handler: ReadValueHandler) {
+    public func readPinIOConfiguration(handler: @escaping ReadPinConfigurationHandler) {
         
         self.readValueForCharacteristic(.pinIOConfigurationUUID,
-                                        handler: {
-                                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                            let bitMask = characteristic.value?.integerFromLittleUInt32
+                                            handler(bitMask)
         })
     }
     
-    public func setPinIOConfiguration(_ pinConfiguration: Int, handler: ReadValueHandler) {
+    public func setPinIOConfiguration(_ pinConfiguration: PinConfigurationMask, handler: ReadPinConfigurationHandler? = nil) {
         
         let data = Data.littleEndianUInt16FromInt(pinConfiguration)
         self.writeValue(data,
                         forCharacteristicUUID: .pinIOConfigurationUUID,
-                        handler: {
-                            (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                        handler: {(characteristic: CBCharacteristic, error: Error?) in
+                            if let handler = handler {
+                                let bitMask = characteristic.value?.integerFromLittleUInt32
+                                handler(bitMask)
+                            }
         })
     }
     
-    public func setNotifyValueForPinIO(_ enabled: Bool, handler: ReadPinIOHandler) {
+    public func onPinIO(handler: @escaping NotifyPinIOHandler) {
         
-        self.setNotifyValue(enabled,
+        self.setNotifyValue(true,
                             forCharacteristicUUID: .pinDataUUID,
-                            handler: {
-                                (characteristic: CBCharacteristic, handlerType, error: Error?) in
+                            handler: {(characteristic: CBCharacteristic, error: Error?) in
+                                
+                                if let data = characteristic.value {
+                                    return handler(data.pinStore)
+                                } else {
+                                    return .stopNotifications
+                                }
         })
     }
-    
-    /*
-     
-     OLD HANDLER STUFF - now required in here
-     
-     switch handler {
-     
-     case let handler as ReadCharacteristicHandler:
-     
-     
-     
-     case let handler as ReadValueHandler:
-     
-     handler(characteristic.value != nil ? characteristic.value!.integerFromLittleUInt16 : nil as Int? , error)
-     
-     case let handler as ReadButtonStateHandler:
-     
-     var buttonState: BTMicrobit.ButtonState?
-     if (characteristic.value != nil) {
-     buttonState = BTMicrobit.ButtonState(rawValue: characteristic.value![0])
-     }
-     handler(buttonState, error)
-     
-     case let handler as ReadAccelerometerHandler:
-     if (characteristic.value != nil) {
-     let accelerometerValues = AccelerometerValues(data: characteristic.value!)
-     handler(accelerometerValues, error)
-     } else {
-     handler(nil, error)
-     }
-     
-     case let handler as ReadPinIOHandler:
-     
-     if let data = characteristic.value {
-     for index in stride(from: 0, to: data.count, by: 2) {
-     self.pinIOValues[Int(data[index])] = Int(data[index + 1])
-     }
-     handler(self.pinIOValues, error)
-     } else {
-     handler(nil, error)
-     }
-     
-     case let handler as ReadImageHandler:
-     
-     if let data = characteristic.value {
-     
-     let image = MicrobitImage.init(data)
-     handler(image, nil)
-     } else {
-     handler(nil, error)
-     }
-     
-     default:
-     print("No handler type for \(handler)")
-     }
-     
-     }
-     }
-     
-     */
     
     // MARK: - Event Functions
     
@@ -314,11 +434,11 @@ public class BTMicrobit: BTPeripheral {
                          handler: @escaping ReadCharacteristicHandler) {
         
         if requiredEvents.insert(event).inserted  {
-            let eventsData = requiredEvents.reduce(into: Data(), {data, event in
-                data.append(event.microbitData)
-            })
-            self.messageLogger?.logMessage("requiredEvents: \(eventsData as NSData)")
-            self.writeValue(eventsData,
+            /*let eventsData = requiredEvents.reduce(into: Data(), {data, event in
+             data.append(event.microbitData)
+             })*/
+            //self.messageLogger?.logMessage("requiredEvents: \(eventsData as NSData)")
+            self.writeValue(event.microbitData,
                             forCharacteristicUUID: .eventClientRequirementsUUID,
                             handler: handler)
         }
@@ -340,7 +460,7 @@ public class BTMicrobit: BTPeripheral {
      }
      }*/
     
-    public func setNotifyValueForMicrobitEvent(_ enabled: Bool, handler: ReadCharacteristicHandler? = nil) {
+    public func setNotifyValueForMicrobitEvent(_ enabled: Bool, handler: NotifyCharacteristicHandler? = nil) {
         
         self.setNotifyValue(enabled,
                             forCharacteristicUUID: .eventMicrobitEventUUID,
