@@ -27,6 +27,13 @@ import UIKit
 import CoreGraphics
 import CoreMotion
 
+private let MicrobitAccelerometerTiltTolerance = 300.0
+private let MicrobitAccelerometerFreefallTolerance = 400.0
+private let MicrobitAccelerometer3GTolerance = 3072.0
+private let MicrobitAccelerometer6GTolerance = 6144.0
+private let MicrobitAccelerometer8GTolerance = 8192.0
+private let MicrobitGestureEventTolerance = 6 // The number of accelerometer events that must elapse before gestures are recognised
+
 public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMimic.NotificationAction
 
 @objc(MicrobitMimic)
@@ -38,6 +45,9 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
     let buttonALayer = CAShapeLayer()
     let buttonBLayer = CAShapeLayer()
     var pinLayers = Dictionary<BTMicrobit.Pin, CALayer>()
+    var filteredAccelerometerValues = AccelerometerValues(x: 0.0, y: 0.0, z: 0.0,
+                                                          unit: UnitAcceleration.microbitGravity)
+    var gestureEventCount = 0
     
     var touchesMap = Dictionary<UITouch, CALayer>()
     
@@ -97,13 +107,19 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
         didSet {
             DispatchQueue.main.async {
                 if let sublayers = self.mimicLayer.sublayers {
+                    CATransaction.begin()
+                    CATransaction.setAnimationDuration(0)
                     for sublayer in sublayers {
                         if let substrings = sublayer.name?.split(separator: ",") {
                             if substrings.count > 1, let x = Int(substrings[0]), let y = Int(substrings[1]) {
-                                sublayer.isHidden = self.microbitImage[x, y] == .off
+                                let layerHidden = self.microbitImage[x, y] == .off
+                                if sublayer.isHidden != layerHidden {
+                                    sublayer.isHidden = layerHidden
+                                }
                             }
                         }
                     }
+                    CATransaction.commit()
                 }
             }
         }
@@ -114,15 +130,71 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
                             unit: UnitAcceleration.microbitGravity) {
         
         didSet {
+            
+            let alpha = self.lowPassFilterConstant
+            filteredAccelerometerValues.x = accelerometerValues.x * alpha + filteredAccelerometerValues.x * (1.0 - alpha)
+            filteredAccelerometerValues.y = accelerometerValues.y * alpha + filteredAccelerometerValues.y * (1.0 - alpha)
+            filteredAccelerometerValues.z = accelerometerValues.z * alpha + filteredAccelerometerValues.z * (1.0 - alpha)
+            
             let tau = CGFloat.tau
-            //var xTransform = CATransform3DMakeRotation(max(min((tau / 4.0) * (CGFloat(_accelerometerValues.x.value) / 1023.0), tau / 8.0), -tau / 8.0), 0.0, 1.0, 0.0)
-            //var xTransform = CATransform3DMakeRotation((tau / 4.0) * (CGFloat(_accelerometerValues.x.value) / 1023.0), 0.0, 1.0, 0.0)
             var transform = CATransform3DIdentity
             transform.m34 = -1.0 / 1000.0
-            transform = CATransform3DRotate(transform, max(min((tau / 4.0) * (CGFloat(accelerometerValues.x) / 1023.0), tau / 8.0), -tau / 8.0), 0.0, 1.0, 0.0)
-            transform = CATransform3DRotate(transform, max(min((tau / 4.0) * (-CGFloat(accelerometerValues.y) / 1023.0), tau / 8.0), -tau / 8.0), 1.0, 0.0, 0.0)
+            transform = CATransform3DRotate(transform, max(min((tau / 4.0) * (CGFloat(filteredAccelerometerValues.x) / 1023.0), tau / 8.0), -tau / 8.0), 0.0, 1.0, 0.0)
+            transform = CATransform3DRotate(transform, max(min((tau / 4.0) * (-CGFloat(filteredAccelerometerValues.y) / 1023.0), tau / 8.0), -tau / 8.0), 1.0, 0.0, 0.0)
             DispatchQueue.main.async {
                 self.mimicLayer.transform = transform
+            }
+            
+            let gStrength = accelerometerValues.strength
+            /*DispatchQueue.main.async {
+             self.messageLogger?.logMessage("\(gStrength)")
+             }*/
+            
+            if gStrength > MicrobitAccelerometer3GTolerance{
+                self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(.threeG))
+                
+                if gStrength > MicrobitAccelerometer6GTolerance {
+                    self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(.sixG))
+                }
+                
+                if gStrength > MicrobitAccelerometer8GTolerance {
+                    self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(.eightG))
+                }
+            }
+            
+            if self.gestureEventCount > MicrobitGestureEventTolerance {
+                
+                let filteredGStrength = filteredAccelerometerValues.strength
+                if filteredGStrength < MicrobitAccelerometerFreefallTolerance {
+                    self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(.freeFall))
+                }
+                
+                if filteredAccelerometerValues.x < (-1023 + MicrobitAccelerometerTiltTolerance) {
+                    self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(.tiltLeft))
+                }
+                
+                if filteredAccelerometerValues.x > (1023 - MicrobitAccelerometerTiltTolerance) {
+                    self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(.tiltRight))
+                }
+                
+                if filteredAccelerometerValues.y < (-1023 + MicrobitAccelerometerTiltTolerance) {
+                    self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(.tiltDown))
+                }
+                
+                if filteredAccelerometerValues.y > (1023 - MicrobitAccelerometerTiltTolerance) {
+                    self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(.tiltUp))
+                }
+                
+                if filteredAccelerometerValues.z < (-1023 + MicrobitAccelerometerTiltTolerance) {
+                    self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(.faceUp))
+                }
+                
+                if filteredAccelerometerValues.z > (1023 - MicrobitAccelerometerTiltTolerance) {
+                    self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(.faceDown))
+                }
+                
+            } else {
+                self.gestureEventCount += 1
             }
         }
     }
@@ -247,6 +319,14 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
         }
     }
     
+    var lowPassFilterConstant: Double {
+        get {
+            let updateInterval = self.motionManager.accelerometerUpdateInterval
+            let RC = max(updateInterval, 0.2) 
+            return updateInterval / (updateInterval + RC)
+        }
+    }
+    
     public func addAccelerometerHandler(_ handler: MimicAccelerometerHandler) {
         if self.isActive {
             self.addHandler(handler, forType: .accelerometer)
@@ -259,6 +339,7 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
         if self.isActive && !self.motionManager.isAccelerometerActive {
             
             //UIDevice.current.beginGeneratingDeviceOrientationNotifications() // These don't work
+            self.gestureEventCount = 0
             self.motionManager.startAccelerometerUpdates(to: OperationQueue(),
                                                          withHandler: {(accelerometerData, error) in
                                                             if (error != nil) {

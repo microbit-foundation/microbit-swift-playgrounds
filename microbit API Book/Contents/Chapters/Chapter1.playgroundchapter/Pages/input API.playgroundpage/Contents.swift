@@ -36,8 +36,3 @@ onPinPressed(.pin1, handler: {
 onPinPressed(.pin2, handler: {
     Character("2").microbitImage.showImage()
 })
-
-onGesture(.shake, handler: {
-    let image = iconImage(.confused)
-    image.showImage()
-})

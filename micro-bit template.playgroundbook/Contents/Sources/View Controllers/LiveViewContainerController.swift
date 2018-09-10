@@ -261,6 +261,15 @@ extension LiveViewContainerController: PlaygroundLiveViewMessageHandler, Microbi
                 if let data = message.data, let event = BTMicrobit.Event(data) {
                     
                     //liveViewController.logMessage("Data: + \(data as! NSData)")
+                    // Start the mimic's accelerometer for non-shake gestures to enable events to be sent.
+                    if case let .gesture(_, gesture) = event {
+                        if gesture != .shake {
+                            self.liveViewController.microbitMimic.addAccelerometerHandler({ accelerometerValues in
+                                return self.proxyConnectionIsOpen ? .continueNotifications : .stopNotifications
+                            })
+                        }
+                    }
+                    
                     microbit?.addEvent(event, handler: {(characteristic, error) in
                         //liveViewController.logMessage("Added event: + \(event)")
                     })

@@ -5,9 +5,9 @@
 	<key>Version</key>
 	<string>3.0</string>
 	<key>ContentVersion</key>
-	<string>0.5.0</string>
+	<string>0.5.2</string>
 	<key>Name</key>
-	<string>micro꞉bit API Book</string>
+	<string>micro꞉bit API</string>
 	<key>ContentIdentifier</key>
 	<string>io.github.microbit-foundation.playgrounds.microbit-api</string>
 	<key>DeploymentTarget</key>

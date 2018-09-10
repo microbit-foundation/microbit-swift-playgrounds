@@ -220,6 +220,10 @@ public final class MicrobitImage: Equatable, LosslessStringConvertible, Expressi
         return MicrobitImage(imageData)
     }
     
+    /**
+     An overloaded operator that performs a binary OR to each LED in two MicrobitImages.
+     - returns: A MicrobitImage
+     */
     public static func | (image1: MicrobitImage, image2: MicrobitImage) -> MicrobitImage {
         
         var imageData = image1.imageData
@@ -250,6 +254,10 @@ public final class MicrobitImage: Equatable, LosslessStringConvertible, Expressi
         return MicrobitImage(imageData)
     }
     
+    /**
+     An overloaded operator that performs an addition of two MicrobitImages by applying a binary OR to each LED.
+     - returns: A MicrobitImage
+     */
     public static func + (image1: MicrobitImage, image2: MicrobitImage) -> MicrobitImage {
         return image1 | image2
     }

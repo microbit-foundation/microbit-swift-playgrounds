@@ -9,8 +9,9 @@
 	<key>Pages</key>
 	<array>
 		<string>GettingStarted.cutscenepage</string>
-		<string>basic API.playgroundpage</string>
-		<string>input API.playgroundpage</string>
+		<string>Basic API.playgroundpage</string>
+		<string>Input API.playgroundpage</string>
+		<string>Gestures API.playgroundpage</string>
 		<string>Images.playgroundpage</string>
 		<string>DataStore.playgroundpage</string>
 	</array>

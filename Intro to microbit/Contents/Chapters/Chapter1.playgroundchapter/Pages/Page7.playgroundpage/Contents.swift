@@ -41,7 +41,7 @@ import PlaygroundSupport
 //#-editable-code
 clearScreen()
 
-setTemperaturePeriod(5000, handler: {(period: Int) in
+setTemperaturePeriod(5000, handler: {(period: Int?) in
     let periodinMS = period
 })
 

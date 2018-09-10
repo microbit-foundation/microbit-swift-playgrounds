@@ -25,6 +25,15 @@
 
 import Foundation
 
+/**
+ A function that sets which pins are used for input or output on the micro:bit.
+ - parameters:
+    - _ An array of type BTMicrobit.Pin. This sets the pins to be used for input. Pins not specified are not changed.
+    - outputPins: An optional array of type BTMicrobit.Pin. This sets the pins to be used for output. Pins not specified are not changed.
+ ````
+ setInputPins([pin0, pin1], outputPins: [pin2, pin3])
+ ````
+ */
 public func setInputPins(_ inputPins: [BTMicrobit.Pin], outputPins: [BTMicrobit.Pin]? = nil) {
     
     ContentMessenger.messenger.sendMessageOfType(.readData,
@@ -49,6 +58,15 @@ public func setInputPins(_ inputPins: [BTMicrobit.Pin], outputPins: [BTMicrobit.
     })
 }
 
+/**
+ A function that sets which pins are used for analogue or digital on the micro:bit.
+ - parameters:
+    - _ An array of type BTMicrobit.Pin. This sets the pins to be used for analogue signal. Pins not specified are not changed.
+    - digitalPins: An optional array of type BTMicrobit.Pin. This sets the pins to be used for a digital signal. Pins not specified are not changed.
+ ````
+ setAnaloguePins([pin0, pin1], digitalPins: [pin2, pin3])
+ ````
+ */
 public func setAnaloguePins(_ analoguePins: [BTMicrobit.Pin], digitalPins: [BTMicrobit.Pin]? = nil) {
     
     ContentMessenger.messenger.sendMessageOfType(.readData,
@@ -73,6 +91,18 @@ public func setAnaloguePins(_ analoguePins: [BTMicrobit.Pin], digitalPins: [BTMi
     })
 }
 
+/**
+ A function that calls a handler when any of the input pins have changed value on the micro:bit. The returned type is a PinStore, this is a dictionary of type [BTMicrobit.Pin: Int]. Note that pins that have not changed value will not be included in the store even if they are set to input. You must therefore always check there is an entry for the pin whose value you wish to read. The pin value is an Int between 0 and 1020.
+ - parameters:
+    - _ A handler that returns a PinStore. This closure is called whenever an input pin changes its value.
+ ````
+ onPins({pinStore in
+    if let pin0Value = pinStore[.pin0] {
+        // Do something with the value stored in pin0Value.
+    }
+ })
+ ````
+ */
 public func onPins(_ handler: ReadPinIOHandler) {
     
     ContentMessenger.messenger.sendMessageOfType(.startNotifications,
@@ -80,6 +110,14 @@ public func onPins(_ handler: ReadPinIOHandler) {
                                                  handler: handler)
 }
 
+/**
+ A function that writes a value to specified output pins on the micro:bit. This is done by passing a PinStore which is a dictionary of type [BTMicrobit.Pin: Int]. The pin value is an Int between 0 and 1020.
+ - parameters:
+    - _ A PinStore that specifies which pins you wish to write to.
+ ````
+ writePins([pin2: 300, pin3: 400])
+ ````
+ */
 public func writePins(_ pinStore: PinStore) {
     
     ContentMessenger.messenger.sendMessageOfType(.writeData,

@@ -37,81 +37,7 @@ public func createImage(_ leds: String) -> MicrobitImage {
     - _ The arrow name of the image you want to create. You can pick an arrow image such as: .north
  */
 public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
-    
-    switch arrowName {
-        
-    case .north:
-        return """
-        ..#..
-        .###.
-        #.#.#
-        ..#..
-        ..#..
-        """
-        
-    case .northEast:
-        return """
-        ..###
-        ...##
-        ..#.#
-        .#...
-        #....
-        """
-        
-    case .east:
-        return """
-        ..#..
-        ...#.
-        #####
-        ...#.
-        ..#..
-        """
-        
-    case .southEast:
-        return """
-        #....
-        .#...
-        ..#.#
-        ...##
-        ..###
-        """
-        
-    case .south:
-        return """
-        ..#..
-        ..#..
-        #.#.#
-        .###.
-        ..#..
-        """
-        
-    case .southWest:
-        return """
-        ....#
-        ...#.
-        #.#..
-        ##...
-        ###..
-        """
-        
-    case .west:
-        return """
-        ..#..
-        .#...
-        #####
-        .#...
-        ..#..
-        """
-        
-    case .northWest:
-        return """
-        ###..
-        ##...
-        #.#..
-        ...#.
-        ....#
-        """
-    }
+    return arrowName.rawValue
 }
 
 /**
@@ -126,11 +52,80 @@ public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
  - LocalizationKey: iconImage()
  */
 public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
+    return iconName.rawValue
+}
+
+extension MicrobitImage {
     
-    switch iconName {
+    public enum ArrowName : MicrobitImage {
+        case north = """
+        ..#..
+        .###.
+        #.#.#
+        ..#..
+        ..#..
+        """
         
-    case .heart:
-        return """
+        case northEast = """
+        ..###
+        ...##
+        ..#.#
+        .#...
+        #....
+        """
+        
+        case east = """
+        ..#..
+        ...#.
+        #####
+        ...#.
+        ..#..
+        """
+        
+        case southEast = """
+        #....
+        .#...
+        ..#.#
+        ...##
+        ..###
+        """
+        
+        case south = """
+        ..#..
+        ..#..
+        #.#.#
+        .###.
+        ..#..
+        """
+        
+        case southWest = """
+        ....#
+        ...#.
+        #.#..
+        ##...
+        ###..
+        """
+        
+        case west = """
+        ..#..
+        .#...
+        #####
+        .#...
+        ..#..
+        """
+        
+        case northWest = """
+        ###..
+        ##...
+        #.#..
+        ...#.
+        ....#
+        """
+    }
+    
+    public enum IconName : MicrobitImage {
+
+        case heart = """
         .#.#.
         #####
         #####
@@ -138,8 +133,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ..#..
         """
         
-    case .smallHeart:
-        return """
+        case smallHeart = """
         .....
         .#.#.
         .###.
@@ -147,8 +141,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .....
         """
         
-    case .yes:
-        return """
+        case yes = """
         .....
         ....#
         ...#.
@@ -156,8 +149,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .#...
         """
         
-    case .no:
-        return """
+        case no = """
         #...#
         .#.#.
         ..#..
@@ -165,8 +157,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         #...#
         """
         
-    case .happy:
-        return """
+        case happy = """
         .....
         .#.#.
         .....
@@ -174,8 +165,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .###.
         """
         
-    case .sad:
-        return """
+        case sad = """
         .....
         .#.#.
         .....
@@ -183,8 +173,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         #...#
         """
         
-    case .confused:
-        return """
+        case confused = """
         .....
         .#.#.
         .....
@@ -192,8 +181,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         #.#.#
         """
         
-    case .angry:
-        return """
+        case angry = """
         #...#
         .#.#.
         .....
@@ -201,8 +189,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         #.#.#
         """
         
-    case .asleep:
-        return """
+        case asleep = """
         .....
         ##.##
         .....
@@ -210,8 +197,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .....
         """
         
-    case .surprised:
-        return """
+        case surprised = """
         .#.#.
         .....
         ..#..
@@ -219,8 +205,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ..#..
         """
         
-    case .silly:
-        return """
+        case silly = """
         #...#
         .....
         #####
@@ -228,8 +213,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ...##
         """
         
-    case .fabulous:
-        return """
+        case fabulous = """
         #####
         ##.##
         .....
@@ -237,8 +221,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .###.
         """
         
-    case .meh:
-        return """
+        case meh = """
         ##.##
         .....
         ...#.
@@ -246,8 +229,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .#...
         """
         
-    case .tShirt:
-        return """
+        case tShirt = """
         ##.##
         #####
         .###.
@@ -255,8 +237,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .###.
         """
         
-    case .rollerSkate:
-        return """
+        case rollerSkate = """
         ...##
         ...##
         #####
@@ -264,8 +245,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .#.#.
         """
         
-    case .duck:
-        return """
+        case duck = """
         .##..
         ###..
         .####
@@ -273,8 +253,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .....
         """
         
-    case .house:
-        return """
+        case house = """
         ..#..
         .###.
         #####
@@ -282,8 +261,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .#.#.
         """
         
-    case .tortoise:
-        return """
+        case tortoise = """
         .....
         .###.
         #####
@@ -291,8 +269,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .....
         """
         
-    case .butterfly:
-        return """
+        case butterfly = """
         ##.##
         #####
         ..#..
@@ -300,8 +277,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ##.##
         """
         
-    case .stickFigure:
-        return """
+        case stickFigure = """
         ..#..
         #####
         ..#..
@@ -309,8 +285,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         #...#
         """
         
-    case .ghost:
-        return """
+        case ghost = """
         .###.
         #.#.#
         #####
@@ -318,8 +293,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         #.#.#
         """
         
-    case .sword:
-        return """
+        case sword = """
         ..#..
         ..#..
         ..#..
@@ -327,8 +301,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ..#..
         """
         
-    case .giraffe:
-        return """
+        case giraffe = """
         ##...
         .#...
         .#...
@@ -336,8 +309,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .#.#.
         """
         
-    case .skull:
-        return """
+        case skull = """
         .###.
         #.#.#
         #####
@@ -345,8 +317,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .###.
         """
         
-    case .umbrella:
-        return """
+        case umbrella = """
         .###.
         #####
         ..#..
@@ -354,8 +325,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ###..
         """
         
-    case .snake:
-        return """
+        case snake = """
         ##...
         ##.##
         .#.#.
@@ -363,8 +333,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .....
         """
         
-    case .rabbit:
-        return """
+        case rabbit = """
         #.#..
         #.#..
         ####.
@@ -372,8 +341,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ####.
         """
         
-    case .cow:
-        return """
+        case cow = """
         #...#
         #...#
         #####
@@ -381,8 +349,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ..#..
         """
         
-    case .quarterNote:
-        return """
+        case quarterNote = """
         ..#..
         ..#..
         ..#..
@@ -390,8 +357,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ###..
         """
         
-    case .eighthNote:
-        return """
+        case eighthNote = """
         ..#..
         ..##.
         ..#.#
@@ -399,8 +365,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ###..
         """
         
-    case .pitchfork:
-        return """
+        case pitchfork = """
         #.#.#
         #.#.#
         #####
@@ -408,8 +373,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ..#..
         """
         
-    case .target:
-        return """
+        case target = """
         ..#..
         .###.
         ##.##
@@ -417,8 +381,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ..#..
         """
         
-    case .triangle:
-        return """
+        case triangle = """
         .....
         ..#..
         .#.#.
@@ -426,8 +389,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .....
         """
         
-    case .leftTriangle:
-        return """
+        case leftTriangle = """
         #....
         ##...
         #.#..
@@ -435,8 +397,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         #####
         """
         
-    case .chessboard:
-        return """
+        case chessboard = """
         .#.#.
         #.#.#
         .#.#.
@@ -444,8 +405,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .#.#.
         """
         
-    case .diamond:
-        return """
+        case diamond = """
         ..#..
         .#.#.
         #...#
@@ -453,8 +413,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         ..#..
         """
         
-    case .smallDiamond:
-        return """
+        case smallDiamond = """
         .....
         ..#..
         .#.#.
@@ -462,8 +421,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .....
         """
         
-    case .square:
-        return """
+        case square = """
         #####
         #...#
         #...#
@@ -471,8 +429,7 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         #####
         """
         
-    case .smallSquare:
-        return """
+        case smallSquare = """
         .....
         .###.
         .#.#.
@@ -480,86 +437,77 @@ public func iconImage(_ iconName: MicrobitImage.IconName) -> MicrobitImage {
         .....
         """
         
-    case .scissors:
-        return """
+        case scissors = """
         ##..#
         ##.#.
         ..#..
         ##.#.
         ##..#
         """
+      
+        case north = """
+        ..#..
+        .###.
+        #.#.#
+        ..#..
+        ..#..
+        """
         
-    case .north, .northEast, .east, .southEast, .south, .southWest, .west, .northWest:
-        if let arrowName = MicrobitImage.ArrowName(rawValue: iconName.rawValue) {
-            return arrowImage(arrowName)
-        } else {
-            return MicrobitImage()
-        }
-    }
-}
-
-extension MicrobitImage {
-    
-    public enum ArrowName : String {
-        case north
-        case northEast
-        case east
-        case southEast
-        case south
-        case southWest
-        case west
-        case northWest
-    }
-    
-    public enum IconName : String {
-        case heart
-        case smallHeart
-        case yes
-        case no
-        case happy
-        case sad
-        case confused
-        case angry
-        case asleep
-        case surprised
-        case silly
-        case fabulous
-        case meh
-        case tShirt
-        case rollerSkate
-        case duck
-        case house
-        case tortoise
-        case butterfly
-        case stickFigure
-        case ghost
-        case sword
-        case giraffe
-        case skull
-        case umbrella
-        case snake
-        case rabbit
-        case cow
-        case quarterNote
-        case eighthNote
-        case pitchfork
-        case target
-        case triangle
-        case leftTriangle
-        case chessboard
-        case diamond
-        case smallDiamond
-        case square
-        case smallSquare
-        case scissors
-        case north
-        case northEast
-        case east
-        case southEast
-        case south
-        case southWest
-        case west
-        case northWest
+        case northEast = """
+        ..###
+        ...##
+        ..#.#
+        .#...
+        #....
+        """
+        
+        case east = """
+        ..#..
+        ...#.
+        #####
+        ...#.
+        ..#..
+        """
+        
+        case southEast = """
+        #....
+        .#...
+        ..#.#
+        ...##
+        ..###
+        """
+        
+        case south = """
+        ..#..
+        ..#..
+        #.#.#
+        .###.
+        ..#..
+        """
+        
+        case southWest = """
+        ....#
+        ...#.
+        #.#..
+        ##...
+        ###..
+        """
+        
+        case west = """
+        ..#..
+        .#...
+        #####
+        .#...
+        ..#..
+        """
+        
+        case northWest = """
+        ###..
+        ##...
+        #.#..
+        ...#.
+        ....#
+        """
     }
     
     /**

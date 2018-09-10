@@ -58,6 +58,9 @@ public struct ThreeAxisValues<UnitType>: Equatable, CustomStringConvertible wher
         }
     }
     
+    /**
+     A Variable that returns the x value as a double.
+     */
     public var x: Double {
         get {
             return _x.value
@@ -67,6 +70,9 @@ public struct ThreeAxisValues<UnitType>: Equatable, CustomStringConvertible wher
         }
     }
     
+    /**
+     A variable that returns the y value as a double.
+     */
     public var y: Double {
         get {
             return _y.value
@@ -76,6 +82,9 @@ public struct ThreeAxisValues<UnitType>: Equatable, CustomStringConvertible wher
         }
     }
     
+    /**
+     A variable that returns the y value as a double.
+     */
     public var z: Double {
         get {
             return _z.value
@@ -85,18 +94,28 @@ public struct ThreeAxisValues<UnitType>: Equatable, CustomStringConvertible wher
         }
     }
     
+    /**
+     A variable that returns the 'magnitude' of the x, y and z components as a double.
+     */
     public var strength: Double {
         get {
             return sqrt((_x.value * _x.value) + (_y.value * _y.value) + (_z.value * _z.value))
         }
     }
     
+    /**
+     A variable that returns the unit of the structure.
+     */
     public var unit: UnitType {
         get {
             return _x.unit
         }
     }
     
+    /**
+     An overloaded operator that performs an addition of two ThreeAxisValues of the same unit type.
+     - returns: A ThreeAxisValues with the same unit type as the operands.
+     */
     public static func + (values1: ThreeAxisValues<UnitType>, values2: ThreeAxisValues<UnitType>) -> ThreeAxisValues<UnitType> {
         return ThreeAxisValues(x: values1.x + values2.x,
                                y: values1.y + values2.y,
@@ -104,6 +123,10 @@ public struct ThreeAxisValues<UnitType>: Equatable, CustomStringConvertible wher
                                unit: values1.unit)
     }
     
+    /**
+     An overloaded operator that performs an subtraction of two ThreeAxisValues of the same unit type. This may be useful for looking at changes in accelerometer values.
+     - returns: A ThreeAxisValues with the same unit type as the operands.
+     */
     public static func - (values1: ThreeAxisValues<UnitType>, values2: ThreeAxisValues<UnitType>) -> ThreeAxisValues<UnitType> {
         return ThreeAxisValues(x: values1.x - values2.x,
                                y: values1.y - values2.y,
@@ -111,6 +134,10 @@ public struct ThreeAxisValues<UnitType>: Equatable, CustomStringConvertible wher
                                unit: values1.unit)
     }
     
+    /**
+     A variable that returns a tuple of each x, y and z components as a Measurement with the struct's unit type.
+     - returns: A tuple of the form (x, y, z)
+     */
     public var measurements: (Measurement<UnitType>, Measurement<UnitType>, Measurement<UnitType>) {
         get {
             return (x: _x, y: _y, z: _z)

@@ -44,17 +44,26 @@ public typealias PinStore = [BTMicrobit.Pin: Int]
 public typealias PinConfigurationMask = Int
 public typealias NotifyPinIOHandler = (PinStore) -> BTPeripheral.NotificationAction
 
+/**
+ The object that represents a micro:bit over Bluetooth. This class contains encapsulated enums for Button, ButtonState, Pin, AccelerometerPeriod and MagnetometerPeriod.
+ */
 public class BTMicrobit: BTPeripheral {
     
     var requiredEvents: Set<BTMicrobit.Event> = []
     
     // MARK: - Microbit Types
+    /**
+     An enum for representing the micro:bit's buttons. The cases are .A, .B and .AB
+     */
     public enum Button: UInt16 {
         case A = 1
         case B = 2
         case AB = 26
     }
     
+    /**
+     An enum for representing the micro:bit's button states. The cases are .notPressed, .pressed and .longPress
+     */
     public enum ButtonState: UInt8 {
         case notPressed = 0
         case pressed = 1
@@ -67,6 +76,9 @@ public class BTMicrobit: BTPeripheral {
         }
     }
     
+    /**
+     An enum for representing the micro:bit's pins. The cases are .pin0, .pin1 upto .pin19
+     */
     public enum Pin: Int {
         case pin0
         case pin1
@@ -91,6 +103,9 @@ public class BTMicrobit: BTPeripheral {
         case pinGND = 1000
     }
     
+    /**
+     An enum for representing the micro:bit's accelerometer period values in milli-seconds. The cases are .ms1, .ms2, .ms5, .ms10, .ms20, .ms80, .ms160 and .ms640
+     */
     public enum AccelerometerPeriod : Int {
         case ms1 = 1
         case ms2 = 2
@@ -102,6 +117,9 @@ public class BTMicrobit: BTPeripheral {
         case ms640 = 640
     }
     
+    /**
+     An enum for representing the micro:bit's magnetometer period values in milli-seconds. The cases are .ms1, .ms2, .ms5, .ms10, .ms20, .ms80, .ms160 and .ms640
+     */
     public enum MagnetometerPeriod : Int {
         case ms1 = 1
         case ms2 = 2

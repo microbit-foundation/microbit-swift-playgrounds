@@ -356,6 +356,10 @@ public class LiveViewController: UIViewController, BTManagerDelegate, LoggingPro
         // Don't display this message if we are not the root view controller
         // Might be pairing and not all services appear
         
+        // Commenting this as sometimes it is called incorrectly and will confuse users.
+        // Requires further testing. It may not even be possible to accurately determine when services are missing.
+        
+        /*
         if self.navigationController?.viewControllers.count == 1 {
             var message = "The following Bluetooth services cannot be discovered:\n"
             for serviceUUID in services {
@@ -371,7 +375,7 @@ public class LiveViewController: UIViewController, BTManagerDelegate, LoggingPro
             })
             alertController.addAction(action)
             self.present(alertController, animated: true)
-        }
+        }*/
     }
     
     public func btManager(_ manager: BTManager,
