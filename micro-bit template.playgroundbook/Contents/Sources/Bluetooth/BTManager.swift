@@ -32,11 +32,12 @@ let BTMicrobitPairedDevices = "org.microbit.PlaygroundBluetooth.PairedDevices"
 
 public typealias MicrobitPairingHandler = (BTMicrobit?, BTManager.PairingError?) -> Void
 
-public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate {
-        
+public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate, BTPeripheralDelegate {
+    
     public var bluetoothCentralManager: PlaygroundBluetoothCentralManager!
     public var microbit: BTMicrobit?
     public weak var delegate: BTManagerDelegate?
+    public weak var messageLogger: LoggingProtocol?
     
     var microbitPairingName: String?
     var microbitPairingHandler: MicrobitPairingHandler?
@@ -92,6 +93,16 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate {
         }
     }
     
+    public func microbitNameForPeripheral(_ peripheral: CBPeripheral) -> String? {
+        if let devicesMappingDict = self.pairedDeviceMappings,
+        let microbitNameValue = devicesMappingDict[String(describing: peripheral.identifier)] {
+            if case .string(let microbitName) = microbitNameValue {
+                return microbitName
+            }
+        }
+        return nil
+    }
+    
     //MARK: - Internal Functions
     
     func callPairingHandlerWithError(_ error: PairingError? = nil) {
@@ -99,7 +110,17 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate {
         if let handler = self.microbitPairingHandler {
             handler(self.microbit, error)
             self.microbitPairingHandler = nil
-            self.microbitPairingName = nil
+        }
+        self.microbitPairingName = nil
+        self.delegate?.btManager(self,
+                                 didPairToMicrobit: self.microbit,
+                                 error: error)
+    }
+    
+    var isPairing: Bool {
+        get {
+            // The name is set until pairing has finished.
+            return self.microbitPairingName != nil
         }
     }
     
@@ -112,19 +133,21 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate {
             if !centralManager.connectToLastConnectedPeripheral(timeout: 7.0,
                                                                 callback: {(peripheral: CBPeripheral?, error: Error?) in
                                                                     
-                                                                    self.delegate?.logMessage("connectToLastConnectedPeripheral callback")
+                                                                    //self.messageLogger?.logMessage("connectToLastConnectedPeripheral callback")
                                                                     
                                                                     if error != nil {
-                                                                        self.delegate?.logMessage("Error connecting to micro:bit \(error!)")
+                                                                        self.messageLogger?.logMessage("Error connecting to last connected micro:bit \(error!)")
                                                                         // TODO: - Remove the lasted connected key and possibly paired info too
+                                                                        let store = PlaygroundKeyValueStore.current
+                                                                        store["com.apple.PlaygroundBluetooth.LastConnectedPeripheral"] = nil
                                                                     }
                                                                     if peripheral != nil {
-                                                                        self.delegate?.logMessage("Connected to last known peripheral \(peripheral!)")
+                                                                        //self.messageLogger?.logMessage("Connected to last known peripheral \(peripheral!)")
                                                                     }
                                                                     
             }) {
                 // There was no previously connected micro:bit - pairing required
-                self.delegate?.logMessage("No previously connected micro:bit")
+                self.messageLogger?.logMessage("No previously connected micro:bit")
             }
         }
         self.delegate?.btManagerStateDidChange(self)
@@ -133,10 +156,11 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate {
     public func centralManager(_ centralManager: PlaygroundBluetoothCentralManager,
                                didConnectTo peripheral: CBPeripheral) {
         
-        delegate?.logMessage("Connected to micro:bit")
+        messageLogger?.logMessage("Connected to micro:bit")
         self.microbit = BTMicrobit.init(peripheral: peripheral)
-        self.microbit?.messageLogger = delegate
-        if let microbit = self.microbit {
+        self.microbit?.delegate = self
+        self.microbit?.messageLogger = messageLogger
+        if let microbit = self.microbit, !self.isPairing {
             delegate?.btManager(self, didConnectMicrobit: microbit)
         }
     }
@@ -145,26 +169,37 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate {
                                didFailToConnectTo peripheral: CBPeripheral,
                                error: Error?) {
         
-        if (error != nil) {
+        messageLogger?.logMessage("Failed to connect to micro:bit")
+        if let error = error as? PlaygroundBluetoothCentralManager.ConnectionError {
             // TODO: What to do on a failure to connect callback - possibly because it has lost pairing info - advise to pair again.
-            delegate?.logMessage("Failed to connect to micro:bit with error: \(error!)")
+            messageLogger?.logMessage("Failed to connect with error: \(error)")
+            switch error {
+                
+            case .excessiveConnections: // This occurs when switching micro:bits - try again but 1/2 second later on the main thread
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                    centralManager.connect(to: peripheral, timeout: 7.0, callback: nil)
+                }
+                
+            default:
+                break
+            }
         }
         
-        self.microbit = BTMicrobit(peripheral: peripheral)
-        if let microbit = self.microbit {
-            delegate?.btManager(self, didFailToConnectToMicrobit: microbit)
-        }
+        delegate?.btManager(self, didFailToConnectToPeripheral: peripheral,
+                            error: error)
     }
     
     public func centralManager(_ centralManager: PlaygroundBluetoothCentralManager,
                                didDisconnectFrom peripheral: CBPeripheral,
                                error: Error?) {
         
-        delegate?.logMessage("Disconnected from micro:bit")
-        self.microbit = BTMicrobit(peripheral: peripheral)
-        if let microbit = self.microbit {
-            delegate?.btManager(self, didFailToConnectToMicrobit: microbit)
+        messageLogger?.logMessage("Disconnected from micro:bit")
+        if (error != nil) {
+            messageLogger?.logMessage("Disconnected with error: \(error!)")
         }
+        delegate?.btManager(self, didDisconnectMicrobit: microbit,
+                            error: error)
+        self.microbit = nil
     }
     
     public func centralManager(_ centralManager: PlaygroundBluetoothCentralManager,
@@ -172,11 +207,11 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate {
                                withAdvertisementData advertisementData: [String: Any]?,
                                rssi: Double) {
         
-        //self.delegate?.logMessage("Found peripheral: \(peripheral) + \(advertisementData)")
+        //self.messageLogger?.logMessage("Found peripheral: \(peripheral) + \(advertisementData)")
         
         if let peripheralName = advertisementData?[CBAdvertisementDataLocalNameKey] as? String {
             if peripheralName == self.microbitPairingName {
-                //self.delegate?.logMessage("Found micro:bit")
+                //self.messageLogger?.logMessage("Found micro:bit")
                 centralManager.scanning = false
                 self.microbitPairingTimer?.invalidate()
                 self.microbitPairingTimer = nil
@@ -185,7 +220,7 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate {
                                        timeout: 7,
                                        callback: {peripheral, error in
                                         
-                                        //self.delegate?.logMessage("Call back with: \(peripheral) and error \(error)")
+                                        //self.messageLogger?.logMessage("Call back with: \(peripheral ?? nil) and error \(error ?? nil)")
                                         
                                         if error != nil {
                                             // Handle connection error
@@ -194,17 +229,31 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate {
                                         } else if peripheral != nil {
                                             // Connection successful
                                             self.microbit = BTMicrobit(peripheral: peripheral!)
-                                            //self.delegate?.logMessage("Reading value for \(self.microbit!)")
+                                            self.microbit?.delegate = self
+                                            //self.messageLogger?.logMessage("Reading value for \(self.microbit!)")
+                                            // If this method is called after the micro:bit is flashed but the iPad still think it is paired then the handler is never called.
+                                            // For this situation we need our own timeout Timer.
+                                            self.microbitPairingTimer = Timer.scheduledTimer(withTimeInterval: 10.0,
+                                                                                             repeats: false,
+                                                                                             block: { timer in
+                                                                                                // Got no response attempting a pairing operation - probably micro:bit re-flashed without forgeting peripheral in iOS device
+                                                                                                
+                                                                                                self.microbitPairingTimer = nil
+                                                                                                self.callPairingHandlerWithError(.microbitFlashed)
+                                            })
                                             self.microbit!.readValueForCharacteristic(.dfuControlUUID,
-                                                                                      handler: {(characteristic: CBCharacteristic, handlerType, error: Error?) in
+                                                                                      handler: {(characteristic: CBCharacteristic, error: Error?) in
                                                                                         
-                                                                                        //self.delegate?.logMessage("Got called back")
+                                                                                        self.microbitPairingTimer?.invalidate()
+                                                                                        self.microbitPairingTimer = nil
+                                                                                        self.microbitPairingName = nil
+                                                                                        
                                                                                         if let characteristicData = characteristic.value {
-                                                                                            _ = Int(characteristicData[0])
-                                                                                            //self.delegate?.logMessage("[DEBUG] pairing read control value: \(intValue)")
+                                                                                            let _ = Int(characteristicData[0])
+                                                                                            //self.messageLogger?.logMessage("[DEBUG] pairing read control value: \(intValue)")
                                                                                             self.callPairingHandlerWithError()
                                                                                         } else {
-                                                                                            self.delegate?.logMessage("[DEBUG] cannot retreive pairing control value")
+                                                                                            //self.messageLogger?.logMessage("[DEBUG] cannot retreive pairing control value")
                                                                                             // If the code is entered incorrectly - we get error code 15, "Encryption is insufficient"
                                                                                             self.callPairingHandlerWithError(.failedToRetrieveCharacteristicValue)
                                                                                         }
@@ -221,15 +270,44 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate {
         case timeoutSearchingForMicrobit
         case failedToConnectToMicrobit
         case failedToRetrieveCharacteristicValue
+        case microbitFlashed
+        
+        var localizedDescription: String {
+            get {
+                switch self {
+                    
+                case .timeoutSearchingForMicrobit:
+                    return "Could not find the micro:bit with the pairing name selected. Check the LEDs were entered correctly and tap Pair Again."
+                    
+                case .microbitFlashed:
+                    return "The micro:bit may have been flashed since it was last paired with this device. Go into Settings > Bluetooth, locate the micro:bit, tap the 'i' button and tap 'Forget This Device'. Then attempt pairing again."
+                default:
+                    return ""
+                }
+            }
+        }
+    }
+    
+    //MARK: - BTPeripheralDelegate
+    
+    public func peripheral(_ peripheral: BTPeripheral,
+                           timeoutDiscoveringServices services: Array<String>) {
+        //self.messageLogger?.logMessage("timeout reading services: \(services)")
+        var serviceUUIDs = Array<BTMicrobit.ServiceUUID>()
+        for uuid in services {
+            if let serviceUUID = BTMicrobit.ServiceUUID(rawValue: uuid) {
+                serviceUUIDs.append(serviceUUID)
+            }
+        }
+        if serviceUUIDs.count > 0 {
+            self.delegate?.btManager(self, didTimeoutReadingServices: serviceUUIDs)
+        }
     }
 }
 
 //MARK: - BTManagerDelegate
 
-public protocol BTManagerDelegate: class {
-    
-    func logMessage(_ message: String)
-    
+public protocol BTManagerDelegate: AnyObject {
     
     func btManagerStateDidChange(_ manager: BTManager)
     
@@ -237,8 +315,17 @@ public protocol BTManagerDelegate: class {
                    didConnectMicrobit microbit: BTMicrobit)
     
     func btManager(_ manager: BTManager,
-                   didDisconnectMicrobit microbit: BTMicrobit)
+                   didDisconnectMicrobit microbit: BTMicrobit?,
+                   error: Error?)
     
     func btManager(_ manager: BTManager,
-                   didFailToConnectToMicrobit microbit: BTMicrobit)
+                   didFailToConnectToPeripheral peripheral: CBPeripheral,
+                   error: Error?)
+    
+    func btManager(_ manager: BTManager,
+                   didTimeoutReadingServices services: Array<BTMicrobit.ServiceUUID>)
+    
+    func btManager(_ manager: BTManager,
+                   didPairToMicrobit microbit: BTMicrobit?,
+                   error: BTManager.PairingError?)
 }

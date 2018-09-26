@@ -52,10 +52,12 @@ public class ValuesTableViewController: UITableViewController {
     
     public func setMicrobitValue(_ microbitValue: Double, forMicrobitMeasurement microbitMeasurement: MicrobitMeasurement) {
         
-        for case let cell as ValueTableViewCell in self.tableView.visibleCells {
-            
-            if cell.microbitMeasurement == microbitMeasurement {
-                cell.microbitValue = microbitValue
+        DispatchQueue.main.async {
+            for case let cell as ValueTableViewCell in self.tableView.visibleCells {
+                
+                if cell.microbitMeasurement == microbitMeasurement {
+                    cell.microbitValue = microbitValue
+                }
             }
         }
     }
@@ -64,38 +66,27 @@ public class ValuesTableViewController: UITableViewController {
 @objc(ValueTableViewCell)
 public class ValueTableViewCell: UITableViewCell {
     
-    var _microbitMeasurement: MicrobitMeasurement!
-    var _measurement: Measurement<Unit>!
     let measurementFormatter = MeasurementFormatter()
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var valueLabel: UILabel!
     
-    public var microbitMeasurement: MicrobitMeasurement {
-        get {
-            return _microbitMeasurement
-        }
-        set {
-            _microbitMeasurement = newValue
-            self.nameLabel.text = microbitMeasurement.name
-            _measurement = microbitMeasurement.measurementFromMicrobitValue(0.0)
+    public var microbitMeasurement: MicrobitMeasurement? = nil {
+        
+        didSet {
             measurementFormatter.unitOptions = .providedUnit
-            self.valueLabel.text = self.measurementFormatter.string(from: _measurement)
+            self.nameLabel.text = microbitMeasurement?.name
+            self.microbitValue = 0.0
+            measurementFormatter.numberFormatter.maximumFractionDigits = 0
         }
     }
     
-    public var microbitValue: Double {
-        get {
-            return _measurement.value
-        }
-        set {
-            _measurement = self.microbitMeasurement.measurementFromMicrobitValue(newValue)
-            //let measurementUnit = _measurement.unit
-            //if let displayedUnit = self.microbitMeasurement.unit as? measurementUnit {
-                //self.nameLabel.text = "\(_measurement.unit):\(unitType)"
-                //let displayMeasurement = _measurement.converted(to: displayedUnit)
-                self.valueLabel.text = self.measurementFormatter.string(from: _measurement)
-            //}
+    public var microbitValue: Double = 0.0 {
+
+        didSet {
+            if let measurement = microbitMeasurement?.displayMeasurementFromMicrobitValue(microbitValue) {
+                self.valueLabel.text = self.measurementFormatter.string(from: measurement)
+            }
         }
     }
 }
@@ -104,5 +95,4 @@ public protocol ValuesTableViewDataSourceProtocol {
     
     func numberOfMicrobitMeasurements() -> Int
     func microbitMeasurementAtIndex(_ index: Int) -> MicrobitMeasurement
-    
 }

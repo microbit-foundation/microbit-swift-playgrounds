@@ -33,6 +33,8 @@ public class LiveViewContainerController: UIViewController, PlaygroundLiveViewSa
     public var microbitMeasurements: Array<MicrobitMeasurement> = []
     
     var liveViewNavigationController: LiveViewNavigationController!
+    var proxyConnectionIsOpen = false
+    var receivingEvents = false
     
     @IBOutlet weak var containerView: UIView!
     
@@ -105,84 +107,223 @@ public class LiveViewContainerController: UIViewController, PlaygroundLiveViewSa
     }
 }
 
-extension LiveViewContainerController: PlaygroundLiveViewMessageHandler {
+extension LiveViewContainerController: PlaygroundLiveViewMessageHandler, MicrobitMimicDelegate {
     
     public func liveViewMessageConnectionOpened() {
         
-        //liveViewNavigationController.logMessage("liveViewMessageConnectionOpened")
+        self.proxyConnectionIsOpen = true
+        self.liveViewController.dataActivityItem = nil
+        //liveViewController.logMessage("liveViewMessageConnectionOpened")
         
         // When the connection opens register for event notifications
         if let microbit = self.liveViewController.btManager.microbit {
-            microbit.setNotifyValueForMicrobitEvent(true, handler: {
-                (characteristic: CBCharacteristic, handlerType, error: Error?) in
-                
-                if let eventData = characteristic.value {
-                    if eventData.count % MemoryLayout<BTMicrobit.Event>.stride == 0 {
-                        //let eventArray = eventData.toArray(type: BTMicrobit.Event.self)
-                        self.liveViewController.logMessage("micro:bit event array: + \(eventData as NSData)")
-                        let message = PlaygroundValue.fromActionType(ContentMessenger.ActionType.requestEvent,
-                                                                     data: eventData)
-                        self.send(message)
+            if !receivingEvents {
+                microbit.setNotifyValueForMicrobitEvent(true, handler: {
+                    (characteristic: CBCharacteristic, error: Error?) in
+                    
+                    if let eventData = characteristic.value {
+                        if eventData.count % MemoryLayout<BTMicrobit.Event>.stride == 0 {
+                            //let eventArray = eventData.toArray(type: BTMicrobit.Event.self)
+                            //self.liveViewController.logMessage("micro:bit event array: + \(eventData as NSData)")
+                            let message = PlaygroundValue.fromActionType(.requestEvent,
+                                                                         data: eventData)
+                            self.send(message)
+                        }
                     }
-                }
-            })
+                    return self.proxyConnectionIsOpen ? .continueNotifications : .stopNotifications
+                })
+                receivingEvents = true
+            }
+        } else {
+            self.liveViewController.microbitMimic.isActive = true
+            self.liveViewController.microbitMimic.delegate = self
         }
+        
+        // The connection is open and the ContentMessenger needs to have it's cached image set.
+        let returnedMessage = PlaygroundValue.fromActionType(.readData,
+                                                             characteristicUUID: .ledStateUUID,
+                                                             data: self.liveViewController.cachedMicrobitImage.imageData)
+        self.send(returnedMessage)
     }
     
     public func liveViewMessageConnectionClosed() {
         
-        //liveViewController.logMessage("liveViewMessageConnectionClosed")
-        // We need to clear the micro:bit's handlers when the connection closes.
+        self.proxyConnectionIsOpen = false
+        self.liveViewController.microbitMimic.delegate = nil
+        //self.liveViewController.logMessage("liveViewMessageConnectionClosed")
+        // We need to stop receiving events otherwise they appear more than once when re-running content code.
+        // We do not however clear the micro:bit's handlers when the connection closes as
+        // this stops the values table from updating - instead we need to just clear the handlers from the content code.
         if let microbit = self.liveViewController.btManager.microbit {
-            microbit.clearHandlers()
             microbit.setNotifyValueForMicrobitEvent(false)
+            receivingEvents = false
         }
     }
     
     public func receive(_ message: PlaygroundValue) {
         
         let liveViewController = self.liveViewController
-        liveViewController.logMessage("Received message: \(message)")
+        //liveViewController.logMessage("Received message: \(message)")
         
         if let actionType = message.actionType {
             
-            guard let microbit = liveViewController.btManager.microbit else { return }
+            let microbit = liveViewController.btManager.microbit
             
             switch actionType {
                 
             case .readData:
                 guard let characteristicUUID = message.characteristicUUID else { return }
-                if characteristicUUID == .ledStateUUID {
-                    let returnedMessage = PlaygroundValue.fromActionType(.readData,
+                switch characteristicUUID {
+                    
+                case .ledStateUUID:
+                    let returnedMessage = PlaygroundValue.fromActionType(actionType,
                                                                          characteristicUUID: characteristicUUID,
                                                                          data: self.liveViewController.cachedMicrobitImage.imageData)
                     self.send(returnedMessage)
-                } else {
+                    
+                default:
+                    microbit?.readValueForCharacteristic(characteristicUUID,
+                                                         handler: {(characteristic, error) in
+                                                            let returnedMessage = PlaygroundValue.fromActionType(actionType,
+                                                                                                                 characteristicUUID: characteristicUUID,
+                                                                                                                 data: characteristic.value)
+                                                            //liveViewController.logMessage("Received data: \(characteristic.value as! NSData)")
+                                                            self.send(returnedMessage)
+                    })
+                    break;
                 }
                 
             case .writeData:
                 guard let characteristicUUID = message.characteristicUUID else { return }
                 if let data = message.data {
-                    if characteristicUUID == .ledStateUUID {
+                    
+                    switch characteristicUUID {
+                        
+                    case .ledStateUUID:
                         self.liveViewController.cachedMicrobitImage = MicrobitImage(data)
+                        
+                    case .ledTextUUID:
+                        if let text = String(data: data, encoding: .utf8) {
+                            self.liveViewController.microbitMimic.scrollText(text)
+                        }
+                        
+                    case .ledScrollingDelayUUID:
+                        if let scrollingDelay = data.integerFromLittleUInt16 {
+                            self.liveViewController.microbitMimic.scrollingDelay = scrollingDelay
+                        }
+                        
+                    case .accelerometerPeriodUUID:
+                        if let accelerometerPeriod = data.integerFromLittleUInt16,
+                            let period = BTMicrobit.AccelerometerPeriod(rawValue: accelerometerPeriod) {
+                            self.liveViewController.microbitMimic.accelerometerPeriod = period
+                        }
+                        
+                    default:
+                        break
                     }
-                    microbit.writeValue(data,
-                                        forCharacteristicUUID: characteristicUUID,
-                                        handler: {(characteristic, handlerType, error) in})
+                    microbit?.writeValue(data,
+                                         forCharacteristicUUID: characteristicUUID,
+                                         handler: {(characteristic, error) in
+                                            let returnedMessage = PlaygroundValue.fromActionType(actionType,
+                                                                                                 characteristicUUID: characteristicUUID,
+                                                                                                 data: characteristic.value)
+                                            self.send(returnedMessage)
+                    })
                 }
+                
+            case .startNotifications:
+                guard let characteristicUUID = message.characteristicUUID else { return }
+                microbit?.setNotifyValue(true,
+                                         forCharacteristicUUID: characteristicUUID,
+                                         handler: notificationsHandler)
+                
+                switch characteristicUUID {
+                    
+                case .accelerometerDataUUID:
+                    self.liveViewController.microbitMimic.addAccelerometerHandler({ accelerometerValues in
+                        
+                        let returnedMessage = PlaygroundValue.fromActionType(.startNotifications,
+                                                                             characteristicUUID: .accelerometerDataUUID,
+                                                                             data: accelerometerValues.microbitData)
+                        self.send(returnedMessage)
+                        return self.proxyConnectionIsOpen ? .continueNotifications : .stopNotifications
+                    })
+                    
+                default:
+                    break
+                }
+                break
+                
+            case .stopNotifications:
+                break
                 
             case .requestEvent:
                 if let data = message.data, let event = BTMicrobit.Event(data) {
                     
-                    liveViewController.logMessage("Data: + \(data as! NSData)")
-                    microbit.addEvent(event, handler: {(characteristic, handlerType, error) in
-                        liveViewController.logMessage("added event: + \(event)")
+                    //liveViewController.logMessage("Data: + \(data as! NSData)")
+                    // Start the mimic's accelerometer for non-shake gestures to enable events to be sent.
+                    if case let .gesture(_, gesture) = event {
+                        if gesture != .shake {
+                            self.liveViewController.microbitMimic.addAccelerometerHandler({ accelerometerValues in
+                                return self.proxyConnectionIsOpen ? .continueNotifications : .stopNotifications
+                            })
+                        }
+                    }
+                    
+                    microbit?.addEvent(event, handler: {(characteristic, error) in
+                        //liveViewController.logMessage("Added event: + \(event)")
                     })
                 }
                 
-            default:
+            case .removeEvent:
                 break
+                
+            case .connectionChanged:
+                break
+                
+            case .shareData:
+                if let data = message.data, let uti = message.uti {
+                    liveViewController.dataActivityItem = DataActivityItemSource(data: data, uti: uti)
+                } else {
+                    liveViewController.dataActivityItem = nil
+                }
+                break
+                
+            case .logMessage:
+                if let data = message.data, let stringMessage = String(data: data, encoding: .utf8) {
+                    liveViewController.logMessage(stringMessage)
+                }
             }
         }
+    }
+    
+    //MARK: - Private Functions
+    
+    func notificationsHandler(characteristic: CBCharacteristic, error: Error?) -> BTPeripheral.NotificationAction {
+        
+        //liveViewController.logMessage("Notification Handler Data: + \(characteristic.value as! NSData)")
+        guard let characteristicUUID = BTMicrobit.CharacteristicUUID(rawValue: characteristic.uuid.uuidString) else { return .stopNotifications}
+        let returnedMessage = PlaygroundValue.fromActionType(.startNotifications,
+                                                             characteristicUUID: characteristicUUID,
+                                                             data: characteristic.value)
+        self.send(returnedMessage)
+        return self.proxyConnectionIsOpen ? .continueNotifications : .stopNotifications
+    }
+    
+    //MARK: - MicrobitMimicDelegate
+    
+    public func microbitMimic(_ microbitMimic: MicrobitMimic, didGenerateEvent event: BTMicrobit.Event) {
+        let message = PlaygroundValue.fromActionType(.requestEvent,
+                                                     data: event.microbitData)
+        self.send(message)
+    }
+    
+    public func microbitMimic(_ microbitMimic: MicrobitMimic, didGenerateData data: Data,
+                              forCharacteristicUUID characteristicUUID: BTMicrobit.CharacteristicUUID) {
+        
+        let returnedMessage = PlaygroundValue.fromActionType(.startNotifications,
+                                                             characteristicUUID: characteristicUUID,
+                                                             data: data)
+        self.send(returnedMessage)
     }
 }

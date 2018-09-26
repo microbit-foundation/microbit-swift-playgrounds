@@ -29,7 +29,8 @@ import CoreBluetooth
 typealias GetServiceHandler = (CBService?, Error?) -> Void
 typealias GetCharacteristicHandler = (CBCharacteristic?, Error?) -> Void
 
-public typealias ReadCharacteristicHandler = (CBCharacteristic, BTPeripheral.HandlerType, Error?) -> Void
+public typealias ReadCharacteristicHandler = (CBCharacteristic, Error?) -> Void
+public typealias NotifyCharacteristicHandler = (CBCharacteristic, Error?) -> BTPeripheral.NotificationAction
 
 public class BTPeripheral: NSObject, CBPeripheralDelegate {
     
@@ -39,11 +40,20 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
         case characteristicNotifyHandler
     }
     
+    public enum NotificationAction {
+        case stopNotifications
+        case continueNotifications
+    }
+    
     internal (set) var peripheral: CBPeripheral!
     let isolationQueue = DispatchQueue(label: "org.microbit.peripheralHandlersQueue")
-    var handlers = [BTPeripheral.HandlerType: [String: Array<Any>]]()
+    var handlers = [BTPeripheral.HandlerType: [String: [UUID: Any]]]()
+    var serviceDiscoveryTimer: Timer?
+    
     var pinIOValues = Array.init(repeating: 0, count: 20)
-    public weak var messageLogger: BTManagerDelegate?
+    
+    public weak var messageLogger: LoggingProtocol?
+    public weak var delegate: BTPeripheralDelegate?
     
     public init(peripheral: CBPeripheral) {
         
@@ -52,15 +62,17 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
         self.peripheral = peripheral
         self.peripheral.delegate = self
         
-        self.handlers = [.discoveryHandler: [String: Array<Any>](),
-                         .characteristicReadHandler: [String: Array<Any>](),
-                         .characteristicNotifyHandler: [String: Array<Any>]()]
+        self.handlers = [.discoveryHandler: Dictionary<String, Dictionary<UUID, Any>>(),
+                         .characteristicReadHandler: Dictionary<String, Dictionary<UUID, Any>>(),
+                         .characteristicNotifyHandler: Dictionary<String, Dictionary<UUID, Any>>()]
     }
     
     //MARK: - CBPeripheral Delegate Functions
     
     public func peripheral(_ peripheral: CBPeripheral,
                            didDiscoverServices error: Error?) {
+        
+        //self.messageLogger?.logMessage ("[DEBUG] didDiscoverServices called")
         
         if let error = error {
             self.messageLogger?.logMessage("[DEBUG] error discovering services: \(error)")
@@ -77,7 +89,7 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
                     self.removeHandlersWithUUID(service.uuid.uuidString,
                                                 forType: .discoveryHandler)
                     
-                    for handler in handlers {
+                    for (_, handler) in handlers {
                         if let serviceHandler = handler as? GetServiceHandler {
                             serviceHandler(service, error)
                         }
@@ -91,6 +103,11 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
                            didDiscoverCharacteristicsFor service: CBService,
                            error: Error?) {
         
+        if let error = error {
+            self.messageLogger?.logMessage("[DEBUG] error discovering characteristics: \(error)")
+            return
+        }
+        
         if let characteristics = service.characteristics {
             for characteristic in characteristics {
                 
@@ -99,7 +116,7 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
                                                         forType: .discoveryHandler) {
                     self.removeHandlersWithUUID(characteristic.uuid.uuidString,
                                                 forType: .discoveryHandler)
-                    for handler in handlers {
+                    for (_, handler) in handlers {
                         if let characteristicHandler = handler as? GetCharacteristicHandler {
                             characteristicHandler(characteristic, error)
                         }
@@ -118,14 +135,20 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
         //self.messageLogger?.logMessage("characteristic: \(characteristic) did update value: \(characteristic.value!)")
         
         if let handlers = self.handlersWithUUID(uuidString, forType: .characteristicReadHandler) {
-            for case let handler as ReadCharacteristicHandler in handlers {
-                handler(characteristic, .characteristicReadHandler, error)
+            for case let (_, handler as ReadCharacteristicHandler) in handlers {
+                handler(characteristic, error)
             }
         }
         
         if let handlers = self.handlersWithUUID(uuidString, forType: .characteristicNotifyHandler) {
-            for case let handler as ReadCharacteristicHandler in handlers {
-                handler(characteristic, .characteristicNotifyHandler, error)
+            for case let (handlerUUID, handler as NotifyCharacteristicHandler) in handlers {
+                let notificationAction = handler(characteristic, error)
+                if notificationAction == .stopNotifications {
+                    self.removeHandlerWithUUID(handlerUUID, uuidKey: uuidString, forType: .characteristicNotifyHandler)
+                    if handlers.count == 1 {
+                        self.peripheral.setNotifyValue(false, for: characteristic)
+                    }
+                }
             }
         }
         
@@ -144,9 +167,9 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
                 peripheral.readValue(for: characteristic)
             } else {
                 print("[DEBUG] error writing value \(error!)")
-                for handler in handlers {
+                for (_, handler) in handlers {
                     if let dataHandler = handler as? ReadCharacteristicHandler {
-                        dataHandler(characteristic, .characteristicReadHandler, error)
+                        dataHandler(characteristic, error)
                     }
                 }
             }
@@ -178,6 +201,24 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
             //self.messageLogger?.logMessage("handlers \(self.handlers)")
             let cbUUID = CBUUID(string: serviceUUIDString)
             self.peripheral.discoverServices([cbUUID])
+            if let timer = self.serviceDiscoveryTimer, timer.isValid {
+                timer.fireDate = Date(timeIntervalSinceNow: 7.0)
+            } else {
+                self.serviceDiscoveryTimer = Timer.scheduledTimer(withTimeInterval: 7.0,
+                                                                  repeats: false,
+                                                                  block: { timer in
+                                                                    // Got no response looking for a service, maybe the hex file has it missing
+                                                                    self.serviceDiscoveryTimer = nil
+                                                                    // Call delegate to notify services are missing
+                                                                    var uuids = Array<String>()
+                                                                    if let dictionary = self.handlers[.discoveryHandler], dictionary.count > 0 {
+                                                                        for (key, _) in dictionary {
+                                                                            uuids.append(key)
+                                                                        }
+                                                                        self.delegate?.peripheral(self, timeoutDiscoveringServices: uuids)
+                                                                    }
+                })
+            }
         }
     }
     
@@ -220,7 +261,7 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
                                                                           handler: {
                                                                             (characteristic: CBCharacteristic?, error: Error?) in
                                                                             if let validCharacteristic = characteristic {
-                                                                                self.messageLogger?.logMessage("Characteristic: \(validCharacteristic)")
+                                                                                //self.messageLogger?.logMessage("Characteristic: \(validCharacteristic)")
                                                                                 self.addHandlerWithUUID(validCharacteristic.uuid.uuidString,
                                                                                                         handler:handler, forType:.characteristicReadHandler)
                                                                                 self.peripheral.readValue(for: validCharacteristic)
@@ -240,7 +281,7 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
                            characteristicUUIDString: String,
                            handler: @escaping ReadCharacteristicHandler) {
         
-        self.messageLogger?.logMessage("writeValue: \(dataValue as NSData)")
+        //self.messageLogger?.logMessage("writeValue: \(dataValue as NSData)")
         self.serviceWithUUIDString(serviceUUIDString,
                                    handler: {
                                     (service: CBService?, error: Error?) in
@@ -268,7 +309,7 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
     public func setNotifyValue(_ enabled: Bool,
                                serviceUUIDString: String,
                                characteristicUUIDString: String,
-                               handler: ReadCharacteristicHandler? = nil) {
+                               handler: NotifyCharacteristicHandler? = nil) {
         
         self.serviceWithUUIDString(serviceUUIDString,
                                    handler: {
@@ -304,15 +345,15 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
                                          handler: (HandlerType),
                                          forType handlerTypeDictionary: BTPeripheral.HandlerType) {
         
-        var mutBlocks = self.handlersWithUUID(uuidKey, forType: handlerTypeDictionary)
+        var mutBlocksDictionary = self.handlersWithUUID(uuidKey, forType: handlerTypeDictionary)
         
-        if (mutBlocks == nil) {
-            mutBlocks = Array<Any>()
+        if (mutBlocksDictionary == nil) {
+            mutBlocksDictionary = Dictionary<UUID, Any>()
         }
         
         self.isolationQueue.async {
-            mutBlocks!.append(handler)
-            self.handlers[handlerTypeDictionary]![uuidKey] = mutBlocks
+            mutBlocksDictionary![UUID()] = handler
+            self.handlers[handlerTypeDictionary]![uuidKey] = mutBlocksDictionary
         }
         self.isolationQueue.sync {}
         //self.messageLogger?.logMessage("Adding handler: \(self.handlers)")
@@ -328,16 +369,18 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
         //self.messageLogger?.logMessage("Removing handlers: \(self.handlers)")
     }
     
-    func removeHandler(_ handler: Any,
-                       uuidKey: String,
-                       forType handlerTypeDictionary: BTPeripheral.HandlerType) {
+    func removeHandlerWithUUID(_ handlerUUID: UUID,
+                               uuidKey: String,
+                               forType handlerTypeDictionary: BTPeripheral.HandlerType) {
         
         self.isolationQueue.async {
             var localDict = self.handlers[handlerTypeDictionary]
             if var handlers = localDict![uuidKey] {
-                if let index = handlers.index(where: { $0 as AnyObject === handler as AnyObject}) {
-                    handlers.remove(at: index)
-                }
+                /*DispatchQueue.main.async {
+                 self.messageLogger?.logMessage("Handlers: \(handlers)")
+                 self.messageLogger?.logMessage("HandlerUUID: \(handlerUUID)")
+                 }*/
+                handlers[handlerUUID] = nil
                 self.handlers[handlerTypeDictionary]![uuidKey] = handlers
             }
         }
@@ -346,18 +389,28 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
     }
     
     func handlersWithUUID(_ uuidKey: String,
-                          forType handlerTypeDictionary: BTPeripheral.HandlerType) -> Array<Any>? {
+                          forType handlerTypeDictionary: BTPeripheral.HandlerType) -> Dictionary<UUID, Any>? {
         
-        var mutArray: Array<Any>?
+        var mutDictionary: Dictionary<UUID, Any>?
         self.isolationQueue.sync() {
-            mutArray = self.handlers[handlerTypeDictionary]![uuidKey]
+            mutDictionary = self.handlers[handlerTypeDictionary]![uuidKey]
         }
         
-        return mutArray
+        return mutDictionary
     }
     
     public func clearHandlers() {
-        self.handlers[.characteristicReadHandler]!.removeAll(keepingCapacity: true)
-        self.handlers[.characteristicNotifyHandler]!.removeAll(keepingCapacity: true)
+        self.isolationQueue.async {
+            self.handlers[.characteristicReadHandler]!.removeAll(keepingCapacity: true)
+            self.handlers[.characteristicNotifyHandler]!.removeAll(keepingCapacity: true)
+        }
+        self.isolationQueue.sync {}
     }
+}
+
+public protocol BTPeripheralDelegate: AnyObject {
+    
+    func peripheral(_ peripheral: BTPeripheral,
+                    timeoutDiscoveringServices services: Array<String>)
+    
 }

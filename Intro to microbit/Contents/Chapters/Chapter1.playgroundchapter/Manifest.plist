@@ -6,9 +6,15 @@
 	<string>Getting Started</string>
 	<key>Pages</key>
 	<array>
-		<string>Page1.playgroundpage</string>
-		<string>Page2.playgroundpage</string>
-		<string>Page3.playgroundpage</string>
+		<string>GettingStarted.cutscenepage</string>
+		<string>DisplayText.playgroundpage</string>
+		<string>DisplayingShapes.playgroundpage</string>
+		<string>ButtonPresses.playgroundpage</string>
+		<string>RockPaperScissors.playgroundpage</string>
+		<string>ShakeGesture.playgroundpage</string>
+		<string>SpiritLevel.playgroundpage</string>
+		<string>ReadingTemperature.playgroundpage</string>
+		<string>PinPresses.playgroundpage</string>
 	</array>
 </dict>
 </plist>

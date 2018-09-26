@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>Version</key>
-	<string>3.0</string>
+	<string>4.0</string>
 	<key>ContentVersion</key>
-	<string>0.1</string>
+	<string>1.0.0</string>
 	<key>Name</key>
 	<string>micro:bit Template Book</string>
 	<key>ContentIdentifier</key>
-	<string>org.microbit.playgrounds.microbit-template</string>
+	<string>org.microbit.swift-playgrounds.microbit-template</string>
 	<key>DeploymentTarget</key>
 	<string>ios11.0</string>
 	<key>DevelopmentRegion</key>

@@ -5,11 +5,11 @@
 	<key>Version</key>
 	<string>3.0</string>
 	<key>ContentVersion</key>
-	<string>0.1</string>
+	<string>1.0.0</string>
 	<key>Name</key>
-	<string>Introduction to the micro:bit</string>
+	<string>Intro to the BBC micro꞉bit</string>
 	<key>ContentIdentifier</key>
-	<string>org.microbit.playgrounds.microbit-intro</string>
+	<string>org.microbit.swift-playgrounds.microbit-intro</string>
 	<key>DeploymentTarget</key>
 	<string>ios11.0</string>
 	<key>DevelopmentRegion</key>

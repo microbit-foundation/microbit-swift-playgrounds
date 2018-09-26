@@ -25,26 +25,44 @@
 
 import Foundation
 
+/**
+ Turns on a single LED on the micro:bit display.
+ - parameters:
+    - x: The x, or horizontal offset, for the LED to turn on. Values are valid from 0 to 4, left to right.
+    - y: The y, or vertical offset, for the LED to turn on. Values are valid from 0 to 4, top to bottom.
+ */
 public func plot(x: Int, y: Int) {
-    readImage{(image: MicrobitImage?, error: Error?) in
+    readImage{(image: MicrobitImage?) in
         if image != nil {
-            image!.plot(column: x, row: y)
+            image!.plot(x: x, y: y)
             image!.showImage()
         }
     }
 }
 
+/**
+ Turns off a single LED on the micro:bit display.
+ - parameters:
+    - x: The x, or horizontal offset, for the LED to turn off. Values are valid from 0 to 4, left to right.
+    - y: The y, or vertical offset, for the LED to turn off. Values are valid from 0 to 4, top to bottom.
+ */
 public func unplot(x: Int, y: Int) {
-    readImage{(image: MicrobitImage?, error: Error?) in
+    readImage{(image: MicrobitImage?) in
         if image != nil {
-            image!.unplot(column: x, row: y)
+            image!.unplot(x: x, y: y)
             image!.showImage()
         }
     }
 }
 
+/**
+ Toggles a single LED on the micro:bit display. This means if the LED is off it will be turned on or if it is on it will be turned off.
+ - parameters:
+    - x: The x, or horizontal offset, for the LED to toggle. Values are valid from 0 to 4, left to right.
+    - y: The y, or vertical offset, for the LED to toggle. Values are valid from 0 to 4, top to bottom.
+ */
 public func toggle(x: Int, y: Int) {
-    readImage{(image: MicrobitImage?, error: Error?) in
+    readImage{(image: MicrobitImage?) in
         if image != nil {
             image![x, y] = image![x, y] == .off ? .on : .off
             image!.showImage()
@@ -52,15 +70,23 @@ public func toggle(x: Int, y: Int) {
     }
 }
 
-public func readPoint(x: Int, y: Int, handler: (LEDState) -> Void) {
-    readImage{(image: MicrobitImage?, error: Error?) in
+/**
+ Reads an LED on the display to determine if it is on or off.
+ - parameters:
+    - x: The x, or horizontal offset, for the LED to read. Values are valid from 0 to 4, left to right.
+    - y: The y, or vertical offset, for the LED to read. Values are valid from 0 to 4, top to bottom.
+    - handler: A handler with one parameter, that being the state of the LED, this is either .off or .on
+ */
+public func readPoint(x: Int, y: Int, handler: @escaping (LEDState) -> Void) {
+    readImage{(image: MicrobitImage?) in
         if image != nil {
             handler(image![x, y])
         }
     }
 }
 
-func readImage(handler: ReadImageHandler) {
+func readImage(handler: @escaping ReadImageHandler) {
+    
     ContentMessenger.messenger.sendMessageOfType(.readData,
                                                  forCharacteristicUUID: .ledStateUUID,
                                                  handler: handler)

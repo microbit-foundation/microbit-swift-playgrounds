@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "idiom" : "ipad",
+      "filename" : "thinking-emoji.pdf"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}
