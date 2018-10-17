@@ -270,10 +270,6 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
                                                      origin: CGPoint(x: 314.0, y: 221.0),
                                                      hitLayerName: "pinGND")
         }
-        
-        
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture(_:)))
-        self.addGestureRecognizer(tapRecognizer)
     }
     
     func makeImageLayer(image: UIImage, origin: CGPoint, hitLayerName: String? = nil) -> CALayer {
@@ -406,7 +402,9 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
     }
     
     public func showPin(_ pin: BTMicrobit.Pin, touched flag: Bool) {
-        self.pinLayers[pin]?.isHidden = !flag
+        if let pinLayer = self.pinLayers[pin], pinLayer.isHidden == flag {
+            pinLayer.isHidden = !flag
+        }
     }
     
     func pinIsTouched(_ pin: BTMicrobit.Pin) -> Bool {
@@ -444,8 +442,8 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
                 //messageLogger?.logMessage("Point: \(layerPoint)")
                 
                 if let layer = self.mimicLayer.hitTest(layerPoint), let layerName = layer.name {
-                    messageLogger?.logMessage("touch began: \(layerName)")
-                    touchesMap[touch] = layer
+                    //messageLogger?.logMessage("touch began: \(layerName)")
+                    touchesMap[touch] = layer // Note: we're only storing layers with names
                     
                     self.setLayerWithName(layerName, touched: true)
                     
@@ -453,19 +451,13 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
                         switch layerName {
                             
                         case "pin0":
-                            let data = Data(bytes: [UInt8(BTMicrobit.Pin.pin0.rawValue), 0xf0])
-                            self.delegate?.microbitMimic(self, didGenerateData:data,
-                                                         forCharacteristicUUID: .pinDataUUID)
+                            self.sendValue(0x0F, forPin: .pin0)
                             
                         case "pin1":
-                            let data = Data(bytes: [UInt8(BTMicrobit.Pin.pin1.rawValue), 0xf0])
-                            self.delegate?.microbitMimic(self, didGenerateData:data,
-                                                         forCharacteristicUUID: .pinDataUUID)
+                            self.sendValue(0x0F, forPin: .pin1)
                             
                         case "pin2":
-                            let data = Data(bytes: [UInt8(BTMicrobit.Pin.pin2.rawValue), 0xf0])
-                            self.delegate?.microbitMimic(self, didGenerateData:data,
-                                                         forCharacteristicUUID: .pinDataUUID)
+                            self.sendValue(0x0F, forPin: .pin2)
                             
                         default:
                             break
@@ -474,7 +466,7 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
                 }
             }
         }
-        super.touchesBegan(touches, with: event)
+        //super.touchesBegan(touches, with: event)
     }
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -487,48 +479,88 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
                 if let hitLayer = self.mimicLayer.hitTest(layerPoint), let touchLayer = touchesMap[touch] {
                     let touched = hitLayer == touchLayer
                     self.setLayerWithName(touchLayer.name!, touched: touched)
+                    //messageLogger?.logMessage("touch moved: \(touchLayer.name!) touched: \(touched)")
                     let pinValue: UInt8 = touched && self.pinIsTouched(.pinGND) ? 0x0F : 0x00
                     switch touchLayer.name! {
                         
                     case "pin0":
-                        let data = Data(bytes: [UInt8(BTMicrobit.Pin.pin0.rawValue), pinValue])
-                        self.delegate?.microbitMimic(self, didGenerateData:data,
-                                                     forCharacteristicUUID: .pinDataUUID)
+                        self.sendValue(pinValue, forPin: .pin0)
                         
                     case "pin1":
-                        let data = Data(bytes: [UInt8(BTMicrobit.Pin.pin1.rawValue), pinValue])
-                        self.delegate?.microbitMimic(self, didGenerateData:data,
-                                                     forCharacteristicUUID: .pinDataUUID)
+                        self.sendValue(pinValue, forPin: .pin1)
                         
                     case "pin2":
-                        let data = Data(bytes: [UInt8(BTMicrobit.Pin.pin2.rawValue), pinValue])
-                        self.delegate?.microbitMimic(self, didGenerateData:data,
-                                                     forCharacteristicUUID: .pinDataUUID)
+                        self.sendValue(pinValue, forPin: .pin2)
+                        
                     default:
                         break
                     }
                 }
             }
         }
-        super.touchesMoved(touches, with: event)
+        //super.touchesMoved(touches, with: event)
     }
     
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        if self.buttonALayer.opacity == 1 && self.buttonBLayer.opacity == 1 {
-            self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(button: .AB, buttonEvent: .click))
-        }
-        
         if self.isActive {
+            
             for touch in touches {
-                if let layer = touchesMap[touch], let layerName = layer.name {
-                    messageLogger?.logMessage("touch ended: \(layerName)")
-                    self.setLayerWithName(layerName, touched: false)
+                if let layer = touchesMap[touch] {
+                    touchesMap[touch] = nil
+                    if let layerName = layer.name {
+                        //messageLogger?.logMessage("touch ended: \(layerName)")
+                        
+                        switch layerName {
+                            
+                        case "buttonA":
+                            if self.buttonBLayer.opacity == 1 {
+                                self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(button: .AB, buttonEvent: .click))
+                                self.setLayerWithName("buttonB", touched: false)
+                            } else if self.buttonALayer.opacity == 1 {
+                                self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(button: .A, buttonEvent: .click))
+                            }
+                            
+                        case "buttonB":
+                            if self.buttonALayer.opacity == 1 {
+                                self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(button: .AB, buttonEvent: .click))
+                                self.setLayerWithName("buttonA", touched: false)
+                            } else if self.buttonBLayer.opacity == 1 {
+                                self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(button: .B, buttonEvent: .click))
+                            }
+                            
+                        case "pin0":
+                            self.sendValue(0x00, forPin: .pin0)
+                            
+                        case "pin1":
+                            self.sendValue(0x00, forPin: .pin1)
+                            
+                        case "pin2":
+                            self.sendValue(0x00, forPin: .pin2)
+                            
+                        default:
+                            break
+                        }
+                        self.setLayerWithName(layerName, touched: false) // Need to do this here as it's used for testing the button presses.
+                    }
                 }
             }
         }
+        //super.touchesEnded(touches, with: event)
+    }
+    
+    override public func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        super.touchesEnded(touches, with: event)
+        for touch in touches {
+            if let layer = touchesMap[touch] {
+                if let layerName = layer.name {
+                    //messageLogger?.logMessage("touches cancelled: \(layerName)")
+                    self.setLayerWithName(layerName, touched: false)
+                }
+                touchesMap[touch] = nil
+            }
+        }
+        //super.touchesCancelled(touches, with: event)
     }
     
     func setLayerWithName(_ layerName: String, touched: Bool) {
@@ -557,18 +589,9 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
         }
     }
     
-    override public func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        self.clearAllTouches()
-        super.touchesCancelled(touches, with: event)
-        
-        for touch in touches {
-            touchesMap[touch] = nil
-        }
-    }
-    
     func clearAllTouches() {
         
+        //messageLogger?.logMessage("clearing all touches")
         self.touchesMap.removeAll(keepingCapacity: true)
         self.showButtonAPressed(false)
         self.showButtonBPressed(false)
@@ -585,32 +608,10 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
         }
     }
     
-    @objc func tapGesture(_ tapRecognizer: UITapGestureRecognizer) {
-        
-        if self.isActive {
-            let gesturePoint = tapRecognizer.location(in: self)
-            let layerPoint = self.mimicLayer.convert(gesturePoint, from: self.layer)
-            //messageLogger?.logMessage("Point: \(layerPoint)")
-            
-            if let layerName = self.mimicLayer.hitTest(layerPoint)?.name {
-                
-                //messageLogger?.logMessage("layer hit: \(layerName)")
-                
-                switch layerName {
-                case "buttonA":
-                    self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(button: .A, buttonEvent: .click))
-                    
-                    break
-                    
-                case "buttonB":
-                    self.delegate?.microbitMimic(self, didGenerateEvent: BTMicrobit.Event(button: .B, buttonEvent: .click))
-                    break
-                    
-                default:
-                    break
-                }
-            }
-        }
+    func sendValue(_ pinValue: UInt8, forPin pin: BTMicrobit.Pin) {
+        let data = Data(bytes: [UInt8(pin.rawValue), pinValue])
+        self.delegate?.microbitMimic(self, didGenerateData:data,
+                                     forCharacteristicUUID: .pinDataUUID)
     }
     
     //MARK: - Microbit Mimic Handlers

@@ -132,6 +132,7 @@ public class LiveViewController: UIViewController, BTManagerDelegate, LoggingPro
         //self.logMessage("setupValuesTable")
         
         var hasAcceleration = false
+        var hasPinData = false
         for microbitMeasurement in self.containerViewController.microbitMeasurements {
             
             var characteristicUUID: BTMicrobit.CharacteristicUUID? = nil
@@ -148,6 +149,12 @@ public class LiveViewController: UIViewController, BTManagerDelegate, LoggingPro
                 
             case .temperature:
                 characteristicUUID = .temperatureDataUUID
+                
+            case .pin0, .pin1, .pin2:
+                if !hasPinData {
+                    characteristicUUID = .pinDataUUID
+                    hasPinData = true
+                }
             }
             
             if let characteristicUUID = characteristicUUID {
@@ -185,6 +192,21 @@ public class LiveViewController: UIViewController, BTManagerDelegate, LoggingPro
                                                         let temperatureValue = Double(data[0])
                                                         self.valuesTableViewController.setMicrobitValue(temperatureValue,
                                                                                                         forMicrobitMeasurement: .temperature(.celsius))
+                                                        
+                                                    case .pinDataUUID:
+                                                        let pinStore = data.pinStore
+                                                        if let pinValue = pinStore[.pin0] {
+                                                            self.valuesTableViewController.setMicrobitValue(Double(pinValue),
+                                                                                                            forMicrobitMeasurement: .pin0(.raw))
+                                                        }
+                                                        if let pinValue = pinStore[.pin1] {
+                                                            self.valuesTableViewController.setMicrobitValue(Double(pinValue),
+                                                                                                            forMicrobitMeasurement: .pin1(.raw))
+                                                        }
+                                                        if let pinValue = pinStore[.pin2] {
+                                                            self.valuesTableViewController.setMicrobitValue(Double(pinValue),
+                                                                                                            forMicrobitMeasurement: .pin2(.raw))
+                                                        }
                                                         
                                                     default:
                                                         break
@@ -336,12 +358,14 @@ public class LiveViewController: UIViewController, BTManagerDelegate, LoggingPro
         
         // If we fail to connect to a micro:bit then should we remove its UUID from the list of paired devices.
         // This maybe because the pairing information was deleted from the iOS device's Settings
-        if error != nil {
+        // However, sometimes we fail to connect for other reasons, then we lose the micro:bit's name.
+        // Commenting this code temporarily.
+        /*if error != nil {
             if var devicesMappingDict = manager.pairedDeviceMappings {
                 devicesMappingDict[String(describing: peripheral.identifier)] = nil
                 manager.pairedDeviceMappings = devicesMappingDict
             }
-        }
+        }*/
         
         self.pairButton.isHidden = false
         self.microbitMimic.isActive = true
@@ -360,22 +384,22 @@ public class LiveViewController: UIViewController, BTManagerDelegate, LoggingPro
         // Requires further testing. It may not even be possible to accurately determine when services are missing.
         
         /*
-        if self.navigationController?.viewControllers.count == 1 {
-            var message = "The following Bluetooth services cannot be discovered:\n"
-            for serviceUUID in services {
-                message += String(describing: serviceUUID) + "\n"
-            }
-            message += "You will need to flash your micro:bit with a hex file that enables the required services."
-            let alertController = UIAlertController(title: "Bluetooth Services",
-                                                    message: message,
-                                                    preferredStyle: .alert
-            )
-            let action = UIAlertAction(title: "OK", style: .default, handler: {(action) in
-                self.dismiss(animated: true)
-            })
-            alertController.addAction(action)
-            self.present(alertController, animated: true)
-        }*/
+         if self.navigationController?.viewControllers.count == 1 {
+         var message = "The following Bluetooth services cannot be discovered:\n"
+         for serviceUUID in services {
+         message += String(describing: serviceUUID) + "\n"
+         }
+         message += "You will need to flash your micro:bit with a hex file that enables the required services."
+         let alertController = UIAlertController(title: "Bluetooth Services",
+         message: message,
+         preferredStyle: .alert
+         )
+         let action = UIAlertAction(title: "OK", style: .default, handler: {(action) in
+         self.dismiss(animated: true)
+         })
+         alertController.addAction(action)
+         self.present(alertController, animated: true)
+         }*/
     }
     
     public func btManager(_ manager: BTManager,

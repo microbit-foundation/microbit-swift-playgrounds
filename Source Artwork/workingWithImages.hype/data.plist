@@ -21,7 +21,7 @@
 	<key>guidesAreVisible</key>
 	<true/>
 	<key>lastCheckDate</key>
-	<date>2018-09-27T10:45:09Z</date>
+	<date>2018-09-27T10:36:36Z</date>
 	<key>layout</key>
 	<dict>
 		<key>keyframeTimelineHeight</key>
@@ -61,7 +61,7 @@
 		<string>None</string>
 	</dict>
 	<key>oidCounter</key>
-	<integer>16</integer>
+	<integer>19</integer>
 	<key>resources</key>
 	<array>
 		<dict>
@@ -152,39 +152,92 @@
 		</dict>
 		<dict>
 			<key>fileModificationDate</key>
-			<date>2017-09-16T02:01:26Z</date>
+			<date>2018-09-27T10:02:08Z</date>
 			<key>fileSize</key>
-			<integer>194056</integer>
+			<integer>65906</integer>
 			<key>md5</key>
-			<string>8680F4A53D2AD3BAD46B13B7BFD6C47F</string>
+			<string>524E4F76C9BD821AE9B7BC51DC02DB0C</string>
 			<key>notifyOnBookmarkChange</key>
 			<true/>
 			<key>originalPath</key>
-			<string>/Users/gary/Downloads/microbit-svg-master/microbit-drawing.svg</string>
+			<string>/Users/gary/Software Development/Stinky Kitten/Swift Playgrounds/microbit Playground Books/Source Artwork/image_popover.png</string>
 			<key>resourceName</key>
-			<string>microbit-drawing.svg</string>
+			<string>image_popover.png</string>
 			<key>securityScopedBookmark</key>
 			<data>
-			Ym9va/QCAAAAAAQQMAAAAIxEyW3KzipfcRDmFmna26Vb6DWXTGiz
-			itQHDs0gwW128AEAAAQAAAADAwAAAAkAKAUAAAABAQAAVXNlcnMA
-			AAAEAAAAAQEAAGdhcnkJAAAAAQEAAERvd25sb2FkcwAAABMAAAAB
-			AQAAbWljcm9iaXQtc3ZnLW1hc3RlcgAUAAAAAQEAAG1pY3JvYml0
-			LWRyYXdpbmcuc3ZnFAAAAAEGAAAQAAAAIAAAACwAAABAAAAAXAAA
-			AAgAAAAEAwAA05MCAAAAAAAIAAAABAMAAHU9CQAAAAAACAAAAAQD
-			AABV/wkAAAAAAAgAAAAEAwAAjKmzAAIAAAAIAAAABAMAAJKpswAC
-			AAAAFAAAAAEGAACUAAAApAAAALQAAADEAAAA1AAAAAgAAAAABAAA
-			Qb9svXYAAAAYAAAAAQIAAAEAAAAAAAAADwAAAAAAAAAAAAAAAAAA
-			AAgAAAAEAwAAAwAAAAAAAAAEAAAAAwMAAPUBAAAIAAAAAQkAAGZp
-			bGU6Ly8vDAAAAAEBAABNYWNpbnRvc2ggSEQIAAAABAMAAACwoEd0
-			AAAACAAAAAAEAABBuhQjSgAAACQAAAABAQAAMTAzNjBGNDMtQUVD
-			Ny0zRDk4LTg1QTItMjQ4QzMwRkM5QzQwGAAAAAECAACBAAAAAQAA
-			AO8TAAABAAAAAAAAAAAAAAABAAAAAQEAAC8AAAAAAAAAAQUAAMwA
-			AAD+////AQAAAAAAAAAQAAAABBAAAHgAAAAAAAAABRAAAOQAAAAA
-			AAAAEBAAABABAAAAAAAAQBAAAAABAAAAAAAAAiAAANwBAAAAAAAA
-			BSAAAEwBAAAAAAAAECAAAFwBAAAAAAAAESAAAJABAAAAAAAAEiAA
-			AHABAAAAAAAAEyAAAIABAAAAAAAAICAAALwBAAAAAAAAMCAAAOgB
-			AAAAAAAAAcAAADABAAAAAAAAEcAAACAAAAAAAAAAEsAAAEABAAAA
-			AAAAENAAAAQAAAAAAAAA
+			Ym9va5gDAAAAAAQQMAAAANci1nI+Akf/URIV0FKSPbCMGIOiNuga
+			e3mb+UiRDyc/lAIAAAQAAAADAwAAAAkAKAUAAAABAQAAVXNlcnMA
+			AAAEAAAAAQEAAGdhcnkUAAAAAQEAAFNvZnR3YXJlIERldmVsb3Bt
+			ZW50DQAAAAEBAABTdGlua3kgS2l0dGVuAAAAEQAAAAEBAABTd2lm
+			dCBQbGF5Z3JvdW5kcwAAABkAAAABAQAAbWljcm9iaXQgUGxheWdy
+			b3VuZCBCb29rcwAAAA4AAAABAQAAU291cmNlIEFydHdvcmsAABEA
+			AAABAQAAaW1hZ2VfcG9wb3Zlci5wbmcAAAAgAAAAAQYAABAAAAAg
+			AAAALAAAAEgAAABgAAAAfAAAAKAAAAC4AAAACAAAAAQDAAD5ZgIA
+			AAAAAAgAAAAEAwAAEl0JAAAAAAAIAAAABAMAAH8iFQAAAAAACAAA
+			AAQDAADO5xYAAAAAAAgAAAAEAwAACsp0AAIAAAAIAAAABAMAAPiG
+			xQACAAAACAAAAAQDAADIrucAAgAAAAgAAAAEAwAAVXsrAQIAAAAg
+			AAAAAQYAAPwAAAAMAQAAHAEAACwBAAA8AQAATAEAAFwBAABsAQAA
+			CAAAAAAEAABBwK5w9vnToRgAAAABAgAAAQAAAAAAAAAPAAAAAAAA
+			AAAAAAAAAAAACAAAAAQDAAAGAAAAAAAAAAQAAAADAwAA9QEAAAgA
+			AAABCQAAZmlsZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAE
+			AwAAAHCiR3QAAAAIAAAAAAQAAEG5XrHGAAAAJAAAAAEBAAA1RjRG
+			MzBBQy0wNzg2LTNGRTctQkU5NS0xNUQxRUZENUJDODkYAAAAAQIA
+			AIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAAAAA
+			AAABBQAAzAAAAP7///8BAAAAAAAAABAAAAAEEAAA1AAAAAAAAAAF
+			EAAAfAEAAAAAAAAQEAAAtAEAAAAAAABAEAAApAEAAAAAAAACIAAA
+			gAIAAAAAAAAFIAAA8AEAAAAAAAAQIAAAAAIAAAAAAAARIAAANAIA
+			AAAAAAASIAAAFAIAAAAAAAATIAAAJAIAAAAAAAAgIAAAYAIAAAAA
+			AAAwIAAAjAIAAAAAAAABwAAA1AEAAAAAAAARwAAAIAAAAAAAAAAS
+			wAAA5AEAAAAAAAAQ0AAABAAAAAAAAAA=
+			</data>
+			<key>shouldIncludeInDocumentHeadHTML</key>
+			<false/>
+			<key>shouldPreload</key>
+			<true/>
+			<key>shouldRemoveWhenNoLongerReferenced</key>
+			<true/>
+			<key>type</key>
+			<string>FileResource</string>
+		</dict>
+		<dict>
+			<key>fileModificationDate</key>
+			<date>2018-09-27T10:03:23Z</date>
+			<key>fileSize</key>
+			<integer>153678</integer>
+			<key>md5</key>
+			<string>72AD6D3961FB56A94A74ADA3F7156BC7</string>
+			<key>notifyOnBookmarkChange</key>
+			<true/>
+			<key>originalPath</key>
+			<string>/Users/gary/Software Development/Stinky Kitten/Swift Playgrounds/microbit Playground Books/Source Artwork/image_debug.png</string>
+			<key>resourceName</key>
+			<string>image_debug.png</string>
+			<key>securityScopedBookmark</key>
+			<data>
+			Ym9va5QDAAAAAAQQMAAAACDjHIHrr+XD3O7hvHcJNQxOwsIoHO1B
+			axhSwjbYZrYvkAIAAAQAAAADAwAAAAkAKAUAAAABAQAAVXNlcnMA
+			AAAEAAAAAQEAAGdhcnkUAAAAAQEAAFNvZnR3YXJlIERldmVsb3Bt
+			ZW50DQAAAAEBAABTdGlua3kgS2l0dGVuAAAAEQAAAAEBAABTd2lm
+			dCBQbGF5Z3JvdW5kcwAAABkAAAABAQAAbWljcm9iaXQgUGxheWdy
+			b3VuZCBCb29rcwAAAA4AAAABAQAAU291cmNlIEFydHdvcmsAAA8A
+			AAABAQAAaW1hZ2VfZGVidWcucG5nACAAAAABBgAAEAAAACAAAAAs
+			AAAASAAAAGAAAAB8AAAAoAAAALgAAAAIAAAABAMAAPlmAgAAAAAA
+			CAAAAAQDAAASXQkAAAAAAAgAAAAEAwAAfyIVAAAAAAAIAAAABAMA
+			AM7nFgAAAAAACAAAAAQDAAAKynQAAgAAAAgAAAAEAwAA+IbFAAIA
+			AAAIAAAABAMAAMiu5wACAAAACAAAAAQDAAD4eSsBAgAAACAAAAAB
+			BgAA+AAAAAgBAAAYAQAAKAEAADgBAABIAQAAWAEAAGgBAAAIAAAA
+			AAQAAEHArnChiNPpGAAAAAECAAABAAAAAAAAAA8AAAAAAAAAAAAA
+			AAAAAAAIAAAABAMAAAYAAAAAAAAABAAAAAMDAAD1AQAACAAAAAEJ
+			AABmaWxlOi8vLwwAAAABAQAATWFjaW50b3NoIEhECAAAAAQDAAAA
+			cKJHdAAAAAgAAAAABAAAQblescYAAAAkAAAAAQEAADVGNEYzMEFD
+			LTA3ODYtM0ZFNy1CRTk1LTE1RDFFRkQ1QkM4ORgAAAABAgAAgQAA
+			AAEAAADvEwAAAQAAAAAAAAAAAAAAAQAAAAEBAAAvAAAAAAAAAAEF
+			AADMAAAA/v///wEAAAAAAAAAEAAAAAQQAADQAAAAAAAAAAUQAAB4
+			AQAAAAAAABAQAACwAQAAAAAAAEAQAACgAQAAAAAAAAIgAAB8AgAA
+			AAAAAAUgAADsAQAAAAAAABAgAAD8AQAAAAAAABEgAAAwAgAAAAAA
+			ABIgAAAQAgAAAAAAABMgAAAgAgAAAAAAACAgAABcAgAAAAAAADAg
+			AACIAgAAAAAAAAHAAADQAQAAAAAAABHAAAAgAAAAAAAAABLAAADg
+			AQAAAAAAABDQAAAEAAAAAAAAAA==
 			</data>
 			<key>shouldIncludeInDocumentHeadHTML</key>
 			<false/>
@@ -305,7 +358,7 @@
 							<key>identifier</key>
 							<string>Height</string>
 							<key>objectValue</key>
-							<string>495px</string>
+							<string>176px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -317,7 +370,7 @@
 							<key>identifier</key>
 							<string>InnerHTML</string>
 							<key>objectValue</key>
-							<string>&lt;div&gt;&lt;b&gt;&lt;font size="4"&gt;Welcome to the micro:bit Swift Playground&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Thanks for downloading this Swift Playground for the BBC micro:bit. By working through this book you’ll learn the basics of interaction with the micro:bit using Swift, making some fun games and experiments along the way. &lt;b&gt;It has lots of information about the micro:bit, but assumes you already know a bit about Swift syntax.&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font size="4"&gt;Do I need a BBC micro:bit?&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;This book is designed to be used with a BBC micro:bit, and it’s much more fun if you can play along with a real device. Don’t worry if you haven’t got one, though. Each page has a simulated micro:bit on the right hand side that you can use instead.&lt;/div&gt;&lt;div&gt;&amp;nbsp;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;font size="4"&gt;&lt;b&gt;Preparing your device&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;In this book, we use Bluetooth to communicate with the micro:bit, and you need to flash the right hex file to your device over USB before you start. &lt;b&gt;Do not skip this step – even though you may be able to pair your micro:bit without it, the activities in the book won’t work properly.&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Please visit &lt;font color="#0000ff"&gt;&lt;u&gt;http://bit.ly/microbit-swift&lt;/u&gt;&lt;/font&gt; to get the right hex file and instructions setting up your micro:bit.&lt;/div&gt;&lt;/div&gt;</string>
+							<string>&lt;div&gt;&lt;span style="color: rgb(0, 0, 0); font-family: &amp;quot;Helvetica Neue&amp;quot;, Arial, Helvetica, sans-serif; font-size: 16px; font-style: normal; font-variant-caps: normal; letter-spacing: normal; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; background-color: rgb(255, 255, 255); text-decoration: none;"&gt;Swift Playgrounds lets you preview some types of constants and variables. Notice that sometimes a small icon appears to the right of a line of code. Tapping that icon gives you a preview of that variable.&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Sometimes it is useful to get a preview of the images you’re making before you run your code. Perhaps you have an image that displays at the end of a program and you want to test what it will look like. The Swift type &lt;b&gt;MicrobitImage&lt;/b&gt;&amp;nbsp;can be previewed in this way.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;To do that, click on the small image icon next to the definition of the image in your code.&lt;/div&gt;</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -335,7 +388,7 @@
 							<key>identifier</key>
 							<string>Width</string>
 							<key>objectValue</key>
-							<string>493px</string>
+							<string>642px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -404,7 +457,7 @@
 							<key>identifier</key>
 							<string>Left</string>
 							<key>objectValue</key>
-							<string>782px</string>
+							<string>760px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -596,7 +649,7 @@
 							<key>identifier</key>
 							<string>InnerHTML</string>
 							<key>objectValue</key>
-							<string>Let's Start Coding!</string>
+							<string>Carry on Coding!</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -755,8 +808,266 @@
 							<string>pointer</string>
 						</dict>
 					</array>
-					<key>13</key>
+					<key>16</key>
 					<array>
+						<dict>
+							<key>identifier</key>
+							<string>BorderWidthLeft</string>
+							<key>objectValue</key>
+							<string>0px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ActionsOnMouseClick</string>
+							<key>objectValue</key>
+							<array>
+								<dict>
+									<key>goToURL</key>
+									<string>http://bit.ly/microbit-swift</string>
+									<key>openInNewWindow</key>
+									<true/>
+									<key>type</key>
+									<integer>5</integer>
+								</dict>
+							</array>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ExplicitDimensions</string>
+							<key>objectValue</key>
+							<string>YES</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderColorBottom</string>
+							<key>objectValue</key>
+							<string>#A0A0A0</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Cursor</string>
+							<key>objectValue</key>
+							<string>pointer</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderStyleRight</string>
+							<key>objectValue</key>
+							<string>None</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ClassType</string>
+							<key>objectValue</key>
+							<string>Box</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderStyleBottom</string>
+							<key>objectValue</key>
+							<string>None</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Top</string>
+							<key>objectValue</key>
+							<string>563px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderWidthRight</string>
+							<key>objectValue</key>
+							<string>0px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderStyleLeft</string>
+							<key>objectValue</key>
+							<string>None</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderColorTop</string>
+							<key>objectValue</key>
+							<string>#A0A0A0</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderColorLeft</string>
+							<key>objectValue</key>
+							<string>#A0A0A0</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Position</string>
+							<key>objectValue</key>
+							<string>absolute</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Height</string>
+							<key>objectValue</key>
+							<string>20px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Left</string>
+							<key>objectValue</key>
+							<string>166px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderColorRight</string>
+							<key>objectValue</key>
+							<string>#A0A0A0</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderStyleTop</string>
+							<key>objectValue</key>
+							<string>None</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Width</string>
+							<key>objectValue</key>
+							<string>185px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ZIndex</string>
+							<key>objectValue</key>
+							<string>12</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderWidthTop</string>
+							<key>objectValue</key>
+							<string>0px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Overflow</string>
+							<key>objectValue</key>
+							<string>visible</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>DisplayName</string>
+							<key>objectValue</key>
+							<string>Box</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderWidthBottom</string>
+							<key>objectValue</key>
+							<string>0px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>TagName</string>
+							<key>objectValue</key>
+							<string>div</string>
+						</dict>
+					</array>
+					<key>17</key>
+					<array>
+						<dict>
+							<key>identifier</key>
+							<string>Position</string>
+							<key>objectValue</key>
+							<string>absolute</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>DisplayName</string>
+							<key>objectValue</key>
+							<string>image_popover</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BackgroundOrigin</string>
+							<key>objectValue</key>
+							<string>content-box</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>OriginalWidth</string>
+							<key>objectValue</key>
+							<string>475px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>SizeRatio</string>
+							<key>objectValue</key>
+							<string>1.00423</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Left</string>
+							<key>objectValue</key>
+							<string>494px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>OriginalHeight</string>
+							<key>objectValue</key>
+							<string>473px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Display</string>
+							<key>objectValue</key>
+							<string>inline</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BackgroundImage</string>
+							<key>objectValue</key>
+							<string>image_popover.png</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ConstrainProportions</string>
+							<key>objectValue</key>
+							<string>YES</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Height</string>
+							<key>objectValue</key>
+							<string>237px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Overflow</string>
+							<key>objectValue</key>
+							<string>visible</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Width</string>
+							<key>objectValue</key>
+							<string>238px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Top</string>
+							<key>objectValue</key>
+							<string>446px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BackgroundSize</string>
+							<key>objectValue</key>
+							<string>100% 100%</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ZIndex</string>
+							<key>objectValue</key>
+							<string>14</string>
+						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>TagName</string>
@@ -771,46 +1082,13 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>ConstrainProportions</string>
-							<key>objectValue</key>
-							<string>YES</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Display</string>
-							<key>objectValue</key>
-							<string>inline</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
 							<string>ClassType</string>
 							<key>objectValue</key>
 							<string>Image</string>
 						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Top</string>
-							<key>objectValue</key>
-							<string>109px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>BackgroundImage</string>
-							<key>objectValue</key>
-							<string>microbit-drawing.svg</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>ReflectionOffset</string>
-							<key>objectValue</key>
-							<string>0px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>ReflectionDepth</string>
-							<key>objectValue</key>
-							<string>0.000000</string>
-						</dict>
+					</array>
+					<key>18</key>
+					<array>
 						<dict>
 							<key>identifier</key>
 							<string>Position</string>
@@ -819,21 +1097,9 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>Height</string>
+							<string>DisplayName</string>
 							<key>objectValue</key>
-							<string>289px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Left</string>
-							<key>objectValue</key>
-							<string>649px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>SizeRatio</string>
-							<key>objectValue</key>
-							<string>1.24272</string>
+							<string>image_debug</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -843,21 +1109,51 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>Width</string>
+							<string>OriginalWidth</string>
 							<key>objectValue</key>
-							<string>359px</string>
+							<string>4335px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>ZIndex</string>
+							<string>SizeRatio</string>
 							<key>objectValue</key>
-							<string>10</string>
+							<string>2.05645</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>BackgroundSize</string>
+							<string>Left</string>
 							<key>objectValue</key>
-							<string>100% 100%</string>
+							<string>80px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>OriginalHeight</string>
+							<key>objectValue</key>
+							<string>2108px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Display</string>
+							<key>objectValue</key>
+							<string>inline</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BackgroundImage</string>
+							<key>objectValue</key>
+							<string>image_debug.png</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ConstrainProportions</string>
+							<key>objectValue</key>
+							<string>YES</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Height</string>
+							<key>objectValue</key>
+							<string>223px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -867,30 +1163,54 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>DisplayName</string>
+							<string>Width</string>
 							<key>objectValue</key>
-							<string>micro:bit Image</string>
+							<string>459px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>OriginalHeight</string>
+							<string>Top</string>
 							<key>objectValue</key>
-							<string>168.109px</string>
+							<string>350px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>OriginalWidth</string>
+							<string>BackgroundSize</string>
 							<key>objectValue</key>
-							<string>208.912px</string>
+							<string>100% 100%</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ZIndex</string>
+							<key>objectValue</key>
+							<string>13</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>TagName</string>
+							<key>objectValue</key>
+							<string>div</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ExplicitDimensions</string>
+							<key>objectValue</key>
+							<string>YES</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ClassType</string>
+							<key>objectValue</key>
+							<string>Image</string>
 						</dict>
 					</array>
-					<key>15</key>
+					<key>19</key>
 					<array>
 						<dict>
 							<key>identifier</key>
-							<string>TextColor</string>
+							<string>TagName</string>
 							<key>objectValue</key>
-							<string>#000000</string>
+							<string>div</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -932,7 +1252,7 @@
 							<key>identifier</key>
 							<string>Top</string>
 							<key>objectValue</key>
-							<string>685px</string>
+							<string>592px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -956,37 +1276,31 @@
 							<key>identifier</key>
 							<string>Height</string>
 							<key>objectValue</key>
-							<string>18px</string>
+							<string>75px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>Left</string>
 							<key>objectValue</key>
-							<string>483px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>TextAlign</string>
-							<key>objectValue</key>
-							<string>right</string>
+							<string>74px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>InnerHTML</string>
 							<key>objectValue</key>
-							<string>Version 1.0.0</string>
+							<string>&lt;div&gt;This will pop out a small preview of your image displayed on the micro:bit screen&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;This should help you have all sorts of fun making pictures on your micro:bit screen.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>ZIndex</string>
 							<key>objectValue</key>
-							<string>11</string>
+							<string>15</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>Width</string>
 							<key>objectValue</key>
-							<string>103px</string>
+							<string>392px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1014,9 +1328,9 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>TagName</string>
+							<string>TextColor</string>
 							<key>objectValue</key>
-							<string>div</string>
+							<string>#000000</string>
 						</dict>
 					</array>
 					<key>2</key>
@@ -1109,7 +1423,7 @@
 							<key>identifier</key>
 							<string>Left</string>
 							<key>objectValue</key>
-							<string>93px</string>
+							<string>99px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1121,7 +1435,7 @@
 							<key>identifier</key>
 							<string>InnerHTML</string>
 							<key>objectValue</key>
-							<string>Welcome to Swift Playgrounds for the BBC micro:bit</string>
+							<string>Working with micro:bit Images</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1133,7 +1447,7 @@
 							<key>identifier</key>
 							<string>Width</string>
 							<key>objectValue</key>
-							<string>659px</string>
+							<string>598px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1785,7 +2099,7 @@
 							<key>identifier</key>
 							<string>Width</string>
 							<key>objectValue</key>
-							<string>578px</string>
+							<string>730px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>

@@ -245,7 +245,7 @@ public func onPinPressed(_ pin: BTMicrobit.Pin, handler: @escaping EventHandler)
         }
         
         if let pinValue = pinStore[pin] {
-            if pinValue > 16 && !staticState.pinIsPressed {
+            if pinValue >= 20 && !staticState.pinIsPressed {
                 staticState.pinIsPressed = true
                 handler()
             } else {

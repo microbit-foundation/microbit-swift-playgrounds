@@ -45,7 +45,7 @@ public class ContentMessenger: PlaygroundRemoteLiveViewProxyDelegate {
     
     public func remoteLiveViewProxy(_ remoteLiveViewProxy: PlaygroundRemoteLiveViewProxy, received message: PlaygroundValue) {
         
-        //print("message received from live view: \(message)")
+        //sendLogMessage("message received from live view: \(message)")
         if let actionType = message.actionType {
             
             if (actionType == .connectionChanged) {
@@ -56,7 +56,6 @@ public class ContentMessenger: PlaygroundRemoteLiveViewProxyDelegate {
             if let data = message.data {
                 
                 var handlerKey: Set<AnyHashable> = []
-                
                 
                 _ = handlerKey.insert(actionType)
                 if actionType == .requestEvent, let event = BTMicrobit.Event(data) {
@@ -72,7 +71,7 @@ public class ContentMessenger: PlaygroundRemoteLiveViewProxyDelegate {
                 
                 callHandlers(handlers[handlerKey], data: data, error: nil)
                 
-                if actionType == .readData {
+                if actionType == .readData || actionType == .writeData {
                     handlers[handlerKey] = nil
                 }
             }
@@ -107,9 +106,21 @@ public class ContentMessenger: PlaygroundRemoteLiveViewProxyDelegate {
                         handler(accelerationValues)
                     }
                     
-                case let handler as ReadTemperaturePeriodHandler: // This might also later work with other Int handlers
-                    if let value = data.integerFromLittleUInt16 {
-                        handler(value)
+                case let handler as ReadTemperaturePeriodHandler: // BEWARE - This will also catch other Int handlers
+                    // case let handler as ReadPinConfigurationHandler: This also has an Int handler but the data is UInt32 not UInt16
+                    switch data.count {
+                    case 2:
+                        if let value = data.integerFromLittleUInt16 {
+                            handler(value)
+                        }
+                        
+                    case 4:
+                        if let value = data.integerFromLittleUInt32 {
+                            handler(value)
+                        }
+                        
+                    default:
+                        break
                     }
                     
                 case let handler as ReadTemperatureHandler: // This also handles the compass bearing
@@ -138,12 +149,7 @@ public class ContentMessenger: PlaygroundRemoteLiveViewProxyDelegate {
                     if let magnetometerValues = MagnetometerValues(data: data) {
                         handler(magnetometerValues)
                     }
-                    
-                case let handler as ReadPinConfigurationHandler:
-                    if let bitMask = data.integerFromLittleUInt32 {
-                        handler(bitMask)
-                    }
-                    
+                                        
                 case let handler as ReadPinIOHandler:
                     handler(data.pinStore)
                     
@@ -155,7 +161,7 @@ public class ContentMessenger: PlaygroundRemoteLiveViewProxyDelegate {
                     }
                     
                 default:
-                    print("No handler type for \(handler)")
+                    sendLogMessage("No handler type for \(handler)")
                 }
             }
         }
@@ -193,6 +199,11 @@ public class ContentMessenger: PlaygroundRemoteLiveViewProxyDelegate {
                                                      data: data)
         let proxy = PlaygroundPage.current.liveView as! PlaygroundRemoteLiveViewProxy
         proxy.send(message)
+    }
+    
+    public func sendLogMessage(_ message: String) {
+        sendMessageOfType(.logMessage,
+                          withData: Data(message.utf8))
     }
     
     //MARK: - Handler Functions
@@ -245,5 +256,6 @@ public class ContentMessenger: PlaygroundRemoteLiveViewProxyDelegate {
         case removeEvent
         case connectionChanged
         case shareData
+        case logMessage
     }
 }

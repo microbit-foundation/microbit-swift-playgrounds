@@ -31,6 +31,9 @@ public enum MicrobitMeasurement : Equatable {
     case accelerationZ(UnitAcceleration)
     case bearing(UnitAngle)
     case temperature(UnitTemperature)
+    case pin0(UnitMicrobitGPIO)
+    case pin1(UnitMicrobitGPIO)
+    case pin2(UnitMicrobitGPIO)
     
     public var name: String {
         get {
@@ -45,6 +48,12 @@ public enum MicrobitMeasurement : Equatable {
                 return "Compass Heading"
             case .temperature:
                 return "Temperature"
+            case .pin0:
+                return "Pin 0"
+            case .pin1:
+                return "Pin 1"
+            case .pin2:
+                return "Pin 2"
             }
         }
     }
@@ -71,6 +80,18 @@ public enum MicrobitMeasurement : Equatable {
         case let .temperature(displayUnitType):
             let convertedMeasurement = Measurement(value: value, unit: UnitTemperature.celsius).converted(to: displayUnitType)
             return Measurement(value: convertedMeasurement.value, unit: convertedMeasurement.unit as Unit)
+        
+        case let .pin0(displayUnitType):
+            let convertedMeasurement = Measurement(value: value, unit: UnitMicrobitGPIO.raw).converted(to: displayUnitType)
+            return Measurement(value: convertedMeasurement.value, unit: convertedMeasurement.unit as Unit)
+            
+        case let .pin1(displayUnitType):
+            let convertedMeasurement = Measurement(value: value, unit: UnitMicrobitGPIO.raw).converted(to: displayUnitType)
+            return Measurement(value: convertedMeasurement.value, unit: convertedMeasurement.unit as Unit)
+            
+        case let .pin2(displayUnitType):
+            let convertedMeasurement = Measurement(value: value, unit: UnitMicrobitGPIO.raw).converted(to: displayUnitType)
+            return Measurement(value: convertedMeasurement.value, unit: convertedMeasurement.unit as Unit)
         }
     }
     
@@ -91,6 +112,15 @@ public enum MicrobitMeasurement : Equatable {
             return true
             
         case (.temperature, .temperature):
+            return true
+        
+        case (.pin0, .pin0):
+            return true
+            
+        case (.pin1, .pin1):
+            return true
+
+        case (.pin2, .pin2):
             return true
             
         default:

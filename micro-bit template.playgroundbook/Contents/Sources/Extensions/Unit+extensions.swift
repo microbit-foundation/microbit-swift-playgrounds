@@ -44,6 +44,12 @@ public class UnitMagneticFluxDensity: Dimension {
     public static let baseUnit = microTesla
 }
 
+public class UnitMicrobitGPIO: Dimension {
+    public static let raw    = UnitMicrobitGPIO(symbol: "", converter: UnitConverterLinear(coefficient: 1.0))
+    
+    public static let baseUnit = raw
+}
+
 extension FloatingPoint {
     
     /**

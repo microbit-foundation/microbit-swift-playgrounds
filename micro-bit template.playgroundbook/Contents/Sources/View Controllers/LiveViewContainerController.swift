@@ -35,6 +35,8 @@ public class LiveViewContainerController: UIViewController, PlaygroundLiveViewSa
     var liveViewNavigationController: LiveViewNavigationController!
     var proxyConnectionIsOpen = false
     var receivingEvents = false
+    var lastDisplayUpdate = Date()
+    var displayUpdateTimer: Timer? = nil
     
     @IBOutlet weak var containerView: UIView!
     
@@ -197,10 +199,41 @@ extension LiveViewContainerController: PlaygroundLiveViewMessageHandler, Microbi
                 guard let characteristicUUID = message.characteristicUUID else { return }
                 if let data = message.data {
                     
+                    var doWriteData = true
                     switch characteristicUUID {
                         
                     case .ledStateUUID:
-                        self.liveViewController.cachedMicrobitImage = MicrobitImage(data)
+                        
+                        if self.liveViewController.cachedMicrobitImage.imageData != data { // If the image hasn't changed, do nothing
+                            
+                            self.displayUpdateTimer?.invalidate() // Invalidate any update timers
+                            self.displayUpdateTimer = nil
+                            
+                            self.liveViewController.cachedMicrobitImage = MicrobitImage(data) // Update the cached image anyway
+                            
+                            if self.lastDisplayUpdate.timeIntervalSinceNow > -0.1 { // Allow 100ms between updates to the micro:bit because of Bluetooth latency
+                                doWriteData = false
+                                //self.liveViewController.logMessage("Setting timer for \(0.1 + self.lastDisplayUpdate.timeIntervalSinceNow)")
+                                self.displayUpdateTimer = Timer.scheduledTimer(withTimeInterval: max(0.1 + self.lastDisplayUpdate.timeIntervalSinceNow, 0.001),
+                                                                               repeats: false,
+                                                                               block: {(timer) in
+                                                                                //self.liveViewController.logMessage("timer called \(timer))")
+                                                                                microbit?.writeValue(data,
+                                                                                                     forCharacteristicUUID: characteristicUUID,
+                                                                                                     handler: {(characteristic, error) in
+                                                                                                        let returnedMessage = PlaygroundValue.fromActionType(actionType,
+                                                                                                                                                             characteristicUUID: characteristicUUID,
+                                                                                                                                                             data: characteristic.value)
+                                                                                                        self.send(returnedMessage)
+                                                                                })
+                                                                                self.lastDisplayUpdate = Date()
+                                })
+                            } else {
+                                self.lastDisplayUpdate = Date()
+                            }
+                        } else {
+                            doWriteData = false
+                        }
                         
                     case .ledTextUUID:
                         if let text = String(data: data, encoding: .utf8) {
@@ -221,14 +254,16 @@ extension LiveViewContainerController: PlaygroundLiveViewMessageHandler, Microbi
                     default:
                         break
                     }
-                    microbit?.writeValue(data,
-                                         forCharacteristicUUID: characteristicUUID,
-                                         handler: {(characteristic, error) in
-                                            let returnedMessage = PlaygroundValue.fromActionType(actionType,
-                                                                                                 characteristicUUID: characteristicUUID,
-                                                                                                 data: characteristic.value)
-                                            self.send(returnedMessage)
-                    })
+                    if doWriteData {
+                        microbit?.writeValue(data,
+                                             forCharacteristicUUID: characteristicUUID,
+                                             handler: {(characteristic, error) in
+                                                let returnedMessage = PlaygroundValue.fromActionType(actionType,
+                                                                                                     characteristicUUID: characteristicUUID,
+                                                                                                     data: characteristic.value)
+                                                self.send(returnedMessage)
+                        })
+                    }
                 }
                 
             case .startNotifications:
@@ -288,6 +323,11 @@ extension LiveViewContainerController: PlaygroundLiveViewMessageHandler, Microbi
                     liveViewController.dataActivityItem = nil
                 }
                 break
+                
+            case .logMessage:
+                if let data = message.data, let stringMessage = String(data: data, encoding: .utf8) {
+                    liveViewController.logMessage(stringMessage)
+                }
             }
         }
     }
@@ -296,6 +336,7 @@ extension LiveViewContainerController: PlaygroundLiveViewMessageHandler, Microbi
     
     func notificationsHandler(characteristic: CBCharacteristic, error: Error?) -> BTPeripheral.NotificationAction {
         
+        //liveViewController.logMessage("Notification Handler Data: + \(characteristic.value as! NSData)")
         guard let characteristicUUID = BTMicrobit.CharacteristicUUID(rawValue: characteristic.uuid.uuidString) else { return .stopNotifications}
         let returnedMessage = PlaygroundValue.fromActionType(.startNotifications,
                                                              characteristicUUID: characteristicUUID,

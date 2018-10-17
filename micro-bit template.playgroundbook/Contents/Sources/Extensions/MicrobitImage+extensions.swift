@@ -38,16 +38,16 @@ extension MicrobitImage: CustomPlaygroundDisplayConvertible {
             context.cgContext.addPath(backgroundPath.cgPath)
             context.cgContext.fillPath(using: .evenOdd)
             
-            if let ledOffImage = UIImage(named: "viewer-led-off")?.cgImage,
-                let ledOnImage = UIImage(named: "viewer-led-on")?.cgImage {
+            if let ledOffImage = UIImage(named: "viewer-led-off"),
+                let ledOnImage = UIImage(named: "viewer-led-on") {
                 
                 for y in 0...4 {
                     for x in 0...4 {
                         let ledRect = CGRect(x: 5 + x * 14, y: 5 + y * 13, width: 3, height: 7)
-                        context.cgContext.draw(ledOffImage, in: ledRect)
+                        ledOffImage.draw(in: ledRect)
                         if self[x, y] == .on {
-                            let ledRect = CGRect(x: -1 + x * 14, y: 1 + y * 13, width: 15, height: 15)
-                            context.cgContext.draw(ledOnImage, in: ledRect)
+                            let ledRect = CGRect(x: -8 + x * 14, y: -8 + y * 13, width: 30, height: 33)
+                            ledOnImage.draw(in: ledRect)
                         }
                     }
                 }

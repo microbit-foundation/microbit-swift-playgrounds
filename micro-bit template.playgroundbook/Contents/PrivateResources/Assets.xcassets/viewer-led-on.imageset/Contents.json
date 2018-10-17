@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "ipad",
-      "filename" : "led_on@x1.png",
+      "filename" : "viewer_led_on@x1.png",
       "scale" : "1x"
     },
     {
       "idiom" : "ipad",
-      "filename" : "led_on@x2.png",
+      "filename" : "viewer_led_on@x2.png",
       "scale" : "2x"
     }
   ],

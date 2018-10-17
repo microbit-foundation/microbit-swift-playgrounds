@@ -38,9 +38,9 @@ public func setInputPins(_ inputPins: [BTMicrobit.Pin], outputPins: [BTMicrobit.
     
     ContentMessenger.messenger.sendMessageOfType(.readData,
                                                  forCharacteristicUUID: .pinIOConfigurationUUID,
-                                                 handler: {(bitMask: PinConfigurationMask) in
+                                                 handler: {(bitMask: PinConfigurationMask?) in
                                                     
-                                                    var newBitMask = bitMask
+                                                    var newBitMask = bitMask ?? 0
                                                     for pin in inputPins {
                                                         newBitMask |= (1 << pin.rawValue)
                                                     }
@@ -71,9 +71,9 @@ public func setAnaloguePins(_ analoguePins: [BTMicrobit.Pin], digitalPins: [BTMi
     
     ContentMessenger.messenger.sendMessageOfType(.readData,
                                                  forCharacteristicUUID: .pinADConfigurationUUID,
-                                                 handler: {(bitMask: PinConfigurationMask) in
+                                                 handler: {(bitMask: PinConfigurationMask?) in
                                                     
-                                                    var newBitMask = bitMask
+                                                    var newBitMask = bitMask ?? 0
                                                     for pin in analoguePins {
                                                         newBitMask |= (1 << pin.rawValue)
                                                     }
