@@ -323,7 +323,7 @@ public typealias MimicAccelerometerHandler = (AccelerometerValues) -> MicrobitMi
         }
     }
     
-    public func addAccelerometerHandler(_ handler: MimicAccelerometerHandler) {
+    public func addAccelerometerHandler(_ handler: @escaping MimicAccelerometerHandler) {
         if self.isActive {
             self.addHandler(handler, forType: .accelerometer)
             self.startAccelerometer()

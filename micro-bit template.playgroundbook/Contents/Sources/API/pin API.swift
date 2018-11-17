@@ -103,7 +103,7 @@ public func setAnaloguePins(_ analoguePins: [BTMicrobit.Pin], digitalPins: [BTMi
  })
  ````
  */
-public func onPins(_ handler: ReadPinIOHandler) {
+public func onPins(_ handler: @escaping ReadPinIOHandler) {
     
     ContentMessenger.messenger.sendMessageOfType(.startNotifications,
                                                  forCharacteristicUUID: .pinDataUUID,
