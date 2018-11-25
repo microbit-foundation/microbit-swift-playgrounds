@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Name</key>
+	<string>Getting Started</string>
+	<key>Pages</key>
+	<array>
+		<string>GettingStarted.cutscenepage</string>
+		<string>DisplayText.playgroundpage</string>
+		<string>DisplayingImages.playgroundpage</string>
+		<string>WorkingWithImages.cutscenepage</string>
+		<string>CreatingImages.playgroundpage</string>
+		<string>ButtonPresses.playgroundpage</string>
+		<string>RockPaperScissors.playgroundpage</string>
+		<string>ShakeGesture.playgroundpage</string>
+		<string>SpiritLevel.playgroundpage</string>
+		<string>ReadingTemperature.playgroundpage</string>
+		<string>PinPresses.playgroundpage</string>
+	</array>
+</dict>
+</plist>

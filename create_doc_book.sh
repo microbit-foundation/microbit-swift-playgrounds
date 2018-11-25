@@ -3,7 +3,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DESTINATION_BOOK="$DIR/micro꞉bit API.playgroundbook"
 DESTINATION_RESOURCES="$DESTINATION_BOOK/Contents/PrivateResources"
-TEMPLATE_BOOK="$DIR/micro-bit template.playgroundbook"
+TEMPLATE_BOOK="$DIR/micro-bit source.playgroundbook"
 SOURCE_MATERIALS="$DIR/microbit API Book"
 
 rm -fR "$DESTINATION_BOOK"
