@@ -1,6 +1,6 @@
 # micro:bit Swift Playgrounds
 
-##Overview
+## Overview
 
 This document covers how to use the BBC micro:bit template book to create your own Swift Playground book. It does not include details on the format of the playground books or the markup of the Content.swift files.
 
@@ -10,7 +10,7 @@ For a complete description of the Swift Playground book format please refer to t
 
 [playground_link]:https://developer.apple.com/documentation/swift_playgrounds?language=objc
 
-##The micro:bit Template Book
+## The micro:bit Template Book
 
 Creating a Swift Playground from scratch is a complex programming task. By providing a template book we have written all the complex code required to pair and communicate with the micro:bit over Bluetooth. You can think of the template book as providing a Playground SDK (Software Development Kit).
 
@@ -26,7 +26,7 @@ The files you need to edit are located in **Contents/Chapters/** You will also n
 
 Inside the **Contents/Sources** directory you will find all the source files required for the playground to communicate with the micro:bit as well as a host of other supporting functionality. These may also provide an additional insight into the functionality of our Swift Playground SDK.
 
-##Testing Your Book
+## Testing Your Book
 To test your book you can either:
 
 * Copy it to the **Playgrounds** folder in your iCloud drive. The Swift Playgrounds app on your iPad will notice it has been added/updated and download it accordingly.
@@ -35,13 +35,13 @@ To test your book you can either:
 
 The Apple documentation also lists various ways of getting your playground onto a device.
 
-##The micro:bit API Book
+## The micro:bit API Book
 
 This repository also contains another Swift Playground book called **microbit API.playgroundbook**
 
 This playground provides an interactive demonstration of the whole of the API we have defined for interacting with the micro:bit much of which is not included in the _Intro_ book. You may wish to install this to your iPad and explore it before developing your own book as it will illustrate the many possibilites that are possible from the Swift Playgrounds app.
 
-##Using Script Files
+## Using Script Files
 
 The repository also contains three script files:
 
