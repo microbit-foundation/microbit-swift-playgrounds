@@ -138,7 +138,7 @@ public struct ThreeAxisValues<UnitType>: Equatable, CustomStringConvertible wher
      A variable that returns a tuple of each x, y and z components as a Measurement with the struct's unit type.
      - returns: A tuple of the form (x, y, z)
      */
-    public var measurements: (Measurement<UnitType>, Measurement<UnitType>, Measurement<UnitType>) {
+    public var measurements: (x: Measurement<UnitType>, y: Measurement<UnitType>, z: Measurement<UnitType>) {
         get {
             return (x: _x, y: _y, z: _z)
         }

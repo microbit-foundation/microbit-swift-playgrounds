@@ -14,6 +14,8 @@
 		<string>Gestures API.playgroundpage</string>
 		<string>LED API.playgroundpage</string>
 		<string>Images.playgroundpage</string>
+		<string>Accelerometer API.playgroundpage</string>
+		<string>Temperature API.playgroundpage</string>
 		<string>Pin API.playgroundpage</string>
 		<string>DataStore.playgroundpage</string>
 	</array>
