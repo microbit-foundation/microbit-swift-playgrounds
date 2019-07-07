@@ -28,7 +28,7 @@ import Foundation
 /**
  A function that calls a handler when a given button is pressed on the micro:bit.
  - parameters:
-    - _ The button to listen for. Values are either .A, .B or .AB
+    - _: The button to listen for. Values are either .A, .B or .AB
     - handler: An event handler with no parameters. This closure is called when the specified button is pressed.
  ````
  onButtonPressed(.A, handler: {
@@ -54,7 +54,7 @@ public func onButtonPressed(_ button: BTMicrobit.Button, handler: @escaping Even
 /**
  A function that calls a handler when a given gesture is detected on the micro:bit.
  - parameters:
-    - _ The gesture to listen for. Gestures can be .shake, .tiltUp, .tiltDown plus others.
+    - _: The gesture to listen for. Gestures can be .shake, .tiltUp, .tiltDown plus others.
     - handler: An event handler with no parameters. This closure is called when the specified gesture is detected.
  ````
  onGesture(.shake, handler: {
@@ -74,7 +74,7 @@ public func onGesture(_ gesture: BTMicrobit.Event.Gesture, handler: @escaping Ev
 /**
  A function that set the interval between accelerometer readings returned through the onAcceleration() function.
  - parameters:
-    - _ The period interval between receiving accelerometer readings. This is an enum value of type BTMicrobit.AccelerometerPeriod.
+    - _: The period interval between receiving accelerometer readings. This is an enum value of type BTMicrobit.AccelerometerPeriod.
     - handler: An optional handler with one parameter that returns an optional BTMicrobit.AccelerometerPeriod? as the actual period that was set on the micro:bit. If the period is nil then there was an error setting the period.
  ````
  setAccelerometerPeriod(.ms80, handler: (period: BTMicrobit.AccelerometerPeriod?) in {
@@ -95,7 +95,7 @@ public func setAccelerometerPeriod(_ period: BTMicrobit.AccelerometerPeriod, han
 /**
  A function that calls a handler when the accelerometer values are updated on the micro:bit. The interval between readings can be set using setAccelerometerPeriod().
  - parameters:
-    - _ An event handler with one parameter of AccelerometerValues. This closure is called when the accelerometer values are updated.
+    - _: An event handler with one parameter of AccelerometerValues. This closure is called when the accelerometer values are updated.
  ````
  onAcceleration({(accelerationValues) in
     let x = accelerationValues.x
@@ -115,7 +115,7 @@ public func onAcceleration(_ handler: @escaping ReadAccelerometerHandler) {
 /**
  A function that calls a handler for reading the temperature on the micro:bit.
  - parameters:
-    - _ An event handler with one parameter of Double. This closure is only called once unlike the onTemperature() function.
+    - _: An event handler with one parameter of Double. This closure is only called once unlike the onTemperature() function.
  ````
  readTemperature({(temperature) in
     // Do something with temperature reading
@@ -132,7 +132,7 @@ public func readTemperature(_ handler: @escaping ReadTemperatureHandler) {
 /**
  A function that sets the interval between temperature readings returned through the onTemperature function.
  - parameters:
-    - _ The period interval between receiving temperature readings. This is an Int in milli-seconds.
+    - _: The period interval between receiving temperature readings. This is an Int in milli-seconds.
     - handler: An optional handler with one parameter that returns an optional Int as the actual period that was set on the micro:bit. If the period is nil then there was an error setting the period.
  ````
  setTemperaturePeriod(5000, handler: (period: Int?) in {
@@ -154,7 +154,7 @@ public func setTemperaturePeriod(_ period: Int, handler: ReadTemperaturePeriodHa
 /**
  A function that calls a handler when the temperature period has elapsed. The interval between readings can be set using setTemperaturePeriod().
  - parameters:
-    - _ An event handler with one parameter of Double. This closure is called when the temperature period has elapsed.
+    - _: An event handler with one parameter of Double. This closure is called when the temperature period has elapsed.
  ````
  onTemperature({(temperature) in
     showNumber(temperature)
@@ -171,7 +171,7 @@ public func onTemperature(_ handler: @escaping ReadTemperatureHandler) {
 /**
  A function that set the interval between magnetic readings returned through the onMagneticForce and onCompassHeading function.
  - parameters:
-    - _ The period interval between receiving magnetometer readings. This is an enum value of type BTMicrobit.MagnetometerPeriod.
+    - _: The period interval between receiving magnetometer readings. This is an enum value of type BTMicrobit.MagnetometerPeriod.
     - handler: An optional handler with one parameter that returns an optional BTMicrobit.MagnetometerPeriod? as the actual period that was set on the micro:bit. If the period is nil then there was an error setting the period.
  ````
  setMagentometerPeriod(.ms80, handler: (period: BTMicrobit.MagnetometerPeriod?) in {
@@ -192,7 +192,7 @@ public func setMagnetometerPeriod(_ period: BTMicrobit.MagnetometerPeriod, handl
 /**
  A function that calls a handler when the compass (bearing) value is updated on the micro:bit. The interval between readings can be set using setMagnetometerPeriod().
  - parameters:
-    - _ An event handler with one parameter of Double. This closure is called when the compass (bearing) value is updated.
+    - _: An event handler with one parameter of Double. This closure is called when the compass (bearing) value is updated.
  ````
  onCompassHeading({(bearing) in
     // Do something with the bearing value such as displaying an arrow in an appropriate direction.
@@ -209,7 +209,7 @@ public func onCompassHeading(_ handler: @escaping ReadCompassHeadingHandler) {
 /**
  A function that calls a handler when the magnetometer values are updated on the micro:bit. The interval between readings can be set using setMagnetometerPeriod().
  - parameters:
-    - _ An event handler with one parameter of MagnetometerValues. This closure is called when the magnetometer values are updated.
+    - _: An event handler with one parameter of MagnetometerValues. This closure is called when the magnetometer values are updated.
  ````
  onMagneticForce({(magnetometerValues) in
  
@@ -226,7 +226,7 @@ public func onMagneticForce(_ handler: @escaping ReadMagnetometerHandler) {
 /**
  A function that calls a handler when a given pin is touched on the micro:bit. Note that you must also be touching the GND pin.
  - parameters:
-    - _ The pin to listen for. Values are either .pin0, .pin1, .pin2
+    - _: The pin to listen for. Values are either .pin0, .pin1, .pin2
     - handler: An event handler with no parameters. This closure is called when the specified pin is touched.
  ````
  onPinPressed(.pin0, handler: {

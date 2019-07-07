@@ -47,7 +47,7 @@ public class MicrobitFont {
      A function that returns a MicrobitImage for a given Character.
      You may find it more useful to get the `microbitImage` on a Character or `microbitImages` on a String.
      - parameters:
-        - _ The Character whose image you want returned.
+        - _: The Character whose image you want returned.
      
      - Note: Get the MicrobitImage for the character A.
      ````

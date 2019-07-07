@@ -45,7 +45,7 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
         case continueNotifications
     }
     
-    internal (set) var peripheral: CBPeripheral!
+    var peripheral: CBPeripheral!
     let isolationQueue = DispatchQueue(label: "org.microbit.peripheralHandlersQueue")
     var handlers = [BTPeripheral.HandlerType: [String: [UUID: Any]]]()
     var serviceDiscoveryTimer: Timer?

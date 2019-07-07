@@ -34,7 +34,7 @@ public func createImage(_ leds: String) -> MicrobitImage {
  - returns:
  A MicrobitImage that can be displayed on the LED screen.
  - parameters:
-    - _ The arrow name of the image you want to create. You can pick an arrow image such as: .north
+    - _: The arrow name of the image you want to create. You can pick an arrow image such as: .north
  */
 public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
     return arrowName.rawValue
@@ -47,7 +47,7 @@ public func arrowImage(_ arrowName: MicrobitImage.ArrowName) -> MicrobitImage {
  A MicrobitImage that can be displayed on the LED screen.
  
  - parameters:
-    - _ The icon name of the image you want to create. You can pick an icon image such as: .heart
+    - _: The icon name of the image you want to create. You can pick an icon image such as: .heart
  
  - LocalizationKey: iconImage()
  */

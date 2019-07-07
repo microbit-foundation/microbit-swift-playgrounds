@@ -50,7 +50,7 @@ extension Array where Element: MicrobitImage {
     /**
      A function that returns an image that is offset by the scroll index for an array of MicrobitImages. This function ensures that upto two images are appropriate offset and added together when creating the returned image.
      - parameters:
-        - _ scrollIndex: An Int that specifies the scroll index to the given image to return. This value needs to be between the scrollStartIndex() and scrollEndIndex().
+        - _: An Int that specifies the scroll index to the given image to return. This value needs to be between the scrollStartIndex() and scrollEndIndex().
         - withSpacing: an Int that adds an additional number of blank columns between each image. This parameter is optional and defaults to 0.
      - returns:
      A MicrobitImage that is offset by the specifed scroll index.

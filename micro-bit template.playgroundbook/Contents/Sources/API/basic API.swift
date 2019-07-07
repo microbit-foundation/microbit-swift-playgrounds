@@ -28,7 +28,7 @@ import Foundation
 /**
  Shows a number on the LED screen. It will slide left if it has more than one digit.
  - parameters:
-    - _ A number as an Int or a Double, this cannot be omitted.
+    - _: A number as an Int or a Double, this cannot be omitted.
  */
 public func showNumber(_ number: Int) {
     
@@ -38,7 +38,7 @@ public func showNumber(_ number: Int) {
 /**
  Shows a number on the LED screen. It will slide left if it has more than one digit.
  - parameters:
-    - _ A number as an Int or a Double, this cannot be omitted.
+    - _: A number as an Int or a Double, this cannot be omitted.
  */
 public func showNumber(_ number: Double) {
     
@@ -48,7 +48,7 @@ public func showNumber(_ number: Double) {
 /**
  Shows a picture on the LED screen.
  - parameters:
-    - _ A string that controls which LEDs are on and off. This is a multi-line string with a # to turn the LED on and a . to turn it off.
+    - _: A string that controls which LEDs are on and off. This is a multi-line string with a # to turn the LED on and a . to turn it off.
  */
 public func showLeds(_ string: String) {
     
@@ -58,7 +58,7 @@ public func showLeds(_ string: String) {
 /**
  Shows the chosen icon on the LED screen.
  - parameters:
-    - _ The icon name of the image you want to show. You can pick an icon image such as: .heart
+    - _: The icon name of the image you want to show. You can pick an icon image such as: .heart
  */
 public func showIcon(_ iconName: MicrobitImage.IconName) {
     
@@ -68,7 +68,7 @@ public func showIcon(_ iconName: MicrobitImage.IconName) {
 /**
  Scrolls a text string onto the LED screen
  - parameters:
-    - _ Text as a String, this cannot be omitted.
+    - _: Text as a String, this cannot be omitted.
  */
 public func showString(_ text: String) {
     
@@ -90,7 +90,7 @@ public func showString(_ text: String) {
 /**
  Sets the delay when scrolling text.
  - parameters:
-    - _ delay: A number that sets how many milli-seconds between each movement of the scroll. The bigger the value the slower the text will scroll.
+    - _: A number that sets how many milli-seconds between each movement of the scroll. The bigger the value the slower the text will scroll.
  */
 public func setScrollingDelay(_ delay: Int) {
     
@@ -103,7 +103,7 @@ public func setScrollingDelay(_ delay: Int) {
  Scroll (slide) an image (picture) from one side to the other of the LED screen.
  
  - parameters:
-    - _ delayInSeconds: A number that sets how many seconds between each movement of the scroll.  The bigger the value the slower the text will scroll.
+    - _: A number that sets how many seconds between each movement of the scroll.  The bigger the value the slower the text will scroll.
  */
 public func setScrollingDelayInSeconds(_ delayInSeconds: Double) {
     setScrollingDelay(Int(delayInSeconds * 1_000))
@@ -112,7 +112,7 @@ public func setScrollingDelayInSeconds(_ delayInSeconds: Double) {
 /**
  Shows the chosen arrow on the LED screen.
  - parameters:
-    - _ The arrow name of the image you want to show. You can pick an arrow image such as: .north
+    - _: The arrow name of the image you want to show. You can pick an arrow image such as: .north
  */
 public func showArrow(_ arrowName: MicrobitImage.ArrowName) {
     

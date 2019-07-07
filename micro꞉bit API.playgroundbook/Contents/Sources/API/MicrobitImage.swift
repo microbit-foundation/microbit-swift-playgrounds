@@ -55,7 +55,7 @@ public final class MicrobitImage: Equatable, LosslessStringConvertible, Expressi
     /**
      An initializer that takes Data as a parameter.
      - parameters:
-        - _ The Data that represents the image.
+        - _: The Data that represents the image.
      */
     public init(_ imageData: Data) {
         
@@ -74,7 +74,7 @@ public final class MicrobitImage: Equatable, LosslessStringConvertible, Expressi
      """)
      ````
      - parameters:
-        - _ A string that represents the image. This should be a multi-line string with the # character to represent an LED that is on and a . for those that are off. Spaces are ignored.
+        - _: A string that represents the image. This should be a multi-line string with the # character to represent an LED that is on and a . for those that are off. Spaces are ignored.
      */
     required public init(_ imageText: String) {
         

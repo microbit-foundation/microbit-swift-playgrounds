@@ -76,7 +76,7 @@ public class DataStore {
     /**
      A function for adding a new data row to the store.
      - parameters:
-        - _ The DataRow is an array of numbers or strings. You can insert any type that conforms to CustomStringConvertible.
+        - _: The DataRow is an array of numbers or strings. You can insert any type that conforms to CustomStringConvertible.
      */
     public func addRow(_ dataRow: DataRow) {
         self.data.append(dataRow)

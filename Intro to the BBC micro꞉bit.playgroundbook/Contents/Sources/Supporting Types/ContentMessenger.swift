@@ -36,6 +36,29 @@ public class ContentMessenger: PlaygroundRemoteLiveViewProxyDelegate {
     public static let messenger = ContentMessenger()
     var handlers = [Set<AnyHashable>: Array<Any>]()
     var cachedMicrobitImage = MicrobitImage()
+    var cachedPinValues: PinStore = [:]
+    var pinsTimer: Timer? = nil
+    public var pinsPeriod: Int? = nil {
+        didSet {
+            cachedPinValues = [:]
+            if pinsTimer != nil {
+                pinsTimer!.invalidate()
+                pinsTimer = nil
+            }
+            if pinsPeriod != nil {
+                pinsTimer = Timer.scheduledTimer(withTimeInterval: Double(pinsPeriod!) / 1000.0,
+                                                 repeats: true) { [unowned self] _ in
+                                                    // Send the cached pins to the pin handlers
+                                                    let handlerKey: Set<AnyHashable> = [ActionType.startNotifications, BTMicrobit.CharacteristicUUID.pinDataUUID]
+                                                    if let pinHandlers = self.handlers[handlerKey] {
+                                                        for case let handler as ReadPinIOHandler in pinHandlers {
+                                                            handler(self.cachedPinValues)
+                                                        }
+                                                    }
+                }
+            }
+        }
+    }
     
     public init() {
         
@@ -82,7 +105,7 @@ public class ContentMessenger: PlaygroundRemoteLiveViewProxyDelegate {
                       data: Data,
                       error: Error?) {
         
-        if (handlers != nil) {
+        if handlers != nil {
             for handler in handlers! {
                 
                 switch handler {
@@ -149,9 +172,13 @@ public class ContentMessenger: PlaygroundRemoteLiveViewProxyDelegate {
                     if let magnetometerValues = MagnetometerValues(data: data) {
                         handler(magnetometerValues)
                     }
-                                        
+                    
                 case let handler as ReadPinIOHandler:
-                    handler(data.pinStore)
+                    if pinsPeriod == nil {
+                        handler(data.pinStore)
+                    } else {
+                        cachedPinValues.merge(data.pinStore) { (_, new) in new }
+                    }
                     
                 case let handler as ReadImageHandler:
                     if data.count >= 5 {
