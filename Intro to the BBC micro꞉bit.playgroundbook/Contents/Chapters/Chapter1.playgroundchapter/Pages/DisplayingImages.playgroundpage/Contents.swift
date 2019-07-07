@@ -8,15 +8,15 @@
  
  In the previous exercise we displayed letters on the screen. But what if we want to display shapes other than letters?
  
- The micro:bit can also show 'images', where each of the LEDs is on or off to make a picture.
+ The micro:bit can also show *images*, where each of the LEDs is on or off to make a shape.
  
  Let's try this out.
  
  1. Run the code below.
  
- 2. Notice that the micro:bit displays a ‘heart’ shape.
+ 2. Notice that the micro:bit displays a *heart* shape.
  
- 3. For this exercise some images have been created for you. So click on the word ‘heart’ and you will see a list of 6 other images that can be displayed.
+ 3. For this exercise some images have been created for you. Click on the text `heart` in the `iconImage` function and you will see a list of 6 other images that can be displayed in the completion bar on the keyboard.
  
  4. Select an image from the list.
  

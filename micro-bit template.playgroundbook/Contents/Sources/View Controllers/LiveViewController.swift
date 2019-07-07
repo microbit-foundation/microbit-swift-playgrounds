@@ -95,8 +95,10 @@ public class LiveViewController: UIViewController, BTManagerDelegate, LoggingPro
         if seque.identifier == "embedValueTableControllerSegue" {
             
             //self.logMessage("\(seque.destination)")
-            valuesTableViewController = seque.destination as! ValuesTableViewController
-            valuesTableViewController.dataSource = self
+            if let viewController = seque.destination as? ValuesTableViewController {
+                valuesTableViewController = viewController
+                valuesTableViewController.dataSource = self
+            }
         }
     }
     

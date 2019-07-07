@@ -21,13 +21,13 @@
 	<key>guidesAreVisible</key>
 	<true/>
 	<key>lastCheckDate</key>
-	<date>2018-11-17T15:31:05Z</date>
+	<date>2019-06-30T11:46:21Z</date>
 	<key>layout</key>
 	<dict>
 		<key>keyframeTimelineHeight</key>
 		<real>50</real>
 		<key>mainWindowFrame</key>
-		<string>184 671 1135 1059 0 0 3200 1777 </string>
+		<string>184 672 1135 1059 0 0 3200 1777 </string>
 		<key>openTabs</key>
 		<array/>
 		<key>selectedTabIndex</key>
@@ -237,6 +237,17 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
+							<string>ActionsOnMouseOver</string>
+							<key>objectValue</key>
+							<array>
+								<dict>
+									<key>type</key>
+									<integer>0</integer>
+								</dict>
+							</array>
+						</dict>
+						<dict>
+							<key>identifier</key>
 							<string>PaddingRight</string>
 							<key>objectValue</key>
 							<string>8px</string>
@@ -285,6 +296,17 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
+							<string>ActionsOnMouseDown</string>
+							<key>objectValue</key>
+							<array>
+								<dict>
+									<key>type</key>
+									<integer>0</integer>
+								</dict>
+							</array>
+						</dict>
+						<dict>
+							<key>identifier</key>
 							<string>PaddingBottom</string>
 							<key>objectValue</key>
 							<string>8px</string>
@@ -303,6 +325,17 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
+							<string>ActionsOnMouseUp</string>
+							<key>objectValue</key>
+							<array>
+								<dict>
+									<key>type</key>
+									<integer>0</integer>
+								</dict>
+							</array>
+						</dict>
+						<dict>
+							<key>identifier</key>
 							<string>Height</string>
 							<key>objectValue</key>
 							<string>495px</string>
@@ -317,7 +350,18 @@
 							<key>identifier</key>
 							<string>InnerHTML</string>
 							<key>objectValue</key>
-							<string>&lt;div&gt;&lt;b&gt;&lt;font size="4"&gt;Welcome to the micro:bit Swift Playground&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Thanks for downloading this Swift Playground for the BBC micro:bit. By working through this book you’ll learn the basics of interaction with the micro:bit using Swift, making some fun games and experiments along the way. &lt;b&gt;It has lots of information about the micro:bit, but assumes you already know a bit about Swift syntax.&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font size="4"&gt;Do I need a BBC micro:bit?&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;This book is designed to be used with a BBC micro:bit, and it’s much more fun if you can play along with a real device. Don’t worry if you haven’t got one, though. Each page has a simulated micro:bit on the right hand side that you can use instead.&lt;/div&gt;&lt;div&gt;&amp;nbsp;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;font size="4"&gt;&lt;b&gt;Preparing your device&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;In this book, we use Bluetooth to communicate with the micro:bit, and you need to flash the right hex file to your device over USB before you start. &lt;b&gt;Do not skip this step – even though you may be able to pair your micro:bit without it, the activities in the book won’t work properly.&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Please visit &lt;font color="#0000ff"&gt;&lt;u&gt;http://bit.ly/microbit-swift&lt;/u&gt;&lt;/font&gt; to get the right hex file and instructions setting up your micro:bit.&lt;/div&gt;&lt;/div&gt;</string>
+							<string>&lt;div&gt;&lt;b&gt;&lt;font size="4"&gt;Welcome to the micro:bit Swift Playground&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Thanks for downloading this Swift Playground for the BBC micro:bit. By working through this book you’ll learn the basics of interaction with the micro:bit using Swift, making some fun games and experiments along the way. &lt;b&gt;It has lots of information about the micro:bit, but assumes you already know a bit about Swift syntax.&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font size="4"&gt;Do I need a BBC micro:bit?&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;This book is designed to be used with a BBC micro:bit, and it’s much more fun if you can play along with a real device. Don’t worry if you haven’t got one, though. Each page has a simulated micro:bit on the right hand side that you can use instead.&lt;/div&gt;&lt;div&gt;&amp;nbsp;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;font size="4"&gt;&lt;b&gt;Preparing your device&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;In this book, we use Bluetooth to communicate with the micro:bit, and you need to flash the right hex file to your device over USB before you start. &lt;b&gt;Do not skip this step – even though you may be able to pair your micro:bit without it, the activities in the book won’t work properly.&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Please visit &lt;font color="#0000ff"&gt;&lt;span style="caret-color: rgb(0, 0, 255);"&gt;&lt;u&gt;https://microbit.org/guide/swift-playgrounds/&lt;/u&gt;&lt;/span&gt;&lt;/font&gt;&amp;nbsp;to get the right hex file and instructions setting up your micro:bit.&lt;/div&gt;&lt;/div&gt;</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ActionsOnMouseOut</string>
+							<key>objectValue</key>
+							<array>
+								<dict>
+									<key>type</key>
+									<integer>0</integer>
+								</dict>
+							</array>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -327,15 +371,15 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>Width</string>
-							<key>objectValue</key>
-							<string>493px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
 							<string>PaddingLeft</string>
 							<key>objectValue</key>
 							<string>8px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Width</string>
+							<key>objectValue</key>
+							<string>493px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -359,7 +403,16 @@
 							<key>identifier</key>
 							<string>ActionsOnMouseClick</string>
 							<key>objectValue</key>
-							<array/>
+							<array>
+								<dict>
+									<key>goToURL</key>
+									<string>https://microbit.org/guide/swift-playgrounds/</string>
+									<key>openInNewWindow</key>
+									<false/>
+									<key>type</key>
+									<integer>5</integer>
+								</dict>
+							</array>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -404,7 +457,7 @@
 							<key>identifier</key>
 							<string>Left</string>
 							<key>objectValue</key>
-							<string>782px</string>
+							<string>750px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -452,7 +505,7 @@
 							<key>identifier</key>
 							<string>Top</string>
 							<key>objectValue</key>
-							<string>19px</string>
+							<string>20px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -590,7 +643,7 @@
 							<key>identifier</key>
 							<string>TextColor</string>
 							<key>objectValue</key>
-							<string>#F94E31</string>
+							<string>#007BFD</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -974,19 +1027,19 @@
 							<key>identifier</key>
 							<string>InnerHTML</string>
 							<key>objectValue</key>
-							<string>Version 1.1.0</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>ZIndex</string>
-							<key>objectValue</key>
-							<string>11</string>
+							<string>Version 1.2.0</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>PaddingLeft</string>
 							<key>objectValue</key>
 							<string>8px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ZIndex</string>
+							<key>objectValue</key>
+							<string>11</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1017,165 +1070,6 @@
 							<string>TextColor</string>
 							<key>objectValue</key>
 							<string>#000000</string>
-						</dict>
-					</array>
-					<key>2</key>
-					<array>
-						<dict>
-							<key>identifier</key>
-							<string>FontFamily</string>
-							<key>objectValue</key>
-							<string>'Helvetica Neue',Arial,Helvetica,Sans-Serif</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>TagName</string>
-							<key>objectValue</key>
-							<string>div</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>PaddingRight</string>
-							<key>objectValue</key>
-							<string>8px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>FontSize</string>
-							<key>objectValue</key>
-							<string>28px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>ExplicitDimensions</string>
-							<key>objectValue</key>
-							<string>YES</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Display</string>
-							<key>objectValue</key>
-							<string>inline</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>WordWrap</string>
-							<key>objectValue</key>
-							<string>break-word</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>ClassType</string>
-							<key>objectValue</key>
-							<string>Text</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Top</string>
-							<key>objectValue</key>
-							<string>10px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>PaddingBottom</string>
-							<key>objectValue</key>
-							<string>8px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>TextShadowYOffset</string>
-							<key>objectValue</key>
-							<string>0px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>WhiteSpaceCollapsing</string>
-							<key>objectValue</key>
-							<string>preserve</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Position</string>
-							<key>objectValue</key>
-							<string>absolute</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Height</string>
-							<key>objectValue</key>
-							<string>35px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Left</string>
-							<key>objectValue</key>
-							<string>93px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>TextShadowBlurRadius</string>
-							<key>objectValue</key>
-							<string>0px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>InnerHTML</string>
-							<key>objectValue</key>
-							<string>Welcome to Swift Playgrounds for the BBC micro:bit</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>ZIndex</string>
-							<key>objectValue</key>
-							<string>5</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Width</string>
-							<key>objectValue</key>
-							<string>659px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>TextShadowColor</string>
-							<key>objectValue</key>
-							<string>#000000</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>PaddingLeft</string>
-							<key>objectValue</key>
-							<string>8px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>PaddingTop</string>
-							<key>objectValue</key>
-							<string>8px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>TextShadowXOffset</string>
-							<key>objectValue</key>
-							<string>0px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Overflow</string>
-							<key>objectValue</key>
-							<string>visible</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>DisplayName</string>
-							<key>objectValue</key>
-							<string>Title Text</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>TextColor</string>
-							<key>objectValue</key>
-							<string>#FFFFFF</string>
 						</dict>
 					</array>
 					<key>5</key>
@@ -1576,15 +1470,15 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>ZIndex</string>
-							<key>objectValue</key>
-							<string>3</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
 							<string>Width</string>
 							<key>objectValue</key>
 							<string>1024px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ZIndex</string>
+							<key>objectValue</key>
+							<string>3</string>
 						</dict>
 						<dict>
 							<key>identifier</key>

@@ -4,35 +4,33 @@
 //
 //#-end-hidden-code
 /*:#localized(key: "Page4Narrative")
- It is really fun to write games on the BBC micro:bit, and one of the most simple is ‘Rock, Paper, Scissors’ which is a super game for two players.
+ It is really fun to write games on the BBC micro:bit, and one of the most simple is **Rock, Paper, Scissors** which is a super game for two players.
  
- This game is as easy to code as it is to play.
- 
- To write this program we will use a random function which will choose a random number and display the shape we have chosen to associate with that number.  In this case:
- 
+ This program will use a *random* function which will choose a random number and display the shape we have chosen to associate with that number. In this case:
  1 = Rock,
  2 = Paper,
- 3 = Scissors,
+ 3 = Scissors.
+ So we will need our range of random numbers to be from 1 to 3.
  
- So for this program we will need our range of random numbers to be from 1 to 3.
+ 1. Just as you did in the previous activity, you need to choose a button that will activate the game. Look for the `onButtonPressed` function and choose to use either button **A** or **B**. When your game is finished everytime you press this button the code will animate a fist before randomly displaying either rock, paper or scissors.
  
- 1. In the code below click next to the word ‘random’ there are 2 boxes each of which has a range of numbers displayed.
+ 2. In the code within the `random` function there are 2 boxes to specify the range of random numbers generated.
  
- 2. In the first box select ‘1’ and in the second one select ‘3’.  You have now selected a random number range of 1 to 3.
+ 3. In the first box labeled `lower bound` choose `1` and for the `upper bound` choose `3`. The `random` function will then selected a random number in range of 1 to 3.
  
- 3. Just as you did in the previous lesson you are going to choose which button will activate your game.  Look for ‘onButtonPressed =’ and choose either ‘A’ or ‘B’.  Now when your game is finished and you press this button your game will run.
+ 4. In the line that says `if randomNumber == 1` tap `image` and choose **rock** from the completion bar.
  
- 4. Look for the line that says ‘if randomNumber == 1’ and in the box beside it choose ‘Rock’ from the options you are given.
+ 5. In the line that says `if randomNumber == 2` tap `image` and choose **paper** from the completion bar.
  
- 5. Look for the line that says ‘if randomNumber == 2’ and in the box beside it choose ‘Paper’ from the options you are given.
+ 6. In the line that says `if randomNumber == 3` tap `image` and choose **scissors** from the completion bar.
  
- 6. Look for the line that says ‘if randomNumber == 3’ and in the box beside it choose ‘Scissors’ from the options you are given.
+ 7. Run your code.
+
+ 8. Press the button that you chose in step 1.
  
- 7. Run your code and press the button that you chose in step 3.
+ 9. Repeat step 8 several times and notice that the shape displayed on your micro:bit should change randomly between rock, paper and scissors.
  
- 8. Repeat step 7 several times and notice that the shape displayed on your micro:bit should change randomly between the rock, paper and scissors shape.
- 
- Now you are able to play Rock, Paper Scissors with someone else if they have completed this exercise too.  Or if you are on your own, why not use your micro:bit to compete against the computer code that you currently see on this screen?
+ Now you are able to play Rock, Paper, Scissors with someone else if they have completed this exercise too.  Or if you are on your own, why not use your micro:bit to compete against yourself?
  
  Best of five wins!
  */

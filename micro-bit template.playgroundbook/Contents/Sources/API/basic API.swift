@@ -72,9 +72,19 @@ public func showIcon(_ iconName: MicrobitImage.IconName) {
  */
 public func showString(_ text: String) {
     
-    ContentMessenger.messenger.sendMessageOfType(.writeData,
-                                                 forCharacteristicUUID: .ledTextUUID,
-                                                 withData: text.microbitData)
+    switch text.count {
+        
+    case 0:
+        clearScreen()
+        
+    case 1:
+        text.microbitImages[0].showImage()
+        
+    default:
+        ContentMessenger.messenger.sendMessageOfType(.writeData,
+                                                     forCharacteristicUUID: .ledTextUUID,
+                                                     withData: text.microbitData)
+    }
 }
 
 /**

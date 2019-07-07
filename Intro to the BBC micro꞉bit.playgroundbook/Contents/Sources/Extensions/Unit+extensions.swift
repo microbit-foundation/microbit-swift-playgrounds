@@ -32,7 +32,7 @@ public typealias MagneticFluxDensity = Measurement<UnitMagneticFluxDensity>
 
 extension UnitAcceleration {
     public static let milliGravity      = UnitAcceleration(symbol: "mg", converter: UnitConverterLinear(coefficient: 9.81 / 1000.0))
-    public static let microbitGravity   = UnitAcceleration(symbol: "mg", converter: UnitConverterLinear(coefficient: 9.81 / 1023.0))
+    public static let microbitGravity   = UnitAcceleration(symbol: "mg", converter: UnitConverterLinear(coefficient: 9.81 / 1024.0))
 }
 
 public class UnitMagneticFluxDensity: Dimension {

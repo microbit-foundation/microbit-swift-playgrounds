@@ -12,17 +12,21 @@
  
  So the accelerometer can be used to get the micro:bit to detect when it is moved, or in this case, shaken.
  
- To do this let us revisit the ‘Rock, Paper, Scissors’ game you developed in the previous lesson. In that program you had to press a button to get the code to run, but it would be much more fun (and realistic) if you could get the micro:bit to react each time you SHAKE it.
+ To do this let us revisit the ‘Rock, Paper, Scissors’ game you developed in the previous lesson. In that program you had to press a button to get the code to run, but it would be much more fun (and realistic) if you could get the micro:bit to react each time you *shake* it.
  
- 1. Look at the slightly modified version of your previous ‘Rock, Paper, Scissors’ program shown below.
+ 1. Look at the slightly modified version of the previous ‘Rock, Paper, Scissors’ program below.
  
- 2. Click in the box where you see ‘when button A pressed’ and select ‘on shake’ from the options you are given.
+ 2. Click to select the text for the `onButtonPressed` function. Change this function to `onGesture`
  
- 3. Now run your code.
+ 3. Tap in the box where you see `gesture` and select **shake** from the completion bar on the keyboard, or type in `shake` if you wish.
  
- 4. Shake your micro:bit and notice how it reacts.
+ 4. Complete the remain boxes in a similar way to the previous Rock, Paper, Scissors activity.
  
- 5. Repeat step 4 several times and notice that the shape displayed on your micro:bit should change randomly between the rock, paper and scissors shape.
+ 5. Run your code.
+ 
+ 6. Shake either your micro:bit (or the iPad if you are not using a micro:bit) and notice how it reacts.
+ 
+ 7. Repeat step 6 several times and notice that the shape displayed on your micro:bit should change randomly between the rock, paper and scissors shape.
  
  There are many ways in which the accelerometer can be used on a micro:bit and in the next exercise we will see a different application for this useful feature.
  */

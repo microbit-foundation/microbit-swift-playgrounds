@@ -4,6 +4,8 @@
 <dict>
 	<key>Name</key>
 	<string>Getting Started</string>
+	<key>TemplatePageFilename</key>
+	<string>Template.playgroundpage</string>
 	<key>Pages</key>
 	<array>
 		<string>GettingStarted.cutscenepage</string>

@@ -52,8 +52,9 @@ public class LiveViewContainerController: UIViewController, PlaygroundLiveViewSa
     override public func prepare(for seque: UIStoryboardSegue, sender: Any?) {
         
         if seque.identifier == "embedNavigationControllerSegue" {
-            if let liveViewNavigationController = seque.destination as? LiveViewNavigationController {
-                self.liveViewNavigationController = liveViewNavigationController
+            
+            if let viewController = seque.destination as? LiveViewNavigationController {
+                liveViewNavigationController = viewController
                 self.addChildViewController(liveViewNavigationController)
                 self.liveViewController.containerViewController = self
             }

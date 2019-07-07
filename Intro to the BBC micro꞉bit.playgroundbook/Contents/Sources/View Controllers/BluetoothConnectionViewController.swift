@@ -48,6 +48,8 @@ public class BluetoothConnectionViewController: UIViewController, PlaygroundBlue
         
         let connectionView = PlaygroundBluetoothConnectionView(centralManager: self.btManager.bluetoothCentralManager,
                                                                delegate: self)
+        // Setting the tint color doesn't work. Need to report to Apple
+        connectionView.tintColor = UIColor.lanternBlue
         connectionView.dataSource = self
         self.view = connectionView
     }

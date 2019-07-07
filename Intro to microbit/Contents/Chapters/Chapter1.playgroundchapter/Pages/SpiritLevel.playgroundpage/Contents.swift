@@ -4,35 +4,33 @@
 //
 //#-end-hidden-code
 /*:#localized(key: "Page6Narrative")
- In the previous exercise you saw how the BBC micro:bit’s built-in accelerometer can be used to make it run a piece of code: each discrete shake made the code run again.
+ In the previous exercise you saw how the BBC micro:bit’s built-in accelerometer can be used to detect a shake gesture. This is not the only way that the micro:bit’s accelerometer can be used.
  
- However, this is not the only way that the micro:bit’s accelerometer can be used.  It can respond in real-time too.
+ The accelerometer measures the orientation of the micro:bit in three dimensions: **x**, **y** and **z**. We can use this to determine whether the micro:bit is *tilted* or *flat*.
  
- As the accelerometer measures the orientation of the micro:bit in three dimensions (x, y and z), we can use this feature to determine whether it has been tilted or not.
+ One practical application of this is a *spirit level.* When the micro:bit is flat, the centre LED will be turned on, but as the device is tilted it will show an LED further towards the edge; like the bubble in a spirit level.
  
- One practical application of this is a ‘spirit level’: when the micro:bit is perfectly even, the centre LED will be turned on, but as the device is tilted it will show an LED further towards the edge.
+ 1. Look at the display opposite. As you tilt your micro:bit, (or iPad if you do not have a connected micro:bit), you will see the acceleration values change. These represent how far the micro:bit is tilted in each direction.
  
- 1. Look at the display beside the on-screen micro:bit. As you tilt your micro:bit you will see the acceleration values change, representing how tilted the micro:bit is in each direction. 
+ 2. Run the code below.
  
- 2. Run the code shown below.
- 
- 3. Tilt your micro:bit from one side to another and watch how the values change. See how, for each axis, -1024 is a strong tilt one way and +1024 a strong tilt the other?
+ 3. Tilt your micro:bit from one side to another and watch how the values change. For each axis the values change between -1000 and +1000. This measurement is in *milli-gravities.* A value of 1000 (1 gravity) represents the full force of gravity acting along that axis of the micro:bit. If you are tilting the iPad you might find it useful to turn on the orientation lock first.
  
  4. Try to get the lit LED to sit in the very centre of the 5 x 5 display.
  
  5. Look at the code below.
  
- 6. The code is currently reacting to the position of the device on the x axis. We start with x=2, which is the middle of the display, and reduce it if the number is negative, or increase it if the number is positive. This selects which LED to light.
+ 6. The code is reacting to the orientation of the device along the x axis. We read the value of `x` from the `accelerationValues` and then determine which of the horizontal LEDs in the centre of the display should be lit. The centre line is where y is 2.
  
- 7. Change every occurrence of ‘x’ that you see in the code to ‘y’ and change every ‘y’ to ‘x’
+ 7. All the code below is fully editable.
  
- 8. Run the code again.
+ 8. Change the code so that the micro:bit is more sensitive to being tilted.
  
- 9. Do you notice what has changed?  The micro:bit is now displaying how its position on the y axis.
+ 9. You need to re-run the code everytime you edit it.
  
- As your display is only two dimensional it is not really possible to show the position of the micro:bit on the z-axis too, but can you add some code to your solution below so that it shows both x and y position together? You can select a block of code and copy it.
+ 10. Try to change the code so that it reads the `y` from `accelerationValues` and then change the LED along the y axis too. You can select blocks of code to copy and paste.
  
- Now you've mastered the accelerometer you can use it for other things: for example, it could be used to create a game in which the micro:bit is used for a driving simulation.
+ Now that you've mastered the accelerometer you can use it for other things. For example, it could be used to create a game in which the micro:bit is used for a driving simulation.
  */
 //#-hidden-code
 import PlaygroundSupport
@@ -44,7 +42,6 @@ setAccelerometerPeriod(.ms160)
 
 //#-end-hidden-code
 //#-editable-code
-
 let image = MicrobitImage()
 var lastX = 2
 image.plot(x: lastX, y: 2)

@@ -93,8 +93,10 @@ public class LiveViewController: UIViewController, BTManagerDelegate, LoggingPro
     override public func prepare(for seque: UIStoryboardSegue, sender: Any?) {
         
         if seque.identifier == "embedValueTableControllerSegue" {
-            if let valuesTableViewController = seque.destination as? ValuesTableViewController {
-                self.valuesTableViewController = valuesTableViewController
+            
+            //self.logMessage("\(seque.destination)")
+            if let viewController = seque.destination as? ValuesTableViewController {
+                valuesTableViewController = viewController
                 valuesTableViewController.dataSource = self
             }
         }

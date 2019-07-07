@@ -21,13 +21,13 @@
 	<key>guidesAreVisible</key>
 	<true/>
 	<key>lastCheckDate</key>
-	<date>2018-09-27T10:36:36Z</date>
+	<date>2019-06-30T11:45:34Z</date>
 	<key>layout</key>
 	<dict>
 		<key>keyframeTimelineHeight</key>
 		<real>50</real>
 		<key>mainWindowFrame</key>
-		<string>70 113 1135 1059 0 0 1920 1177 </string>
+		<string>289 357 1135 1059 0 0 3200 1777 </string>
 		<key>openTabs</key>
 		<array/>
 		<key>selectedTabIndex</key>
@@ -61,7 +61,7 @@
 		<string>None</string>
 	</dict>
 	<key>oidCounter</key>
-	<integer>19</integer>
+	<integer>20</integer>
 	<key>resources</key>
 	<array>
 		<dict>
@@ -152,55 +152,6 @@
 		</dict>
 		<dict>
 			<key>fileModificationDate</key>
-			<date>2018-09-27T10:02:08Z</date>
-			<key>fileSize</key>
-			<integer>65906</integer>
-			<key>md5</key>
-			<string>524E4F76C9BD821AE9B7BC51DC02DB0C</string>
-			<key>notifyOnBookmarkChange</key>
-			<true/>
-			<key>originalPath</key>
-			<string>/Users/gary/Software Development/Stinky Kitten/Swift Playgrounds/microbit Playground Books/Source Artwork/image_popover.png</string>
-			<key>resourceName</key>
-			<string>image_popover.png</string>
-			<key>securityScopedBookmark</key>
-			<data>
-			Ym9va5gDAAAAAAQQMAAAANci1nI+Akf/URIV0FKSPbCMGIOiNuga
-			e3mb+UiRDyc/lAIAAAQAAAADAwAAAAkAKAUAAAABAQAAVXNlcnMA
-			AAAEAAAAAQEAAGdhcnkUAAAAAQEAAFNvZnR3YXJlIERldmVsb3Bt
-			ZW50DQAAAAEBAABTdGlua3kgS2l0dGVuAAAAEQAAAAEBAABTd2lm
-			dCBQbGF5Z3JvdW5kcwAAABkAAAABAQAAbWljcm9iaXQgUGxheWdy
-			b3VuZCBCb29rcwAAAA4AAAABAQAAU291cmNlIEFydHdvcmsAABEA
-			AAABAQAAaW1hZ2VfcG9wb3Zlci5wbmcAAAAgAAAAAQYAABAAAAAg
-			AAAALAAAAEgAAABgAAAAfAAAAKAAAAC4AAAACAAAAAQDAAD5ZgIA
-			AAAAAAgAAAAEAwAAEl0JAAAAAAAIAAAABAMAAH8iFQAAAAAACAAA
-			AAQDAADO5xYAAAAAAAgAAAAEAwAACsp0AAIAAAAIAAAABAMAAPiG
-			xQACAAAACAAAAAQDAADIrucAAgAAAAgAAAAEAwAAVXsrAQIAAAAg
-			AAAAAQYAAPwAAAAMAQAAHAEAACwBAAA8AQAATAEAAFwBAABsAQAA
-			CAAAAAAEAABBwK5w9vnToRgAAAABAgAAAQAAAAAAAAAPAAAAAAAA
-			AAAAAAAAAAAACAAAAAQDAAAGAAAAAAAAAAQAAAADAwAA9QEAAAgA
-			AAABCQAAZmlsZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAE
-			AwAAAHCiR3QAAAAIAAAAAAQAAEG5XrHGAAAAJAAAAAEBAAA1RjRG
-			MzBBQy0wNzg2LTNGRTctQkU5NS0xNUQxRUZENUJDODkYAAAAAQIA
-			AIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAAAAA
-			AAABBQAAzAAAAP7///8BAAAAAAAAABAAAAAEEAAA1AAAAAAAAAAF
-			EAAAfAEAAAAAAAAQEAAAtAEAAAAAAABAEAAApAEAAAAAAAACIAAA
-			gAIAAAAAAAAFIAAA8AEAAAAAAAAQIAAAAAIAAAAAAAARIAAANAIA
-			AAAAAAASIAAAFAIAAAAAAAATIAAAJAIAAAAAAAAgIAAAYAIAAAAA
-			AAAwIAAAjAIAAAAAAAABwAAA1AEAAAAAAAARwAAAIAAAAAAAAAAS
-			wAAA5AEAAAAAAAAQ0AAABAAAAAAAAAA=
-			</data>
-			<key>shouldIncludeInDocumentHeadHTML</key>
-			<false/>
-			<key>shouldPreload</key>
-			<true/>
-			<key>shouldRemoveWhenNoLongerReferenced</key>
-			<true/>
-			<key>type</key>
-			<string>FileResource</string>
-		</dict>
-		<dict>
-			<key>fileModificationDate</key>
 			<date>2018-09-27T10:03:23Z</date>
 			<key>fileSize</key>
 			<integer>153678</integer>
@@ -238,6 +189,57 @@
 			ABIgAAAQAgAAAAAAABMgAAAgAgAAAAAAACAgAABcAgAAAAAAADAg
 			AACIAgAAAAAAAAHAAADQAQAAAAAAABHAAAAgAAAAAAAAABLAAADg
 			AQAAAAAAABDQAAAEAAAAAAAAAA==
+			</data>
+			<key>shouldIncludeInDocumentHeadHTML</key>
+			<false/>
+			<key>shouldPreload</key>
+			<true/>
+			<key>shouldRemoveWhenNoLongerReferenced</key>
+			<true/>
+			<key>type</key>
+			<string>FileResource</string>
+		</dict>
+		<dict>
+			<key>fileModificationDate</key>
+			<date>2019-06-30T11:35:33Z</date>
+			<key>fileSize</key>
+			<integer>312483</integer>
+			<key>md5</key>
+			<string>0907AF6B02093E590D7DFC9C93233B72</string>
+			<key>notifyOnBookmarkChange</key>
+			<true/>
+			<key>originalPath</key>
+			<string>/Users/gary/Software Development/Stinky Kitten/Swift Playgrounds/microbit Playground Books/Source Artwork/image_popover.png</string>
+			<key>resourceName</key>
+			<string>image_popover.png</string>
+			<key>securityScopedBookmark</key>
+			<data>
+			Ym9va9QDAAAAAAQQMAAAAGzL40u21tBtwB7oeVymQl0/qXwfKuju
+			3SQ96xU1iiXJxAIAAAQAAAADAwAAAAkAKAUAAAABAQAAVXNlcnMA
+			AAAEAAAAAQEAAGdhcnkUAAAAAQEAAFNvZnR3YXJlIERldmVsb3Bt
+			ZW50DQAAAAEBAABTdGlua3kgS2l0dGVuAAAAEQAAAAEBAABTd2lm
+			dCBQbGF5Z3JvdW5kcwAAABkAAAABAQAAbWljcm9iaXQgUGxheWdy
+			b3VuZCBCb29rcwAAAA4AAAABAQAAU291cmNlIEFydHdvcmsAABEA
+			AAABAQAAaW1hZ2VfcG9wb3Zlci5wbmcAAAAgAAAAAQYAABAAAAAg
+			AAAALAAAAEgAAABgAAAAfAAAAKAAAAC4AAAACAAAAAQDAADTkwIA
+			AAAAAAgAAAAEAwAAdT0JAAAAAAAIAAAABAMAAGZWFgAAAAAACAAA
+			AAQDAABmFxgAAAAAAAgAAAAEAwAAHxJYAAIAAAAIAAAABAMAACtf
+			tAACAAAACAAAAAQDAACcnNUAAgAAAAgAAAAEAwAAV29HAgIAAAAg
+			AAAAAQYAAPwAAAAMAQAAHAEAACwBAAA8AQAATAEAAFwBAABsAQAA
+			CAAAAAAEAABBwWRq4ITJ/BgAAAABAgAAAQAAAAAAAAAPAAAAAAAA
+			AAAAAAAAAAAACAAAAAQDAAAGAAAAAAAAAAQAAAADAwAA9QEAAAgA
+			AAABCQAAZmlsZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAE
+			AwAAALCgR3QAAAAIAAAAAAQAAEG6FCNKAAAAJAAAAAEBAAAxMDM2
+			MEY0My1BRUM3LTNEOTgtODVBMi0yNDhDMzBGQzlDNDAYAAAAAQIA
+			AIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAAAAA
+			AAABBQAAGgAAAAEBAABOU1VSTERvY3VtZW50SWRlbnRpZmllcktl
+			eQAABAAAAAMDAADxpQAA2AAAAP7///8BAAAAAAAAABEAAAAEEAAA
+			1AAAAAAAAAAFEAAAfAEAAAAAAAAQEAAAtAEAAAAAAABAEAAApAEA
+			AAAAAAACIAAAgAIAAAAAAAAFIAAA8AEAAAAAAAAQIAAAAAIAAAAA
+			AAARIAAANAIAAAAAAAASIAAAFAIAAAAAAAATIAAAJAIAAAAAAAAg
+			IAAAYAIAAAAAAAAwIAAAjAIAAAAAAAABwAAA1AEAAAAAAAARwAAA
+			IAAAAAAAAAASwAAA5AEAAAAAAAAQ0AAABAAAAAAAAACUAgCAuAIA
+			AAAAAAA=
 			</data>
 			<key>shouldIncludeInDocumentHeadHTML</key>
 			<false/>
@@ -457,7 +459,7 @@
 							<key>identifier</key>
 							<string>Left</string>
 							<key>objectValue</key>
-							<string>760px</string>
+							<string>750px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -505,7 +507,7 @@
 							<key>identifier</key>
 							<string>Top</string>
 							<key>objectValue</key>
-							<string>19px</string>
+							<string>20px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -643,7 +645,7 @@
 							<key>identifier</key>
 							<string>TextColor</string>
 							<key>objectValue</key>
-							<string>#F94E31</string>
+							<string>#007BFF</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -970,160 +972,13 @@
 							<string>div</string>
 						</dict>
 					</array>
-					<key>17</key>
-					<array>
-						<dict>
-							<key>identifier</key>
-							<string>Position</string>
-							<key>objectValue</key>
-							<string>absolute</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>DisplayName</string>
-							<key>objectValue</key>
-							<string>image_popover</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>BackgroundOrigin</string>
-							<key>objectValue</key>
-							<string>content-box</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>OriginalWidth</string>
-							<key>objectValue</key>
-							<string>475px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>SizeRatio</string>
-							<key>objectValue</key>
-							<string>1.00423</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Left</string>
-							<key>objectValue</key>
-							<string>494px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>OriginalHeight</string>
-							<key>objectValue</key>
-							<string>473px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Display</string>
-							<key>objectValue</key>
-							<string>inline</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>BackgroundImage</string>
-							<key>objectValue</key>
-							<string>image_popover.png</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>ConstrainProportions</string>
-							<key>objectValue</key>
-							<string>YES</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Height</string>
-							<key>objectValue</key>
-							<string>237px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Overflow</string>
-							<key>objectValue</key>
-							<string>visible</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Width</string>
-							<key>objectValue</key>
-							<string>238px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Top</string>
-							<key>objectValue</key>
-							<string>446px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>BackgroundSize</string>
-							<key>objectValue</key>
-							<string>100% 100%</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>ZIndex</string>
-							<key>objectValue</key>
-							<string>14</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>TagName</string>
-							<key>objectValue</key>
-							<string>div</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>ExplicitDimensions</string>
-							<key>objectValue</key>
-							<string>YES</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>ClassType</string>
-							<key>objectValue</key>
-							<string>Image</string>
-						</dict>
-					</array>
 					<key>18</key>
 					<array>
-						<dict>
-							<key>identifier</key>
-							<string>Position</string>
-							<key>objectValue</key>
-							<string>absolute</string>
-						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>DisplayName</string>
 							<key>objectValue</key>
 							<string>image_debug</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>BackgroundOrigin</string>
-							<key>objectValue</key>
-							<string>content-box</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>OriginalWidth</string>
-							<key>objectValue</key>
-							<string>4335px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>SizeRatio</string>
-							<key>objectValue</key>
-							<string>2.05645</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Left</string>
-							<key>objectValue</key>
-							<string>80px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1133,63 +988,9 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>Display</string>
+							<string>OriginalWidth</string>
 							<key>objectValue</key>
-							<string>inline</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>BackgroundImage</string>
-							<key>objectValue</key>
-							<string>image_debug.png</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>ConstrainProportions</string>
-							<key>objectValue</key>
-							<string>YES</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Height</string>
-							<key>objectValue</key>
-							<string>223px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Overflow</string>
-							<key>objectValue</key>
-							<string>visible</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Width</string>
-							<key>objectValue</key>
-							<string>459px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>Top</string>
-							<key>objectValue</key>
-							<string>350px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>BackgroundSize</string>
-							<key>objectValue</key>
-							<string>100% 100%</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>ZIndex</string>
-							<key>objectValue</key>
-							<string>13</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>TagName</string>
-							<key>objectValue</key>
-							<string>div</string>
+							<string>4335px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1199,9 +1000,117 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
+							<string>ConstrainProportions</string>
+							<key>objectValue</key>
+							<string>YES</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Display</string>
+							<key>objectValue</key>
+							<string>inline</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
 							<string>ClassType</string>
 							<key>objectValue</key>
 							<string>Image</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Top</string>
+							<key>objectValue</key>
+							<string>350px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BackgroundImage</string>
+							<key>objectValue</key>
+							<string>image_debug.png</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Position</string>
+							<key>objectValue</key>
+							<string>absolute</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Height</string>
+							<key>objectValue</key>
+							<string>223px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Left</string>
+							<key>objectValue</key>
+							<string>80px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>SizeRatio</string>
+							<key>objectValue</key>
+							<string>2.05645</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BackgroundOrigin</string>
+							<key>objectValue</key>
+							<string>content-box</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderRadiusTopLeft</string>
+							<key>objectValue</key>
+							<string>12px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Width</string>
+							<key>objectValue</key>
+							<string>459px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ZIndex</string>
+							<key>objectValue</key>
+							<string>13</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BackgroundSize</string>
+							<key>objectValue</key>
+							<string>100% 100%</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderRadiusTopRight</string>
+							<key>objectValue</key>
+							<string>12px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Overflow</string>
+							<key>objectValue</key>
+							<string>visible</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderRadiusBottomRight</string>
+							<key>objectValue</key>
+							<string>12px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderRadiusBottomLeft</string>
+							<key>objectValue</key>
+							<string>12px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>TagName</string>
+							<key>objectValue</key>
+							<string>div</string>
 						</dict>
 					</array>
 					<key>19</key>
@@ -1298,15 +1207,15 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>Width</string>
-							<key>objectValue</key>
-							<string>392px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
 							<string>PaddingLeft</string>
 							<key>objectValue</key>
 							<string>8px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>Width</string>
+							<key>objectValue</key>
+							<string>392px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1333,35 +1242,35 @@
 							<string>#000000</string>
 						</dict>
 					</array>
-					<key>2</key>
+					<key>20</key>
 					<array>
 						<dict>
 							<key>identifier</key>
-							<string>FontFamily</string>
+							<string>DisplayName</string>
 							<key>objectValue</key>
-							<string>'Helvetica Neue',Arial,Helvetica,Sans-Serif</string>
+							<string>image_popover</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>TextColor</string>
+							<string>OriginalHeight</string>
 							<key>objectValue</key>
-							<string>#FFFFFF</string>
+							<string>536px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>PaddingRight</string>
+							<string>OriginalWidth</string>
 							<key>objectValue</key>
-							<string>8px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>FontSize</string>
-							<key>objectValue</key>
-							<string>28px</string>
+							<string>482px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>ExplicitDimensions</string>
+							<key>objectValue</key>
+							<string>YES</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>ConstrainProportions</string>
 							<key>objectValue</key>
 							<string>YES</string>
 						</dict>
@@ -1373,39 +1282,21 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>WordWrap</string>
-							<key>objectValue</key>
-							<string>break-word</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
 							<string>ClassType</string>
 							<key>objectValue</key>
-							<string>Text</string>
+							<string>Image</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>Top</string>
 							<key>objectValue</key>
-							<string>10px</string>
+							<string>423px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>PaddingBottom</string>
+							<string>BackgroundImage</string>
 							<key>objectValue</key>
-							<string>8px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>TextShadowYOffset</string>
-							<key>objectValue</key>
-							<string>0px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>WhiteSpaceCollapsing</string>
-							<key>objectValue</key>
-							<string>preserve</string>
+							<string>image_popover.png</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1417,61 +1308,55 @@
 							<key>identifier</key>
 							<string>Height</string>
 							<key>objectValue</key>
-							<string>35px</string>
+							<string>247px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>Left</string>
 							<key>objectValue</key>
-							<string>99px</string>
+							<string>498px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>TextShadowBlurRadius</string>
+							<string>SizeRatio</string>
 							<key>objectValue</key>
-							<string>0px</string>
+							<string>0.899254</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>InnerHTML</string>
+							<string>BackgroundOrigin</string>
 							<key>objectValue</key>
-							<string>Working with micro:bit Images</string>
+							<string>content-box</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>ZIndex</string>
+							<string>BorderRadiusTopLeft</string>
 							<key>objectValue</key>
-							<string>5</string>
+							<string>12px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>Width</string>
 							<key>objectValue</key>
-							<string>598px</string>
+							<string>222px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>TextShadowColor</string>
+							<string>ZIndex</string>
 							<key>objectValue</key>
-							<string>#000000</string>
+							<string>16</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>PaddingLeft</string>
+							<string>BackgroundSize</string>
 							<key>objectValue</key>
-							<string>8px</string>
+							<string>100% 100%</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>PaddingTop</string>
+							<string>BorderRadiusTopRight</string>
 							<key>objectValue</key>
-							<string>8px</string>
-						</dict>
-						<dict>
-							<key>identifier</key>
-							<string>TextShadowXOffset</string>
-							<key>objectValue</key>
-							<string>0px</string>
+							<string>12px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1481,9 +1366,15 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
-							<string>DisplayName</string>
+							<string>BorderRadiusBottomRight</string>
 							<key>objectValue</key>
-							<string>Title Text</string>
+							<string>12px</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
+							<string>BorderRadiusBottomLeft</string>
+							<key>objectValue</key>
+							<string>12px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -2117,7 +2008,7 @@
 							<key>identifier</key>
 							<string>Left</string>
 							<key>objectValue</key>
-							<string>40px</string>
+							<string>41px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -2215,7 +2106,7 @@
 			<string>{0, 0}</string>
 			<key>selectedObjects</key>
 			<array>
-				<string>2</string>
+				<string>11</string>
 			</array>
 			<key>showTimelineActions</key>
 			<false/>
