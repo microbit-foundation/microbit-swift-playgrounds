@@ -1,7 +1,7 @@
 {
   "title" : "micro:bit",
   "publisherName" : "Micro:bit Educational Foundation",
-  "feedIdentifier" : "org.microbit.swift-playgrounds.microbit-intro",
+  "feedIdentifier" : "org.microbit.swift-playgrounds",
   "contactURL" : "https://microbit.org/guide/swift-playgrounds",
   "formatVersion" : "1.2",
   "documents" : [
