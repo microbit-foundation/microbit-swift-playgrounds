@@ -50,3 +50,7 @@ The repository also contains three script files:
 * create\_template\_book.sh
 
 These were used by us to the create the **micro:bit API**,  **Intro to the BBC micro:bit** and **micro-bit template** playground books. These scripts copy and _compile_ the **micro-bit source** book and then merge the books' contents from separate folders. You may wish to copy and modify one of these scripts for your own workflow. They contain lines to compile the original storyboard and assets from the _source_ book. Unless you intend to modify the storyboard or assets then you should just work from the compiled template book instead.
+
+## Code of Conduct
+
+Trust, partnership, simplicity and passion are our core values we live and breathe in our daily work life and within our projects. Our open-source projects are no exception. We have an active community which spans the globe and we welcome and encourage participation and contributions to our projects by everyone. We work to foster a positive, open, inclusive and supportive environment and trust that our community respects the micro:bit code of conduct. Please see our [code of conduct](https://microbit.org/safeguarding/) which outlines our expectations for all those that participate in our community and details on how to report any concerns and what would happen should breaches occur.
