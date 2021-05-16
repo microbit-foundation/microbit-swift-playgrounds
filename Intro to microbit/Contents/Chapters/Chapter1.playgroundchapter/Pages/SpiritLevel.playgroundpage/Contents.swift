@@ -38,7 +38,7 @@ import PlaygroundSupport
 //#-code-completion(everything, hide)
 //#-code-completion(currentmodule, show)
 
-setAccelerometerPeriod(.ms160)
+setAccelerometerPeriod(.ms80)
 
 //#-end-hidden-code
 //#-editable-code

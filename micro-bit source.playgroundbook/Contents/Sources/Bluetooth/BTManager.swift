@@ -70,7 +70,7 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate, BT
                                                         self.bluetoothCentralManager!.scanning = false
                                                         self.microbitPairingTimer = nil
                                                         self.callPairingHandlerWithError(.timeoutSearchingForMicrobit)
-        })
+                                                    })
         bluetoothCentralManager!.scanning = true
     }
     
@@ -95,7 +95,7 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate, BT
     
     public func microbitNameForPeripheral(_ peripheral: CBPeripheral) -> String? {
         if let devicesMappingDict = self.pairedDeviceMappings,
-        let microbitNameValue = devicesMappingDict[String(describing: peripheral.identifier)] {
+           let microbitNameValue = devicesMappingDict[String(describing: peripheral.identifier)] {
             if case .string(let microbitName) = microbitNameValue {
                 return microbitName
             }
@@ -141,11 +141,11 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate, BT
                                                                         let store = PlaygroundKeyValueStore.current
                                                                         store["com.apple.PlaygroundBluetooth.LastConnectedPeripheral"] = nil
                                                                     }
-                                                                    if peripheral != nil {
-                                                                        //self.messageLogger?.logMessage("Connected to last known peripheral \(peripheral!)")
-                                                                    }
+//                                                                    if peripheral != nil {
+//                                                                        self.messageLogger?.logMessage("Connected to last known peripheral \(peripheral!)")
+//                                                                    }
                                                                     
-            }) {
+                                                                }) {
                 // There was no previously connected micro:bit - pairing required
                 self.messageLogger?.logMessage("No previously connected micro:bit")
             }
@@ -174,7 +174,7 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate, BT
             // TODO: What to do on a failure to connect callback - possibly because it has lost pairing info - advise to pair again.
             messageLogger?.logMessage("Failed to connect with error: \(error)")
             switch error {
-                
+
             case .excessiveConnections: // This occurs when switching micro:bits - try again but 1/2 second later on the main thread
                 DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
                     centralManager.connect(to: peripheral, timeout: 7.0, callback: nil)
@@ -207,11 +207,11 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate, BT
                                withAdvertisementData advertisementData: [String: Any]?,
                                rssi: Double) {
         
-        //self.messageLogger?.logMessage("Found peripheral: \(peripheral) + \(advertisementData)")
+        self.messageLogger?.logMessage("Found peripheral: \(peripheral) + \(advertisementData!)")
         
         if let peripheralName = advertisementData?[CBAdvertisementDataLocalNameKey] as? String {
             if peripheralName == self.microbitPairingName {
-                //self.messageLogger?.logMessage("Found micro:bit")
+                self.messageLogger?.logMessage("Found micro:bit")
                 centralManager.scanning = false
                 self.microbitPairingTimer?.invalidate()
                 self.microbitPairingTimer = nil
@@ -219,18 +219,19 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate, BT
                 centralManager.connect(toPeripheralWithUUID: peripheral.identifier,
                                        timeout: 7,
                                        callback: {peripheral, error in
-                                        
-                                        //self.messageLogger?.logMessage("Call back with: \(peripheral ?? nil) and error \(error ?? nil)")
+
+                                        self.messageLogger?.logMessage("Call back with: \(peripheral?.description ?? "nil") and error \(error?.localizedDescription ?? "nil")")
                                         
                                         if error != nil {
                                             // Handle connection error
-                                            self.callPairingHandlerWithError(.failedToConnectToMicrobit)
+                                            // This has changed from .failedToConnectToMicrobit to .microbitFlashed
+                                            // This is a change of behaviour with either later versions of iOS or the micro:bit
+                                            self.callPairingHandlerWithError(.microbitFlashed)
                                             
                                         } else if peripheral != nil {
                                             // Connection successful
                                             self.microbit = BTMicrobit(peripheral: peripheral!)
                                             self.microbit?.delegate = self
-                                            //self.messageLogger?.logMessage("Reading value for \(self.microbit!)")
                                             // If this method is called after the micro:bit is flashed but the iPad still think it is paired then the handler is never called.
                                             // For this situation we need our own timeout Timer.
                                             self.microbitPairingTimer = Timer.scheduledTimer(withTimeInterval: 10.0,
@@ -240,26 +241,69 @@ public class BTManager : NSObject, PlaygroundBluetoothCentralManagerDelegate, BT
                                                                                                 
                                                                                                 self.microbitPairingTimer = nil
                                                                                                 self.callPairingHandlerWithError(.microbitFlashed)
-                                            })
-                                            self.microbit!.readValueForCharacteristic(.dfuControlUUID,
+                                                                                             })
+
+                                            self.microbit!.readValueForCharacteristic(.modelNumberString,
                                                                                       handler: {(characteristic: CBCharacteristic, error: Error?) in
-                                                                                        
-                                                                                        self.microbitPairingTimer?.invalidate()
-                                                                                        self.microbitPairingTimer = nil
-                                                                                        self.microbitPairingName = nil
-                                                                                        
-                                                                                        if let characteristicData = characteristic.value {
-                                                                                            let _ = Int(characteristicData[0])
-                                                                                            //self.messageLogger?.logMessage("[DEBUG] pairing read control value: \(intValue)")
-                                                                                            self.callPairingHandlerWithError()
-                                                                                        } else {
-                                                                                            //self.messageLogger?.logMessage("[DEBUG] cannot retreive pairing control value")
-                                                                                            // If the code is entered incorrectly - we get error code 15, "Encryption is insufficient"
-                                                                                            self.callPairingHandlerWithError(.failedToRetrieveCharacteristicValue)
+
+                                                                                        if error == nil, let characteristicData = characteristic.value {
+                                                                                            if let modelNumberString = String(data: characteristicData, encoding: .ascii) {
+                                                                                                self.messageLogger?.logMessage("Value for model number string: " + modelNumberString)
+                                                                                                var versionNumber = 1.0
+                                                                                                if let versionIndex = modelNumberString.lastIndex(of: "V") {
+                                                                                                    let index = versionIndex.utf16Offset(in: modelNumberString) + 1
+                                                                                                    let versionNumberString = modelNumberString.suffix(from: String.Index(utf16Offset: index, in: modelNumberString))
+                                                                                                    if let convertedNumber = Double(versionNumberString) {
+                                                                                                        versionNumber = convertedNumber
+                                                                                                    }
+                                                                                                }
+
+                                                                                                if (versionNumber >= 2.0) {
+
+                                                                                                    let data = Data.fromUInt8(0x77)
+                                                                                                    self.messageLogger?.logMessage("[DEBUG] sending data: \(data)")
+                                                                                                    self.microbit!.writeValue(data,
+                                                                                                                              forCharacteristicUUID: .dfuAppBondUUID,
+                                                                                                                              handler: {(characteristic: CBCharacteristic, error: Error?) in
+
+                                                                                                                                self.microbitPairingTimer?.invalidate()
+                                                                                                                                self.microbitPairingTimer = nil
+                                                                                                                                self.microbitPairingName = nil
+
+                                                                                                                                // There is no value to check with this method of setting the characteristic - hmm...
+                                                                                                                                self.messageLogger?.logMessage("[DEBUG] characteristic: \(characteristic)")
+                                                                                                                                self.messageLogger?.logMessage("[DEBUG] characteristic value: \(characteristic.value)")
+
+                                                                                                                                self.callPairingHandlerWithError()
+                                                                                                                              })
+                                                                                                } else {
+
+                                                                                                    self.microbit!.readValueForCharacteristic(.dfuControlUUID,
+                                                                                                                                              handler: {(characteristic: CBCharacteristic, error: Error?) in
+
+                                                                                                                                                self.microbitPairingTimer?.invalidate()
+                                                                                                                                                self.microbitPairingTimer = nil
+                                                                                                                                                self.microbitPairingName = nil
+
+                                                                                                                                                if let characteristicData = characteristic.value {
+                                                                                                                                                    let intValue = Int(characteristicData[0])
+                                                                                                                                                    self.messageLogger?.logMessage("[DEBUG] pairing read control value: \(intValue)")
+                                                                                                                                                    self.callPairingHandlerWithError()
+                                                                                                                                                } else {
+                                                                                                                                                    self.messageLogger?.logMessage("[DEBUG] cannot retreive pairing control value")
+                                                                                                                                                    // If the code is entered incorrectly - we get error code 15, "Encryption is insufficient"
+                                                                                                                                                    self.callPairingHandlerWithError(.failedToRetrieveCharacteristicValue)
+                                                                                                                                                }
+                                                                                                                                              })
+                                                                                                    self.messageLogger?.logMessage("Reading value for \(self.microbit!)")
+                                                                                                }
+
+                                                                                                self.messageLogger?.logMessage("Version number: \(versionNumber)")
+                                                                                            }
                                                                                         }
-                                            })
+                                                                                      })
                                         }
-                })
+                                       })
             }
         }
     }

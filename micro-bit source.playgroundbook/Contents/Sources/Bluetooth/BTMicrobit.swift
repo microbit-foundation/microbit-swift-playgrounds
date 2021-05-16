@@ -104,7 +104,10 @@ public class BTMicrobit: BTPeripheral {
     }
     
     /**
-     An enum for representing the micro:bit's accelerometer period values in milli-seconds. The cases are .ms1, .ms2, .ms5, .ms10, .ms20, .ms80, .ms160 and .ms640
+     An enum for representing the micro:bit's accelerometer period values in milli-seconds.
+     The cases are .ms1, .ms2, .ms5, .ms10, .ms20, .ms40, .ms80, .ms100, .ms160, .ms640 and .ms1000
+     Note that the value set may not be the actual period of the update as the micro:bit will round these values up
+     to those appropriate for the board.
      */
     public enum AccelerometerPeriod : Int {
         case ms1 = 1
@@ -112,9 +115,12 @@ public class BTMicrobit: BTPeripheral {
         case ms5 = 5
         case ms10 = 10
         case ms20 = 20
+        case ms40 = 40
         case ms80 = 80
+        case ms100 = 100
         case ms160 = 160
         case ms640 = 640
+        case ms1000 = 1000
     }
     
     /**

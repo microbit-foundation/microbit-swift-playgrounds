@@ -131,8 +131,12 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
                            error: Error?) {
         
         let uuidString = characteristic.uuid.uuidString
-        
-        //self.messageLogger?.logMessage("characteristic: \(characteristic) did update value: \(characteristic.value!)")
+
+//        if let characteristicValue = characteristic.value {
+//            self.messageLogger?.logMessage("characteristic: \(characteristic) did update value to: \(characteristicValue)")
+//        } else {
+//            self.messageLogger?.logMessage("characteristic: \(characteristic) did update value to nil")
+//        }
         
         if let handlers = self.handlersWithUUID(uuidString, forType: .characteristicReadHandler) {
             for case let (_, handler as ReadCharacteristicHandler) in handlers {
@@ -374,7 +378,7 @@ public class BTPeripheral: NSObject, CBPeripheralDelegate {
                                forType handlerTypeDictionary: BTPeripheral.HandlerType) {
         
         self.isolationQueue.async {
-            var localDict = self.handlers[handlerTypeDictionary]
+            let localDict = self.handlers[handlerTypeDictionary]
             if var handlers = localDict![uuidKey] {
                 /*DispatchQueue.main.async {
                  self.messageLogger?.logMessage("Handlers: \(handlers)")
