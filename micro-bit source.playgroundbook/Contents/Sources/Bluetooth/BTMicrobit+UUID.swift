@@ -32,10 +32,13 @@ extension BTMicrobit {
     public enum ServiceUUID: String, CustomStringConvertible {
         
         case genericAccessUUID = "00001800-0000-1000-8000-00805F9B34FB"
-        case deviceInformationUUID = "0000180A-0000-1000-8000-00805F9B34FB"
-        
+        case deviceInformationUUID = "180A"
+
+        // This has been deprecated - do not use
         case dfuControlUUID = "E95D93B0-251D-470A-A062-FA1922DFA9A8"
-        
+
+        case secureDFUServiceUUID = "FE59"
+
         case ledUUID = "E95DD91D-251D-470A-A062-FA1922DFA9A8"
         case buttonUUID = "E95D9882-251D-470A-A062-FA1922DFA9A8"
         case accelerometerUUID = "E95D0753-251D-470A-A062-FA1922DFA9A8"
@@ -54,6 +57,8 @@ extension BTMicrobit {
                 return "Device Information Service"
             case .dfuControlUUID:
                 return "DFU Control Service"
+            case .secureDFUServiceUUID:
+                return "Secure DFU Service"
             case .ledUUID:
                 return "LED Display Service"
             case .buttonUUID:
@@ -77,8 +82,13 @@ extension BTMicrobit {
     // MARK:- Characterisitic UUIDs
     
     public enum CharacteristicUUID: String {
-        
+
+        case modelNumberString = "2A24"
+
+        // This has been deprecated - do not use
         case dfuControlUUID = "E95D93B1-251D-470A-A062-FA1922DFA9A8"
+
+        case dfuAppBondUUID = "8EC90004-F315-4F60-9FB8-838830DAEA50"
         
         case ledStateUUID = "E95D7B77-251D-470A-A062-FA1922DFA9A8"
         case ledTextUUID = "E95D93EE-251D-470A-A062-FA1922DFA9A8"
@@ -113,8 +123,14 @@ extension BTMicrobit {
         public var serviceUUID: ServiceUUID {
             get {
                 switch self {
+                case .modelNumberString:
+                    return .deviceInformationUUID
+
                 case .dfuControlUUID:
                     return .dfuControlUUID
+
+                case .dfuAppBondUUID:
+                    return .secureDFUServiceUUID
                     
                 case .ledStateUUID, .ledTextUUID, .ledScrollingDelayUUID:
                     return .ledUUID
