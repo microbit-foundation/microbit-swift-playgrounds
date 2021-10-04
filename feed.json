@@ -11,10 +11,10 @@
       "description" : "Learn how to control the micro:bit using Swift.",
       "difficultyLevel" : "intermediate",
       "contentIdentifier" : "org.microbit.swift-playgrounds.microbit-intro",
-      "contentVersion" : "1.2.0",
+      "contentVersion" : "1.3.0",
       "url" : "intro.playgroundbook.zip",
       "publishedDate" : "2018-09-26T13:30:00+01:00",
-      "lastUpdatedDate" : "2019-07-08T22:00:00+01:00",
+      "lastUpdatedDate" : "2021-10-04T12:00:00+01:00",
       "thumbnailURL" : "intro_thumbnail.png",
       "bannerImageURL" : "intro_banner.png",
       "additionalInformation" : [
