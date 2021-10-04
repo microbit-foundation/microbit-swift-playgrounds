@@ -26,7 +26,14 @@
 import Foundation
 
 extension Data {
-    
+
+    static func fromUInt8(_ value: UInt8) -> Data {
+
+        var uint8FromValue = value
+        let data = Data(buffer: UnsafeBufferPointer(start: &uint8FromValue, count: 1))
+        return data
+    }
+
     static func littleEndianUInt16FromInt(_ value: Int) -> Data {
         
         var integerFromValue = UInt16(value).littleEndian
